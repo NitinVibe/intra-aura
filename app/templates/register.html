@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account | Intra Aura{% endblock %}
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="auth-box">
+
+        <p class="auth-eyebrow">JOIN INTRA AURA</p>
+
+        <h1>Create Account</h1>
+
+        <p class="auth-subtitle">
+            Create your account to manage your enquiries and <!-- orders-->. 
+        </p>
+
+        {% if request.query_params.get("error") == "exists" %}
+            <p class="auth-error">
+                An account with this email already exists.
+            </p>
+        {% endif %}
+
+        <form
+            method="post"
+            action="/account/register"
+            class="auth-form register-form"
+        >
+
+            <div class="auth-field">
+                <label>Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Your full name"
+                    required
+                >
+            </div>
+
+            <div class="auth-field">
+                <label>Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Your email address"
+                    required
+                >
+            </div>
+
+            <div class="auth-field">
+                <label>Phone</label>
+                <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Your phone number"
+                >
+            </div>
+
+            <div class="auth-field">
+                <label>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Create a password"
+                    required
+                >
+            </div>
+
+            <button
+                type="submit"
+                class="auth-button"
+            >
+                CREATE ACCOUNT
+            </button>
+
+        </form>
+
+        <p class="auth-switch">
+            Already have an account?
+            <a href="/account/login">Sign In</a>
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

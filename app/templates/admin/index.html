@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="admin-dashboard">
+
+    <div class="admin-page-header">
+        <span>OVERVIEW</span>
+        <h1>Dashboard</h1>
+        <p>Manage your store and customer enquiries.</p>
+    </div>
+
+
+    <div class="admin-stats">
+
+        <a href="/admin/products" class="admin-stat">
+            <span>PRODUCTS</span>
+            <strong>{{ product_count }}</strong>
+            <small>Manage products →</small>
+        </a>
+
+        <a href="/admin/categories" class="admin-stat">
+            <span>CATEGORIES</span>
+            <strong>{{ category_count }}</strong>
+            <small>Manage categories →</small>
+        </a>
+
+        <a href="/admin/enquiries" class="admin-stat">
+            <span>ENQUIRIES</span>
+            <strong>{{ enquiry_count }}</strong>
+            <small>View enquiries →</small>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

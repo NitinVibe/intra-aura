@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block title %}
+Products | Intra Aura
+{% endblock %}
+
+{% block content %}
+<!-- =========================================
+     PRODUCTS HERO
+========================================= -->
+
+<section class="products-hero">
+
+    <div class="products-hero-content">
+
+        <p class="eyebrow">
+            INTRA AURA COLLECTION
+        </p>
+
+        {% if selected_category %}
+
+            <h1>
+                {{ selected_category.name }}
+            </h1>
+
+            <p class="products-hero-description">
+                {{ selected_category.description }}
+            </p>
+
+        {% else %}
+
+            <h1>
+                Furniture for<br>
+                modern living.
+            </h1>
+
+            <p class="products-hero-description">
+                Explore our collection of thoughtfully designed
+                furniture pieces.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="products-hero-image">
+
+        {% if selected_category and selected_category.image_url %}
+
+            <img
+                src="{{ selected_category.image_url }}"
+                alt="{{ selected_category.name }}"
+            >
+
+        {% elif products and products[0].images %}
+
+            <img
+                src="{{ products[0].images[0].image_url }}"
+                alt="Intra Aura Furniture"
+            >
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<!-- =========================================
+     PRODUCTS CONTENT
+========================================= -->
+
+<section class="products-page">
+
+
+    <!-- FILTERS -->
+
+<div class="product-filters">
+
+    <form method="get" action="/products" class="product-filter-form">
+
+        <!-- Search -->
+        <div class="filter-search">
+
+            <span class="filter-icon">⌕</span>
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                placeholder="Search products..."
+            >
+
+        </div>
+
+
+        <!-- Category -->
+        <div class="filter-category">
+
+            <span class="filter-icon">⊞</span>
+
+            <select name="category_id">
+
+                <option value="all">
+                    All Categories
+                </option>
+
+                {% for category in categories %}
+
+                <option
+                    value="{{ category.id }}"
+                    {% if selected_category and selected_category.id == category.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ category.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <!-- Search Button -->
+        <button
+            type="submit"
+            class="filter-search-btn"
+        >
+            Search
+            <span>→</span>
+        </button>
+
+
+        <!-- Reset -->
+        <a
+            href="/products"
+            class="filter-reset"
+        >
+            <span>↻</span>
+            Reset
+        </a>
+
+    </form>
+
+</div>
+
+
+    <!-- =========================================
+         PRODUCTS GRID
+    ========================================= -->
+
+    <div class="products-grid">
+
+        {% for product in products %}
+        {% set primary_image = product.images
+            |selectattr("is_primary", "equalto", true)
+            |first
+        %}
+
+        <article class="product-card">
+
+
+            <!-- IMAGE -->
+
+            <div class="product-image">
+
+                {% set primary_image = product.images
+                    |selectattr("is_primary", "equalto", true)
+                    |first
+                %}
+
+                <article class="product-card">
+
+
+                {% if primary_image %}
+
+                    <img
+                        src="{{ primary_image.image_url }}"
+                        alt="{{ product.name }}"
+                    >
+
+                {% elif product.images %}
+
+                    <img
+                        src="{{ product.images[0].image_url }}"
+                        alt="{{ product.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="product-image-placeholder">
+                        Intra Aura
+                    </div>
+
+                {% endif %}
+
+
+                <!-- DISCOUNT -->
+
+                {% if product.discount_price and product.price %}
+
+                    <span class="discount-badge">
+
+                        -{{ (
+                            ((product.price - product.discount_price)
+                            / product.price) * 100
+                        ) | round(0) }}%
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- PRODUCT INFO -->
+
+            <div class="product-info">
+
+                <p class="product-category">
+
+                    {% if product.categories %}
+
+                        {% for category in product.categories %}
+
+                            {{ category.name }}{% if not loop.last %} · {% endif %}
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                </p>
+
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+
+                {% if product.description %}
+
+                <p class="product-description">
+                    {{ product.description }}
+                </p>
+
+                {% endif %}
+
+
+                <!-- PRICE -->
+
+                <div class="product-price">
+
+                    {% if product.discount_price %}
+
+                        <strong>
+                            ₹{{ "%.0f"|format(product.discount_price) }}
+                        </strong>
+
+                        <span class="old-price">
+                            ₹{{ "%.0f"|format(product.price) }}
+                        </span>
+
+                    {% else %}
+
+                        <strong>
+                            ₹{{ "%.0f"|format(product.price) }}
+                        </strong>
+
+                    {% endif %}
+
+                </div>
+<!-- SHOP ACTIONS -->
+
+<div class="product-shop-actions">
+
+    <!-- WISHLIST -->
+
+    <button
+        type="button"
+        class="product-wishlist-btn"
+        data-product-id="{{ product.id }}"
+        data-product-name="{{ product.name }}"
+        data-product-price="{{ product.discount_price or product.price }}"
+        data-product-image="{% if primary_image %}{{ primary_image.image_url }}{% elif product.images %}{{ product.images[0].image_url }}{% endif %}"
+        aria-label="Add to wishlist"
+    >
+        ♡
+    </button>
+
+
+    <!-- CART -->
+
+    <button
+        type="button"
+        class="product-add-cart-btn"
+        data-product-id="{{ product.id }}"
+        data-product-name="{{ product.name }}"
+        data-product-price="{{ product.discount_price or product.price }}"
+        data-product-image="{% if primary_image %}{{ primary_image.image_url }}{% elif product.images %}{{ product.images[0].image_url }}{% endif %}"
+    >
+        Add to Cart
+        <span>→</span>
+    </button>
+
+</div>
+   <!-- VIEW BUTTON -->
+
+                <a
+                    href="/products/{{ product.id }}"
+                    class="product-view-btn"
+                >
+
+                    <span class="view-btn-icon">
+                        ◉
+                    </span>
+
+                    <span>
+                        View Details
+                    </span>
+
+                    <span class="view-btn-arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </article>
+
+
+        {% else %}
+
+        <div class="empty-products">
+
+            <h2>
+                No products found.
+            </h2>
+
+            <p>
+                Try another search or category.
+            </p>
+
+            <a href="/products">
+                View all products →
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Enquiries{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <div class="admin-page-header">
+
+        <div>
+            <span>ADMIN</span>
+            <h1>Customer Enquiries</h1>
+            <p>Manage customer enquiries and follow-ups.</p>
+        </div>
+
+        <div class="admin-stat-card">
+            <strong>{{ enquiries|length }}</strong>
+            <span>Total Enquiries</span>
+        </div>
+
+    </div>
+
+
+    {% if enquiries %}
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table enquiries-table">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Product</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for enquiry in enquiries %}
+
+                <tr>
+
+                    <td>
+                        #{{ enquiry.id }}
+                    </td>
+
+                    <td>
+                        <div class="enquiry-customer">
+                            <strong>{{ enquiry.name }}</strong>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="enquiry-contact">
+                            <span>{{ enquiry.email }}</span>
+                            <span>{{ enquiry.phone }}</span>
+                        </div>
+                    </td>
+
+                    <td>
+
+                        {% if enquiry.product %}
+
+                            <span class="enquiry-product">
+                                {{ enquiry.product.name }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="enquiry-general">
+                                General Enquiry
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        <div class="enquiry-message">
+                            {{ enquiry.message or "No message" }}
+                        </div>
+                    </td>
+
+                    <td>
+
+                        <span class="enquiry-status {{ enquiry.status }}">
+                            {{ enquiry.status|capitalize }}
+                        </span>
+
+                    </td>
+
+                    <td>
+                        <span class="enquiry-date">
+                            {{ enquiry.created_at.strftime("%d %b %Y") }}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="/admin/enquiries/{{ enquiry.id }}"
+                            class="admin-edit-btn">
+                            View
+                        </a>
+
+                        <button
+                            type="button"
+                            class="admin-delete-btn delete-enquiry-btn"
+                            data-enquiry-id="{{ enquiry.id }}">
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>No enquiries yet</h2>
+
+        <p>
+            Customer enquiries will appear here when someone contacts you.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<script src="/static/js/enquiries.js"></script>
+
+{% endblock %}

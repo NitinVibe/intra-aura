@@ -1,0 +1,507 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile | Intra Aura{% endblock %}
+
+{% block content %}
+
+<section class="account-page">
+
+    <!-- PAGE INTRO -->
+    <div class="account-header">
+
+        <div class="account-breadcrumb">
+            Home <span>›</span> My Account <span>›</span> Profile
+        </div>
+
+        <p class="account-eyebrow">
+            MY ACCOUNT
+        </p>
+
+        <h1>My Profile</h1>
+
+        <p class="account-subtitle">
+            Manage your account details and view your activity.
+        </p>
+
+    </div>
+
+
+    <!-- ACCOUNT LAYOUT -->
+    <div class="account-layout">
+
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
+        <aside class="account-sidebar">
+
+            <div class="sidebar-heading">
+
+                <div class="sidebar-heading-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="3.5"></circle>
+                        <path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6"></path>
+                    </svg>
+                </div>
+
+                <span>My Account</span>
+
+            </div>
+
+
+            <nav class="account-nav">
+
+                <!-- ACTIVE -->
+                <a href="/account/profile" class="account-nav-item active">
+
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="3"></circle>
+                            <path d="M5 20c.7-3.6 3-5.5 7-5.5s6.3 1.9 7 5.5"></path>
+                        </svg>
+                    </span>
+
+                    <span>My Profile</span>
+
+                </a>
+
+
+                <a href="/account/enquiries" class="account-nav-item">
+
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 5.5h16v11H8l-4 3v-14z"></path>
+                            <path d="M8 9h8M8 12h5"></path>
+                        </svg>
+                    </span>
+
+                    <span>My Enquiries</span>
+
+                </a>
+
+
+                <!-- <a href="/account/orders" class="account-nav-item">
+
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 8h14l-1 12H6L5 8z"></path>
+                            <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
+                        </svg>
+                    </span>
+
+                    <span>My Orders</span>
+
+                </a> -->
+
+
+                <a href="/wishlist" class="account-nav-item">
+
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20.8 8.8c0 5.5-8.8 10-8.8 10s-8.8-4.5-8.8-10A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.8 2.6z"></path>
+                        </svg>
+                    </span>
+
+                    <span>My Wishlist</span>
+
+                </a>
+
+
+                <div class="account-nav-divider"></div>
+
+
+                <a href="/account/settings" class="account-nav-item">
+
+                    <span class="nav-icon">
+                        <span>⚙</span>
+                    </span>
+
+                    <span>Settings</span>
+
+                </a>
+
+
+                <a href="/account/logout" class="account-nav-item logout-item">
+
+                    <span class="nav-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 17l5-5-5-5"></path>
+                            <path d="M15 12H4"></path>
+                            <path d="M20 4v16"></path>
+                        </svg>
+                    </span>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </nav>
+
+
+            <!-- HELP BOX -->
+
+            <div class="account-help">
+
+                <div class="help-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 5h16v11H8l-4 3V5z"></path>
+                        <path d="M8 9h8M8 12h5"></path>
+                    </svg>
+                </div>
+
+                <div class="help-content">
+
+                    <strong>Need Help?</strong>
+
+                    <p>
+                        We are here to assist you
+                    </p>
+
+                    <a href="/contact">
+                        Contact Support
+                        <span>→</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================== -->
+
+        <main class="account-main">
+
+
+            <!-- PROFILE INFORMATION -->
+
+            <div class="profile-card">
+
+                <div class="profile-card-header">
+
+                    <div>
+
+                        <p class="card-eyebrow">
+                            ACCOUNT DETAILS
+                        </p>
+
+                        <h2>Profile Information</h2>
+
+                    </div>
+
+
+                    <!-- <a
+                        href="/edit-profile"
+                        class="edit-profile-button"
+                    >
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4L16.5 3.5z"></path>
+                        </svg>
+
+                        Edit Profile
+
+                    </a> -->
+
+                </div>
+
+
+                <div class="profile-info-body">
+
+
+                    <!-- AVATAR -->
+
+                    <div class="profile-avatar">
+                        {{ user.name[0]|upper }}
+                    </div>
+
+
+
+                    <!-- DETAILS -->
+
+                    <div class="profile-info-grid">
+
+
+                        <div class="profile-info-item">
+
+                            <span class="info-label">
+                                FULL NAME
+                            </span>
+
+                            <strong>
+                                {{ user.name }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info-item">
+
+                            <span class="info-label">
+                                EMAIL ADDRESS
+                            </span>
+
+                            <strong>
+                                {{ user.email }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info-item">
+
+                            <span class="info-label">
+                                PHONE NUMBER
+                            </span>
+
+                            <strong>
+                                {{ user.phone or "Not added" }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info-item">
+
+                            <span class="info-label">
+                                MEMBER SINCE
+                            </span>
+
+                            <strong>
+                                {% if user.created_at %}
+                                    {{ user.created_at.strftime('%d %b %Y') }}
+                                {% else %}
+                                    Recently Joined
+                                {% endif %}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="profile-info-item">
+
+                            <span class="info-label">
+                                ACCOUNT STATUS
+                            </span>
+
+                            <span class="status-badge">
+                                <span></span>
+                                Active
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="quick-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="card-eyebrow">
+                            QUICK ACCESS
+                        </p>
+
+                        <h2>Manage Your Account</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-grid">
+
+
+                    <!-- ENQUIRIES -->
+
+                    <a
+                        href="/account/enquiries"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon enquiries-icon">
+
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 5.5h16v11H8l-4 3v-14z"></path>
+                                <path d="M8 9h8M8 12h5"></path>
+                            </svg>
+
+                        </div>
+
+                        <h3>My Enquiries</h3>
+
+                        <p>
+                            View your product and
+                            quotation enquiries.
+                        </p>
+
+                        <span class="quick-link">
+                            View Enquiries
+                            <span>→</span>
+                        </span>
+
+                    </a>
+
+
+
+                    <!-- ORDERS -->
+
+                    <a
+                        href="/account/orders"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon orders-icon">
+
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 8h14l-1 12H6L5 8z"></path>
+                                <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
+                            </svg>
+
+                        </div>
+
+                        <h3>My Orders</h3>
+
+                        <p>
+                            Track your orders and
+                            view your order history.
+                        </p>
+
+                        <span class="quick-link">
+                            View Orders
+                            <span>→</span>
+                        </span>
+
+                    </a>
+
+
+
+                    <!-- WISHLIST -->
+
+                    <a
+                        href="/wishlist"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon wishlist-icon">
+
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20.8 8.8c0 5.5-8.8 10-8.8 10s-8.8-4.5-8.8-10A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.8 2.6z"></path>
+                            </svg>
+
+                        </div>
+
+                        <h3>My Wishlist</h3>
+
+                        <p>
+                            See your saved items
+                            and wishlist.
+                        </p>
+
+                        <span class="quick-link">
+                            View Wishlist
+                            <span>→</span>
+                        </span>
+
+                    </a>
+
+
+
+                    <!-- SETTINGS -->
+
+                    <a
+                        href="/account/settings"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon settings-icon">
+
+                            <span>⚙</span>
+
+                        </div>
+
+                        <h3>Settings</h3>
+
+                        <p>
+                            Manage your account
+                            and preferences.
+                        </p>
+
+                        <span class="quick-link">
+                            Manage Settings
+                            <span>→</span>
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SECURITY STRIP -->
+
+            <div class="security-strip">
+
+                <div class="security-left">
+
+                    <div class="security-icon">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3l7 3v5c0 4.5-3 7.8-7 10-4-2.2-7-5.5-7-10V6l7-3z"></path>
+                            <path d="M9 12l2 2 4-4"></path>
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <strong>Your Account is Secure</strong>
+
+                        <p>
+                            Your personal information is protected.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-status">
+
+                    <svg viewBox="0 0 24 24">
+                        <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+                        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                    </svg>
+
+                    <span>Secure Account</span>
+
+                </div>
+
+            </div>
+
+
+        </main>
+
+    </div>
+
+</section>
+
+{% endblock %}

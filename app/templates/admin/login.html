@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Intra Aura | Admin Login</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f3ef;
+            color: #1d1d1d;
+        }
+
+        .admin-login-page {
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+        .admin-login-card {
+            width: 100%;
+            max-width: 430px;
+
+            background: #ffffff;
+
+            padding: 45px;
+
+            border: 1px solid #e5e0d8;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.08);
+        }
+
+        .admin-login-brand {
+            text-align: center;
+
+            color: #b1874a;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            letter-spacing: 5px;
+
+            margin-bottom: 8px;
+        }
+
+        .admin-login-label {
+            text-align: center;
+
+            color: #999;
+
+            font-size: 10px;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 30px;
+        }
+
+        .admin-login-card h1 {
+            margin: 0;
+
+            text-align: center;
+
+            font-family: Georgia, serif;
+
+            font-size: 34px;
+
+            font-weight: 400;
+        }
+
+        .login-subtitle {
+            text-align: center;
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin: 10px 0 30px;
+        }
+
+        .login-error {
+            padding: 12px;
+
+            margin-bottom: 20px;
+
+            border-radius: 7px;
+
+            background: #fff1ef;
+
+            border: 1px solid #e2c0bb;
+
+            color: #a33b31;
+
+            font-size: 13px;
+        }
+
+        .login-field {
+            margin-bottom: 20px;
+        }
+
+        .login-field label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #333;
+        }
+
+        .login-field input {
+            width: 100%;
+
+            height: 48px;
+
+            padding: 0 14px;
+
+            border: 1px solid #d6d0c7;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: #fff;
+        }
+
+        .login-field input:focus {
+            border-color: #b1874a;
+
+            box-shadow:
+                0 0 0 3px rgba(177, 135, 74, 0.12);
+        }
+
+        .login-submit-btn {
+            width: 100%;
+
+            height: 50px;
+
+            margin-top: 5px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #1d1d1d;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .login-submit-btn:hover {
+            background: #b1874a;
+        }
+
+        .login-security {
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #eee;
+
+            text-align: center;
+
+            color: #999;
+
+            font-size: 12px;
+        }
+
+        .login-security span {
+            color: #b1874a;
+
+            margin-right: 5px;
+        }
+
+        .login-footer {
+            margin-top: 25px;
+
+            color: #999;
+
+            font-size: 12px;
+
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+
+            .admin-login-page {
+                padding: 20px;
+            }
+
+            .admin-login-card {
+                padding: 30px 25px;
+            }
+
+            .admin-login-card h1 {
+                font-size: 29px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="admin-login-page">
+
+    <div class="admin-login-card">
+
+        <div class="admin-login-brand">
+            INTRA AURA
+        </div>
+
+        <div class="admin-login-label">
+            ADMIN PORTAL
+        </div>
+
+        <h1>
+            Welcome Back
+        </h1>
+
+        <p class="login-subtitle">
+            Sign in to manage your store.
+        </p>
+
+
+        {% if request.query_params.get("error") %}
+
+        <div class="login-error">
+            Invalid username or password.
+        </div>
+
+        {% endif %}
+
+
+        <form
+            method="post"
+            action="/auth/login"
+        >
+
+            <div class="login-field">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter username"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="login-field">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-submit-btn"
+            >
+                Login →
+            </button>
+
+        </form>
+
+
+        <div class="login-security">
+            <span>◆</span>
+            Secure access to your admin dashboard
+        </div>
+
+    </div>
+
+
+    <div class="login-footer">
+        © 2026 Intra Aura. All rights reserved.
+    </div>
+
+</div>
+
+</body>
+
+</html>

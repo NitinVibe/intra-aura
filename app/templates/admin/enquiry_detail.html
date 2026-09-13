@@ -1,0 +1,319 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Enquiry Details{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <div class="admin-page-header">
+        <span>ENQUIRY</span>
+        <h1>Enquiry #{{ enquiry.id }}</h1>
+        <p>Customer enquiry details.</p>
+    </div>
+
+    <div class="enquiry-detail-card">
+
+        <div class="detail-row">
+            <span>Customer</span>
+            <strong>{{ enquiry.name }}</strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Email</span>
+            <strong>{{ enquiry.email }}</strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Phone</span>
+            <strong>{{ enquiry.phone }}</strong>
+        </div>
+
+        {% if cart_items %}
+
+<div class="detail-row">
+
+    <span>Products</span>
+
+    <strong>
+        {{ cart_items|length }} Product{% if cart_items|length != 1 %}s{% endif %}
+    </strong>
+
+</div>
+
+
+<div class="admin-cart-products">
+
+    <div class="admin-cart-products-header">
+        Selected Products
+    </div>
+
+
+    {% for item in cart_items %}
+
+    <div class="admin-cart-product">
+
+        <div class="admin-cart-product-info">
+
+            <strong>
+                {{ item.name }}
+            </strong>
+
+            <span>
+                Quantity: {{ item.quantity }}
+            </span>
+
+        </div>
+
+
+        <strong class="admin-cart-product-price">
+
+            ₹{{ "{:,.0f}".format(
+                (item.price | float) *
+                (item.quantity | int)
+            ) }}
+
+        </strong>
+
+    </div>
+
+    {% endfor %}
+
+
+    {% if enquiry.cart_total %}
+
+    <div class="admin-cart-total">
+
+        <span>
+            Estimated Total
+        </span>
+
+        <strong>
+            ₹{{ "{:,.0f}".format(
+                enquiry.cart_total | float
+            ) }}
+        </strong>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+{% elif product %}
+
+<div class="detail-row">
+
+    <span>Product</span>
+
+    <strong>
+        {{ product.name }}
+    </strong>
+
+</div>
+
+{% else %}
+
+<div class="detail-row">
+
+    <span>Product</span>
+
+    <strong>
+        General Enquiry
+    </strong>
+
+</div>
+
+{% endif %}
+
+        <div class="detail-row">
+            <span>Status</span>
+
+            <span class="enquiry-status {{ enquiry.status }}">
+                {{ enquiry.status|capitalize }}
+            </span>
+        </div>
+
+        <div class="detail-message">
+
+            <span>Message</span>
+
+            <p>
+                {{ enquiry.message or "No message provided." }}
+            </p>
+
+        </div>
+
+        <!-- =========================================
+     PRICE CALCULATOR DETAILS
+========================================= -->
+
+{% if enquiry.calculator_data %}
+
+<div class="enquiry-calculator-details">
+
+    <h3>
+        Price Calculator Details
+    </h3>
+
+
+    {% set calculator =
+        enquiry.calculator_data | from_json
+    %}
+
+
+    <div class="enquiry-detail-row">
+
+        <span>BHK</span>
+
+        <strong>
+            {{ calculator.bhk }} BHK
+        </strong>
+
+    </div>
+
+
+    <div class="enquiry-detail-row">
+
+        <span>Package</span>
+
+        <strong>
+            {{ calculator.package | title }}
+        </strong>
+
+    </div>
+
+
+    <div class="enquiry-detail-row">
+
+        <span>City / Address</span>
+
+        <strong>
+            {{ calculator.city }}
+        </strong>
+
+    </div>
+
+
+    <div class="enquiry-detail-row">
+
+        <span>WhatsApp Updates</span>
+
+        <strong>
+            {{ "Yes" if calculator.whatsapp else "No" }}
+        </strong>
+
+    </div>
+
+
+    <div class="enquiry-rooms">
+
+        <h4>
+            Rooms
+        </h4>
+
+
+        {% for room, quantity in calculator.rooms.items() %}
+
+        <div class="enquiry-detail-row">
+
+            <span>
+                {{ room.replace("_", " ") | title }}
+            </span>
+
+            <strong>
+                {{ quantity }}
+            </strong>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% if enquiry.estimated_price %}
+
+    <div class="enquiry-estimated-price">
+
+        <span>
+            Estimated Price
+        </span>
+
+        <strong>
+            ₹{{ "%.0f"|format(enquiry.estimated_price) }}
+        </strong>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+        <div class="detail-row">
+            <span>Submitted</span>
+
+            <strong>
+                {{ enquiry.created_at.strftime("%d %b %Y, %I:%M %p") }}
+            </strong>
+        </div>
+
+        <div class="enquiry-status-section">
+
+    <h3>Update Status</h3>
+
+    <form
+        method="post"
+        action="/admin/enquiries/{{ enquiry.id }}/status"
+        class="enquiry-status-form">
+
+        <select name="status">
+
+            <option
+                value="new"
+                {% if enquiry.status == "new" %}selected{% endif %}>
+                New
+            </option>
+
+            <option
+                value="contacted"
+                {% if enquiry.status == "contacted" %}selected{% endif %}>
+                Contacted
+            </option>
+
+            <option
+                value="resolved"
+                {% if enquiry.status == "resolved" %}selected{% endif %}>
+                Resolved
+            </option>
+
+        </select>
+
+        <button
+            type="submit"
+            class="admin-primary-btn">
+            Update Status
+        </button>
+
+    </form>
+
+</div>
+
+<div class="product-form-actions">
+
+    <a
+        href="/admin/enquiries"
+        class="admin-secondary-btn">
+        ← Back to Enquiries
+    </a>
+
+</div>
+
+    </div>
+
+</div>
+
+{% endblock %}

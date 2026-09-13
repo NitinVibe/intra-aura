@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Portfolio | Intra Aura{% endblock %}
+{% block content %}
+<section class="portfolio-page">
+<section class="portfolio-hero" style="background-image:url('{{ site().portfolio.hero.image }}');"><div class="portfolio-hero-content"><p class="portfolio-eyebrow">{{ site().portfolio.hero.eyebrow }}</p><h1>{{ site().portfolio.hero.title_html|safe }}</h1><p>{{ site().portfolio.hero.description }}</p></div></section>
+<section class="portfolio-intro"><div><p class="portfolio-eyebrow">{{ site().portfolio.intro.eyebrow }}</p><h2>{{ site().portfolio.intro.title_html|safe }}</h2></div><p>{{ site().portfolio.intro.description }}</p></section>
+<section class="portfolio-grid">{% for item in site()["portfolio"]["projects"] %}<article class="portfolio-card {% if loop.first %}portfolio-large{% elif loop.last %}portfolio-wide{% endif %}"><div class="portfolio-image"><img src="{{ item[3] }}" alt="{{ item[1] }}"><div class="portfolio-overlay"></div><div class="portfolio-card-content"><span>{{ item[0] }}</span><h3>{{ item[1] }}</h3><p>{{ item[2] }}</p></div></div></article>{% endfor %}</section>
+<section class="portfolio-cta"><p class="portfolio-eyebrow">{{ site().portfolio.cta.eyebrow }}</p><h2>{{ site().portfolio.cta.title_html|safe }}</h2><a href="/contact" class="portfolio-cta-button">{{ site().portfolio.cta.button }} <span>→</span></a></section>
+</section>
+{% endblock %}

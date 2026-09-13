@@ -1,0 +1,511 @@
+{% extends "base.html" %}
+
+{% block title %}My Enquiries | Intra Aura{% endblock %}
+
+{% block content %}
+
+<section class="account-page enquiries-page">
+
+    <div class="account-box">
+
+        <p class="account-eyebrow">
+            MY ACCOUNT
+        </p>
+
+        <h1>My Enquiries</h1>
+
+
+        {% if enquiries %}
+
+        <div class="enquiries-list">
+
+            {% for enquiry in enquiries %}
+
+            <div class="enquiry-card">
+
+
+                <!-- =========================================
+                     ENQUIRY HEADER
+                ========================================== -->
+
+                <div class="enquiry-top">
+
+                    <div>
+
+                        <span class="enquiry-label">
+                            ENQUIRY
+                        </span>
+
+                        <h2>
+
+                            {% if enquiry.product %}
+
+                                {{ enquiry.product.name }}
+
+                            {% elif enquiry.calculator_data %}
+
+                                Price Calculator Enquiry
+
+                            {% else %}
+
+                                Furniture Enquiry
+
+                            {% endif %}
+
+                        </h2>
+
+                    </div>
+
+
+                    <span class="enquiry-status">
+                        {{ enquiry.status|upper }}
+                    </span>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     CART / SELECTED PRODUCTS
+                ========================================== -->
+
+                {% if enquiry.cart_data %}
+
+                <div class="enquiry-products">
+
+                    <span class="enquiry-section-label">
+                        PRODUCTS
+                    </span>
+
+
+                    {% set products = enquiry.cart_data | from_json %}
+
+
+                    {% for item in products %}
+
+                    <div class="enquiry-product">
+
+
+                        <!-- IMAGE -->
+
+                        <img
+                            src="{{ item.image }}"
+                            alt="{{ item.name }}"
+                        >
+
+
+                        <!-- PRODUCT DETAILS -->
+
+                        <div class="enquiry-product-details">
+
+                            <h3>
+                                {{ item.name }}
+                            </h3>
+
+                            <p>
+                                ₹{{ "%.2f"|format(item.price) }}
+                            </p>
+
+                        </div>
+
+
+                        <!-- QUANTITY -->
+
+                        <div class="enquiry-product-quantity">
+
+                            × {{ item.quantity }}
+
+                        </div>
+
+
+                        <!-- SUBTOTAL -->
+
+                        <div class="enquiry-product-total">
+
+                            ₹{{ "%.2f"|format(
+                                item.price * item.quantity
+                            ) }}
+
+                        </div>
+
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+
+
+                <!-- =========================================
+                     PRICE CALCULATOR DETAILS
+                ========================================== -->
+
+                {% if enquiry.calculator_data %}
+
+                <div class="calculator-enquiry-details">
+
+
+                    <span class="enquiry-section-label">
+                        PRICE CALCULATOR
+                    </span>
+
+
+                    {% set calculator =
+                        enquiry.calculator_data | from_json
+                    %}
+
+
+
+                    <!-- =====================================
+                         BHK TYPE
+                    ====================================== -->
+
+                    <div class="calculator-enquiry-row">
+
+                        <span>
+                            BHK TYPE
+                        </span>
+
+                        <strong>
+
+                            {{ calculator.bhk }} BHK
+
+                            {% if calculator.bhk == 5 %}
+                                +
+                            {% endif %}
+
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         ROOMS
+                    ====================================== -->
+
+                    <div class="calculator-enquiry-block">
+
+                        <span>
+                            ROOMS TO DESIGN
+                        </span>
+
+
+                        <div class="calculator-enquiry-rooms">
+
+
+                            {% if calculator.rooms.living_room
+                                  and calculator.rooms.living_room > 0 %}
+
+                            <div>
+
+                                <span>
+                                    Living Room
+                                </span>
+
+                                <strong>
+                                    × {{ calculator.rooms.living_room }}
+                                </strong>
+
+                            </div>
+
+                            {% endif %}
+
+
+
+                            {% if calculator.rooms.kitchen
+                                  and calculator.rooms.kitchen > 0 %}
+
+                            <div>
+
+                                <span>
+                                    Kitchen
+                                </span>
+
+                                <strong>
+                                    × {{ calculator.rooms.kitchen }}
+                                </strong>
+
+                            </div>
+
+                            {% endif %}
+
+
+
+                            {% if calculator.rooms.bedroom
+                                  and calculator.rooms.bedroom > 0 %}
+
+                            <div>
+
+                                <span>
+                                    Bedroom
+                                </span>
+
+                                <strong>
+                                    × {{ calculator.rooms.bedroom }}
+                                </strong>
+
+                            </div>
+
+                            {% endif %}
+
+
+
+                            {% if calculator.rooms.bathroom
+                                  and calculator.rooms.bathroom > 0 %}
+
+                            <div>
+
+                                <span>
+                                    Bathroom
+                                </span>
+
+                                <strong>
+                                    × {{ calculator.rooms.bathroom }}
+                                </strong>
+
+                            </div>
+
+                            {% endif %}
+
+
+
+                            {% if calculator.rooms.dining
+                                  and calculator.rooms.dining > 0 %}
+
+                            <div>
+
+                                <span>
+                                    Dining
+                                </span>
+
+                                <strong>
+                                    × {{ calculator.rooms.dining }}
+                                </strong>
+
+                            </div>
+
+                            {% endif %}
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         PACKAGE
+                    ====================================== -->
+
+                    <div class="calculator-enquiry-row">
+
+                        <span>
+                            PACKAGE
+                        </span>
+
+                        <strong>
+
+                            {% if calculator.package == "essentials" %}
+
+                                Essentials
+
+                            {% elif calculator.package == "premium" %}
+
+                                Premium
+
+                            {% elif calculator.package == "luxe" %}
+
+                                Luxe
+
+                            {% else %}
+
+                                {{ calculator.package }}
+
+                            {% endif %}
+
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         CITY
+                    ====================================== -->
+
+                    <div class="calculator-enquiry-row">
+
+                        <span>
+                            CITY
+                        </span>
+
+                        <strong>
+                            {{ calculator.city }}
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         ESTIMATED PRICE
+                    ====================================== -->
+
+                    {% if enquiry.estimated_price %}
+
+                    <div class="calculator-enquiry-price">
+
+                        <span>
+                            ESTIMATED PRICE
+                        </span>
+
+                        <strong>
+                            ₹{{ "{:,.0f}".format(
+                                enquiry.estimated_price
+                            ) }}
+                        </strong>
+
+                    </div>
+
+                    {% endif %}
+
+
+                </div>
+
+                {% endif %}
+
+
+
+                <!-- =========================================
+                     ENQUIRY INFORMATION
+                ========================================== -->
+
+                <div class="enquiry-info">
+
+
+                    <!-- DATE -->
+
+                    <div>
+
+                        <span>
+                            DATE
+                        </span>
+
+                        <p>
+                            {{ enquiry.created_at.strftime(
+                                "%d %b %Y"
+                            ) }}
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- PHONE -->
+
+                    <div>
+
+                        <span>
+                            PHONE
+                        </span>
+
+                        <p>
+                            {{ enquiry.phone }}
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- CART TOTAL -->
+
+                    {% if enquiry.cart_total %}
+
+                    <div>
+
+                        <span>
+                            TOTAL
+                        </span>
+
+                        <p>
+                            ₹{{ "%.2f"|format(
+                                enquiry.cart_total
+                            ) }}
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- =========================================
+                     MESSAGE
+                ========================================== -->
+
+                {% if enquiry.message %}
+
+                <div class="enquiry-message">
+
+                    <span>
+                        MESSAGE
+                    </span>
+
+                    <p>
+                        {{ enquiry.message }}
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- =============================================
+             NO ENQUIRIES
+        ============================================== -->
+
+        <div class="no-enquiries">
+
+            <h2>
+                No enquiries yet.
+            </h2>
+
+            <p>
+                Your product and quotation enquiries
+                will appear here.
+            </p>
+
+            <a
+                href="/products"
+                class="account-button"
+            >
+                Explore Products
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

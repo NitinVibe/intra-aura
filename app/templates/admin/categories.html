@@ -1,0 +1,217 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <div class="admin-page-header">
+        <span>STORE</span>
+        <h1>Categories</h1>
+        <p>Manage your product categories.</p>
+    </div>
+
+    <div class="admin-form-card">
+
+    <h2>Add Category</h2>
+
+    <form id="categoryForm" class="admin-form" onsubmit="addCategory(event)">
+
+        <div class="form-group">
+            <label for="name">Category Name</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="e.g. Living Room"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="slug">Slug</label>
+            <input
+                type="text"
+                id="slug"
+                name="slug"
+                placeholder="e.g. living-room"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea
+                id="description"
+                name="description"
+                placeholder="Category description"></textarea>
+        </div>
+
+        <button type="submit" class="admin-primary-btn">
+            Add Category
+        </button>
+        
+
+    </form>
+
+</div>
+<div id="editCategoryModal" class="admin-modal">
+
+    <div class="admin-modal-content">
+
+        <button
+            type="button"
+            id="closeEditModal"
+            class="modal-close">
+            ×
+        </button>
+
+        <h2>Edit Category</h2>
+
+        <form id="editCategoryForm">
+
+            <input type="hidden" id="editCategoryId">
+
+            <div class="form-group">
+                <label>Name</label>
+                <input
+                    type="text"
+                    id="editName"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Slug</label>
+                <input
+                    type="text"
+                    id="editSlug"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="editDescription"></textarea>
+            </div>
+            <div class="form-group">
+
+    <label for="editImage">
+        Category Image
+    </label>
+
+    <input
+        type="file"
+        id="editImage"
+        name="image"
+        accept="image/jpeg,image/png,image/webp"
+    >
+
+    <small>
+        JPG, PNG or WEBP. Automatically resized and converted to optimized WebP.
+    </small>
+
+</div>
+
+            <button
+                type="submit"
+                class="admin-primary-btn">
+                Save Changes
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Slug</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                    
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for category in categories %}
+
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>
+
+                        {% if category.image_url %}
+
+                            <img
+                                src="{{ category.image_url }}"
+                                alt="{{ category.name }}"
+                                class="category-table-image"
+                            >
+
+                        {% else %}
+
+                            <span class="no-category-image">
+                                No Image
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="table-name">
+                        {{ category.name }}
+                    </td>
+
+                    <td>
+                        {{ category.slug }}
+                    </td>
+
+                    <td>
+                        {{ category.description or "-" }}
+                    </td>
+
+                    <td>
+    <button
+    type="button"
+    class="admin-edit-btn"
+    data-category-id="{{ category.id }}"
+    data-name="{{ category.name }}"
+    data-slug="{{ category.slug }}"
+    data-description="{{ category.description or '' }}">
+    Edit
+</button>
+
+    <button
+        class="admin-delete-btn"
+        data-category-id="{{ category.id }}">
+        Delete
+    </button>
+</td>
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No categories found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="/static/js/categories.js"></script>
+
+{% endblock %}

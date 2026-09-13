@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="contact-page">
+<div class="contact-intro"><span>{{ site().contact.eyebrow }}</span><h1>{{ site().contact.title_html|safe }}</h1><p>{{ site().contact.description }}</p></div>
+<form id="enquiryForm" class="enquiry-form">
+<div class="form-group"><label for="name">Name</label><input type="text" id="name" name="name" required></div>
+<div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" required></div>
+<div class="form-group"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" required></div>
+<div class="form-group"><label>Selected Products</label><div id="cartEnquiryItems" class="cart-enquiry-items"></div></div>
+<input type="hidden" id="cartData" name="cart_data"><input type="hidden" id="cartTotal" name="cart_total">
+<div class="form-group"><label for="message">Message</label><textarea id="message" name="message" rows="6" placeholder="Tell us what you're looking for..."></textarea></div>
+<button type="submit">Send Enquiry →</button><p id="formMessage"></p>
+</form></section>
+<script>
+document.addEventListener("DOMContentLoaded",function(){const c=document.getElementById("cartEnquiryItems"),d=document.getElementById("cartData"),t=document.getElementById("cartTotal");if(!c)return;const cart=JSON.parse(sessionStorage.getItem("intraAuraEnquiryCart")||"[]");if(!cart.length){c.innerHTML="<p>No products selected.</p>";return;}if(d)d.value=JSON.stringify(cart);let total=0;cart.forEach(item=>{const sub=Number(item.price)*Number(item.quantity);total+=sub;const e=document.createElement("div");e.className="cart-enquiry-item";e.innerHTML=`<span>${item.name} × ${item.quantity}</span><strong>₹${sub.toLocaleString("en-IN")}</strong>`;c.appendChild(e);});if(t)t.value=total;const e=document.createElement("div");e.className="cart-enquiry-total";e.innerHTML=`<span>Estimated Total</span><strong>₹${total.toLocaleString("en-IN")}</strong>`;c.appendChild(e);});
+</script>
+{% endblock %}

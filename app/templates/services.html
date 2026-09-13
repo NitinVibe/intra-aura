@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Services | Intra Aura{% endblock %}
+{% block content %}
+<section class="services-page">
+<section class="services-hero" style="background-image:url('{{ site().services.hero.image }}');"><div class="services-hero-content"><p class="services-eyebrow">{{ site().services.hero.eyebrow }}</p><h1>{{ site().services.hero.title_html|safe }}</h1><p class="services-hero-text">{{ site().services.hero.description }}</p></div></section>
+<section class="services-intro"><div class="services-intro-heading"><p class="services-eyebrow">{{ site().services.intro.eyebrow }}</p><h2>{{ site().services.intro.title_html|safe }}</h2></div><div class="services-intro-text"><p>{{ site().services.intro.description }}</p></div></section>
+<section class="services-grid">{% for item in site()["services"]["items"] %}<article class="service-card"><div class="service-card-image"><img src="{{ item[2] }}" alt="{{ item[0] }}"></div><div class="service-card-overlay"></div><div class="service-card-content"><span class="service-number">{{ "%02d"|format(loop.index) }}</span><div class="service-card-bottom"><h3>{{ item[0] }}</h3><p>{{ item[1] }}</p><a href="/contact">Explore service <span>→</span></a></div></div></article>{% endfor %}</section>
+<section class="services-cta"><p class="services-eyebrow">{{ site().services.cta.eyebrow }}</p><h2>{{ site().services.cta.title_html|safe }}</h2><a href="/contact" class="services-cta-button">{{ site().services.cta.button }} <span>→</span></a></section>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+<div class="admin-container">
+  <div class="admin-header">
+    <span>STORE MANAGEMENT</span>
+    <h1>Orders</h1>
+    <p>Order management is ready for when the orders database module is enabled.</p>
+  </div>
+  {% if not orders_enabled %}
+    <section class="admin-empty-state">
+      <div class="admin-empty-icon">○</div>
+      <h2>Orders are not enabled yet</h2>
+      <p>The <code>orders</code> table does not exist in the current database, so this page stays safe and empty instead of throwing an error.</p>
+      <a class="admin-button" href="/admin">Back to Dashboard</a>
+    </section>
+  {% else %}
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Created</th></tr></thead>
+        <tbody>
+        {% for order in orders %}
+          <tr><td>#{{ order.id }}</td><td>{{ order.user.email if order.user else "—" }}</td><td>₹{{ "%.2f"|format(order.total_amount) }}</td><td>{{ order.status }}</td><td>{{ order.created_at }}</td></tr>
+        {% else %}<tr><td colspan="5">No orders yet.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

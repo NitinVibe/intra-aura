@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}
+Enquire About {{ product.name }} | Intra Aura
+{% endblock %}
+
+{% block content %}
+
+<section class="enquiry-page">
+
+    <div class="enquiry-container">
+
+        <!-- LEFT PRODUCT -->
+
+        <div class="enquiry-product">
+
+            <div class="enquiry-product-image">
+
+                {% if product.images %}
+
+                    <img
+                        src="{{ product.images[0].image_url }}"
+                        alt="{{ product.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="enquiry-no-image">
+                        INTRA AURA
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="enquiry-product-info">
+
+                <p class="enquiry-eyebrow">
+                    YOUR SELECTION
+                </p>
+
+                <h2>
+                    {{ product.name }}
+                </h2>
+
+                <div class="enquiry-price">
+
+                    {% if product.discount_price %}
+
+                        <strong>
+                            ₹{{ "%.0f"|format(product.discount_price) }}
+                        </strong>
+
+                        <del>
+                            ₹{{ "%.0f"|format(product.price) }}
+                        </del>
+
+                    {% else %}
+
+                        <strong>
+                            ₹{{ "%.0f"|format(product.price) }}
+                        </strong>
+
+                    {% endif %}
+
+                </div>
+
+                {% if product.category %}
+
+                <p class="enquiry-category">
+                    {{ product.category.name }}
+                </p>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT FORM -->
+
+        <div class="enquiry-form-container">
+
+            <p class="enquiry-eyebrow">
+                INTRA AURA
+            </p>
+
+            <h1>
+                Let's talk about<br>
+                your furniture.
+            </h1>
+
+            <p class="enquiry-intro">
+                Interested in this piece? Share your details
+                and our team will get in touch with you.
+            </p>
+
+
+            {% if request.query_params.get("success") %}
+
+            <div class="enquiry-success">
+
+                <strong>
+                    Enquiry sent successfully.
+                </strong>
+
+                <span>
+                    Thank you. Our team will contact you shortly.
+                </span>
+
+            </div>
+
+            {% else %}
+
+            <form
+                method="post"
+                action="/products/{{ product.id }}/enquire"
+                class="enquiry-form"
+            >
+
+                <div class="form-field">
+
+                    <label for="name">
+                        Your Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-field">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="phone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="Your phone number"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="message">
+                        Message
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Tell us what you'd like to know..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="enquiry-submit"
+                >
+
+                    Send Enquiry
+
+                    <span>→</span>
+
+                </button>
+
+            </form>
+
+            {% endif %}
+
+
+            <a
+                href="/products/{{ product.id }}"
+                class="enquiry-back"
+            >
+                ← Back to Product
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

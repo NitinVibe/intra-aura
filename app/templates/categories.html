@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}
+Categories | Intra Aura
+{% endblock %}
+
+{% block content %}
+
+<section class="categories-page">
+
+    <!-- HERO -->
+
+    <div class="categories-hero">
+
+        <div class="categories-hero-content">
+
+            <p class="categories-eyebrow">
+                INTRA AURA COLLECTION
+            </p>
+
+            <h1>
+                Explore furniture<br>
+                for <em>every space.</em>
+            </h1>
+
+            <p>
+                Discover thoughtfully designed pieces for
+                living, dining, sleeping and working spaces.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CATEGORY SECTION -->
+
+    <section class="category-showcase">
+
+        <div class="category-section-heading">
+
+            <div>
+                <p class="categories-eyebrow">
+                    OUR COLLECTION
+                </p>
+
+                <h2>
+                    Find your style.
+                </h2>
+            </div>
+
+            <p>
+                Explore our curated furniture collections
+                and find pieces made for your space.
+            </p>
+
+        </div>
+
+
+        <div class="category-grid">
+
+            {% for category in categories %}
+
+            <a
+                href="/products?category_id={{ category.id }}"
+                class="category-card"
+            >
+
+                <div class="category-image">
+
+                    {% if category.image_url %}
+
+                    <img
+                        src="{{ category.image_url }}"
+                        alt="{{ category.name }}"
+                    >
+
+                    {% else %}
+
+                    <div class="category-placeholder">
+                        INTRA AURA
+                    </div>
+
+                    {% endif %}
+
+                    <div class="category-overlay"></div>
+
+
+                    <div class="category-card-content">
+
+                        <span>
+                            COLLECTION
+                        </span>
+
+                        <h3>
+                            {{ category.name }}
+                        </h3>
+
+                        <div class="category-arrow">
+                            <span>Explore</span>
+                            <strong>→</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}

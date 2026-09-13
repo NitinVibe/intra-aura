@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Wishlist | Intra Aura
+{% endblock %}
+
+{% block content %}
+
+<section class="wishlist-page">
+
+    <div class="wishlist-heading">
+
+        <span>SAVED COLLECTION</span>
+
+        <h1>
+            Your <em>wishlist.</em>
+        </h1>
+
+        <p>
+            Pieces you've saved for later.
+        </p>
+
+    </div>
+
+
+    <div
+        id="wishlistItems"
+        class="wishlist-items">
+    </div>
+
+</section>
+
+<script src="/static/js/shop.js"></script>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Intra Aura | Interior & Furniture{% endblock %}
+{% block content %}
+<section class="home-hero">
+{% for i in range(1,4) %}
+{% set s = site().home["hero_" ~ i] %}
+<div class="home-hero-slide{% if i == 1 %} active{% endif %}" style="background-image:url('{{ s.image }}');">
+<div class="home-hero-overlay"></div>
+<div class="home-hero-content">
+<p class="home-eyebrow">{{ s.eyebrow }}</p>
+<h1>{{ s.title_html|safe }}</h1>
+<p class="home-hero-description">{{ s.description }}</p>
+<div class="home-hero-actions">
+<a href="/products" class="home-btn home-btn-primary">{{ s.primary }}</a>
+<a href="/price-calculator" class="home-btn home-btn-secondary">{{ s.secondary }}</a>
+</div>
+</div>
+</div>
+{% endfor %}
+<div class="home-hero-dots">
+{% for i in range(3) %}<button class="hero-dot{% if i == 0 %} active{% endif %}" data-slide="{{ i }}"></button>{% endfor %}
+</div>
+</section>
+
+<section class="featured-section">
+<div class="section-heading">
+<span>{{ site().home.featured.eyebrow }}</span><h2>{{ site().home.featured.title }}</h2><p>{{ site().home.featured.description }}</p>
+</div>
+<div class="featured-carousel"><div class="featured-track" id="featuredTrack">
+{% for product in featured_products %}
+<article class="featured-card">
+<a href="/products/{{ product.id }}" class="featured-image">
+{% if product.images %}<img src="{{ product.images[0].image_url }}" alt="{{ product.name }}">{% else %}<span>INTRA AURA</span>{% endif %}
+</a>
+<div class="featured-info">
+<span class="featured-category">{{ product.categories[0].name if product.categories else "" }}</span>
+<h3>{{ product.name }}</h3>
+<div class="featured-bottom">
+{% if product.discount_price %}<strong>₹{{ "%.0f"|format(product.discount_price) }}</strong><del>₹{{ "%.0f"|format(product.price) }}</del>{% else %}<strong>₹{{ "%.0f"|format(product.price) }}</strong>{% endif %}
+<a href="/products/{{ product.id }}">View</a>
+</div></div></article>
+{% endfor %}
+</div></div>
+<div class="section-action"><a href="/products">View All Products</a></div>
+</section>
+
+<section class="categories-section">
+<div class="section-heading"><span>{{ site().home.categories.eyebrow }}</span><h2>{{ site().home.categories.title }}</h2><p>{{ site().home.categories.description }}</p></div>
+<div class="categories-carousel"><div class="categories-track">
+{% for category in categories %}
+<a href="/products?category={{ category.slug }}" class="category-card">
+<div class="category-image">{% if category.image_url %}<img src="{{ category.image_url }}" alt="{{ category.name }}">{% else %}<div class="category-image-placeholder">INTRA AURA</div>{% endif %}</div>
+<div class="category-card-content"><span class="category-number">{{ "%02d"|format(loop.index) }}</span><h3>{{ category.name }}</h3>{% if category.description %}<p>{{ category.description }}</p>{% endif %}<strong>Explore</strong></div>
+</a>
+{% endfor %}
+</div></div>
+</section>
+
+<section class="home-about">
+<div class="home-about-image"><img src="{{ site().home.about.image }}" alt="Intra Aura furniture"></div>
+<div class="home-about-content">
+<span class="home-about-eyebrow">{{ site().home.about.eyebrow }}</span><h2>{{ site().home.about.title }}</h2>
+<p>{{ site().home.about.paragraph_1 }}</p><p>{{ site().home.about.paragraph_2 }}</p>
+<div class="home-about-highlights">
+{% for h in [site().home.about.highlight_1, site().home.about.highlight_2, site().home.about.highlight_3] %}
+{% set parts=h.split('|') %}<div><strong>{{ parts[0] }}</strong><span>{{ parts[1] if parts|length > 1 else '' }}</span></div>
+{% endfor %}
+</div>
+<a href="/about" class="home-about-link">{{ site().home.about.button }}</a>
+</div></section>
+
+<section class="services-section">
+<div class="section-heading services-heading"><span>{{ site().home.services.eyebrow }}</span><h2>{{ site().home.services.title }}</h2><p>{{ site().home.services.description }}</p></div>
+<div class="services-grid">
+{% for item in site()["services"]["items"][:3] %}
+<article class="service-card"><div class="service-card-image"><img src="{{ item[2] }}" alt="{{ item[0] }}"></div><div class="service-card-overlay"></div><div class="service-card-content"><span class="service-number">{{ "%02d"|format(loop.index) }}</span><div class="service-card-bottom"><h3>{{ item[0] }}</h3><p>{{ item[1] }}</p><a href="/contact">Explore Service</a></div></div></article>
+{% endfor %}
+</div>
+</section>
+
+<section class="quote-section"><div class="quote-line"></div><div class="quote-content"><span class="quote-eyebrow">{{ site().home.cta.eyebrow }}</span><h2>{{ site().home.cta.title_html|safe }}</h2><p>{{ site().home.cta.description }}</p><a href="/price-calculator" class="quote-cta"><span>{{ site().home.cta.button }}</span></a></div><div class="quote-line quote-line-bottom"></div></section>
+{% endblock %}

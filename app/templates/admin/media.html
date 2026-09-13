@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% block title %}Media Library{% endblock %}
+{% block content %}
+<div class="cms-wrap">
+<div class="cms-head"><div><span class="admin-eyebrow">MEDIA</span><h1>Media Library</h1><p>Upload reusable JPG, PNG or WEBP images for products and website sections.</p></div><a class="admin-secondary-btn" href="/admin/website">Website Editor</a></div>
+<section class="media-upload-card">
+<form method="post" action="/admin/media/upload" enctype="multipart/form-data">
+<label>Upload new image<input type="file" name="image" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" required></label>
+<button class="admin-primary-btn" type="submit">Upload Image</button>
+</form>
+</section>
+<div class="media-grid">
+{% for file in files %}
+<div class="media-card"><div class="media-thumb"><img src="{{ file.url }}" alt="{{ file.name }}"></div><div class="media-meta"><strong>{{ file.name }}</strong><code>{{ file.url }}</code><button type="button" class="media-copy" data-url="{{ file.url }}">Copy path</button><button type="button" class="media-delete" data-file="{{ file.name }}">Delete</button></div></div>
+{% else %}<div class="empty-state">No uploaded media yet.</div>{% endfor %}
+</div>
+</div>
+<script>
+document.querySelectorAll(".media-copy").forEach(b=>b.addEventListener("click",async()=>{await navigator.clipboard.writeText(b.dataset.url);const old=b.textContent;b.textContent="Copied!";setTimeout(()=>b.textContent=old,1200)}));
+document.querySelectorAll(".media-delete").forEach(b=>b.addEventListener("click",async()=>{if(!confirm("Delete this uploaded image?"))return;const r=await fetch("/admin/media/"+encodeURIComponent(b.dataset.file),{method:"DELETE"});if(r.ok)location.reload();}));
+</script>
+{% endblock %}

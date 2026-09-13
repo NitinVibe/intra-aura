@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}
+Cart | Intra Aura
+{% endblock %}
+
+{% block content %}
+
+<section class="cart-page">
+
+    <!-- HEADER -->
+
+    <div class="cart-header">
+
+        <div>
+            <p class="cart-eyebrow">
+                INTRA AURA
+            </p>
+
+            <h1>
+                Your Cart
+            </h1>
+
+            <p>
+                Review your selected pieces before
+                connecting with our team.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- CART CONTENT -->
+
+    <div class="cart-container">
+
+        <!-- PRODUCTS -->
+
+        <div class="cart-items-section">
+
+            <div
+                id="cartItems"
+                class="cart-items"
+            >
+                <!-- JavaScript will render cart items -->
+            </div>
+
+
+            <!-- EMPTY CART -->
+
+            <div
+                id="emptyCart"
+                class="cart-empty"
+                style="display: none;"
+            >
+
+                <div class="cart-empty-icon">
+                    🛒
+                </div>
+
+                <h2>
+                    Your cart is empty.
+                </h2>
+
+                <p>
+                    Explore our collection and add
+                    something beautiful to your space.
+                </p>
+
+                <a
+                    href="/products"
+                    class="cart-continue-btn"
+                >
+                    Explore Products
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <aside
+            id="cartSummary"
+            class="cart-summary"
+        >
+
+            <p class="cart-summary-eyebrow">
+                ORDER SUMMARY
+            </p>
+
+            <h2>
+                Your Selection
+            </h2>
+
+
+            <div class="cart-summary-line">
+
+                <span>
+                    Items
+                </span>
+
+                <strong id="cartItemCount">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="cart-summary-line">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong id="cartSubtotal">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <div class="cart-summary-divider"></div>
+
+
+            <div class="cart-total">
+
+                <span>
+                    Estimated Total
+                </span>
+
+                <strong id="cartTotal">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <p class="cart-summary-note">
+                Final pricing may vary based on customization,
+                material and requirements.
+            </p>
+
+
+            <button
+                type="button"
+                class="cart-connect-btn"
+                id="cartConnectBtn"
+            >
+                Connect With Us
+                <span>→</span>
+            </button>
+
+
+            <a
+                href="/products"
+                class="cart-continue-link"
+            >
+                ← Continue Shopping
+            </a>
+
+        </aside>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,800 @@
+{% extends "base.html" %}
+
+{% block title %}
+Price Calculator | Intra Aura
+{% endblock %}
+
+{% block content %}
+
+<section class="calculator-page">
+
+    <!-- =========================================
+         PROGRESS
+    ========================================== -->
+
+    <div class="calculator-progress">
+
+        <div class="calculator-step active" data-progress="1">
+            <span>1</span>
+            <small>BHK TYPE</small>
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="calculator-step" data-progress="2">
+            <span>2</span>
+            <small>ROOMS TO DESIGN</small>
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="calculator-step" data-progress="3">
+            <span>3</span>
+            <small>PACKAGE</small>
+        </div>
+
+        <div class="progress-line"></div>
+
+        <div class="calculator-step" data-progress="4">
+            <span>4</span>
+            <small>GET QUOTE</small>
+        </div>
+
+        <div class="calculator-page-count" id="calculatorPageCount">
+            1/4
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         CALCULATOR CARD
+    ========================================== -->
+
+    <div class="calculator-card">
+
+
+        <!-- =====================================
+             STEP 1 — BHK
+        ====================================== -->
+
+        <div
+            class="calculator-screen active"
+            data-step="1"
+        >
+
+            <h1>BHK Type</h1>
+
+            <p class="calculator-question">
+                Select your BHK type <span>*</span>
+            </p>
+
+
+            <div class="bhk-options">
+
+
+                <label class="bhk-option">
+
+                    <input
+                        type="radio"
+                        name="bhk"
+                        value="1"
+                    >
+
+                    <span>1 BHK</span>
+
+                </label>
+
+
+                <label class="bhk-option bhk-2">
+
+                    <input
+                        type="radio"
+                        name="bhk"
+                        value="2"
+                    >
+
+                    <span>2 BHK</span>
+
+                    
+
+                </label>
+
+
+                <label class="bhk-option">
+
+                    <input
+                        type="radio"
+                        name="bhk"
+                        value="3"
+                    >
+
+                    <span>3 BHK</span>
+
+                </label>
+
+
+                <label class="bhk-option">
+
+                    <input
+                        type="radio"
+                        name="bhk"
+                        value="4"
+                    >
+
+                    <span>4 BHK</span>
+
+                </label>
+
+
+                <label class="bhk-option">
+
+                    <input
+                        type="radio"
+                        name="bhk"
+                        value="5"
+                    >
+
+                    <span>5 BHK+</span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             STEP 2 — ROOMS
+        ====================================== -->
+
+        <div
+            class="calculator-screen"
+            data-step="2"
+        >
+
+            <h1>Rooms to Design</h1>
+
+
+            <div class="room-options">
+
+
+                <!-- LIVING ROOM -->
+
+                <div
+                    class="room-option"
+                    data-room="living_room"
+                >
+
+                    <strong>
+                        Living Room
+                    </strong>
+
+                    <div class="room-counter">
+
+                        <button
+                            type="button"
+                            class="room-minus"
+                            data-room="living_room"
+                        >
+                            −
+                        </button>
+
+                        <span
+                            id="living_room_count"
+                        >
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            class="room-plus"
+                            data-room="living_room"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- KITCHEN -->
+
+                <div
+                    class="room-option"
+                    data-room="kitchen"
+                >
+
+                    <strong>
+                        Kitchen
+                    </strong>
+
+                    <div class="room-counter">
+
+                        <button
+                            type="button"
+                            class="room-minus"
+                            data-room="kitchen"
+                        >
+                            −
+                        </button>
+
+                        <span
+                            id="kitchen_count"
+                        >
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            class="room-plus"
+                            data-room="kitchen"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BEDROOM -->
+
+                <div
+                    class="room-option"
+                    data-room="bedroom"
+                >
+
+                    <strong>
+                        Bedroom
+                    </strong>
+
+                    <div class="room-counter">
+
+                        <button
+                            type="button"
+                            class="room-minus"
+                            data-room="bedroom"
+                        >
+                            −
+                        </button>
+
+                        <span
+                            id="bedroom_count"
+                        >
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            class="room-plus"
+                            data-room="bedroom"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BATHROOM -->
+
+                <div
+                    class="room-option"
+                    data-room="bathroom"
+                >
+
+                    <strong>
+                        Bathroom
+                    </strong>
+
+                    <div class="room-counter">
+
+                        <button
+                            type="button"
+                            class="room-minus"
+                            data-room="bathroom"
+                        >
+                            −
+                        </button>
+
+                        <span
+                            id="bathroom_count"
+                        >
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            class="room-plus"
+                            data-room="bathroom"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DINING -->
+
+                <div
+                    class="room-option"
+                    data-room="dining"
+                >
+
+                    <strong>
+                        Dining
+                    </strong>
+
+                    <div class="room-counter">
+
+                        <button
+                            type="button"
+                            class="room-minus"
+                            data-room="dining"
+                        >
+                            −
+                        </button>
+
+                        <span
+                            id="dining_count"
+                        >
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            class="room-plus"
+                            data-room="dining"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             STEP 3 — PACKAGE
+        ====================================== -->
+
+        <div
+            class="calculator-screen"
+            data-step="3"
+        >
+
+            <h1>Package</h1>
+
+            <p class="calculator-question">
+                Pick your package <span>*</span>
+            </p>
+
+
+            <div class="package-options">
+
+
+                <label class="package-option">
+
+                    <input
+                        type="radio"
+                        name="package"
+                        value="essentials"
+                    >
+
+                    <div class="package-image">
+                        <img
+                            src="/static/images/essentials.jpg"
+                            alt="Essentials Package"
+                        >
+                    </div>
+
+                    <div class="package-content">
+
+                        <h3>
+                            Essentials
+                        </h3>
+
+                        <p>
+                            Essential home interior
+                            solutions for your needs.
+                        </p>
+
+                        <span>
+                            Price: ₹
+                        </span>
+
+                    </div>
+
+                </label>
+
+
+                <label class="package-option">
+
+                    <input
+                        type="radio"
+                        name="package"
+                        value="premium"
+                    >
+
+                    <div class="package-image">
+                            <img
+                                src="/static/images/premium.jpg"
+                                alt="Premium Package"
+                            >
+                        </div>
+
+                    <div class="package-content">
+
+                        <h3>
+                            Premium
+                        </h3>
+
+                        
+
+                        <p>
+                            Superior interior solutions
+                            with premium designs.
+                        </p>
+
+                        <span>
+                            Price: ₹₹
+                        </span>
+
+                    </div>
+
+                </label>
+
+
+                <label class="package-option">
+
+                    <input
+                        type="radio"
+                        name="package"
+                        value="luxe"
+                    >
+
+                    <div class="package-image">
+                        <img
+                            src="/static/images/luxe.jpg"
+                            alt="Luxe Package"
+                        >
+                    </div>
+
+                    <div class="package-content">
+
+                        <h3>
+                            Luxe
+                        </h3>
+
+                        <p>
+                            High-end interior solutions
+                            with bespoke design.
+                        </p>
+
+                        <span>
+                            Price: ₹₹₹
+                        </span>
+
+                    </div>
+
+                </label>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             STEP 4 — GET QUOTE
+        ====================================== -->
+
+        <div
+            class="calculator-screen"
+            data-step="4"
+        >
+
+            <h1>Get Quote</h1>
+
+
+            <form
+                id="calculatorForm"
+                class="calculator-form"
+            >
+
+                <div class="calculator-form-group">
+
+                    <label for="calculatorName">
+                        Name <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="calculatorName"
+                        name="name"
+                        placeholder="Your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="calculator-form-group">
+
+                    <label for="calculatorEmail">
+                        Email ID <span>*</span>
+                    </label>
+
+                    <input
+                        type="email"
+                        id="calculatorEmail"
+                        name="email"
+                        placeholder="Email address"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="calculator-form-group">
+
+                    <label for="calculatorPhone">
+                        Phone Number <span>*</span>
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="calculatorPhone"
+                        name="phone"
+                        placeholder="10-digit mobile"
+                        required
+                    >
+
+                </div>
+
+
+                <label class="whatsapp-option">
+
+                    <input
+                        type="checkbox"
+                        name="whatsapp"
+                    >
+
+                    <span>
+                        Send me updates on WhatsApp
+                    </span>
+
+                </label>
+
+
+                <div class="calculator-form-group">
+
+                    <label for="calculatorCity">
+                        Select City <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="calculatorCity"
+                        name="city"
+                        placeholder="Type your city or full address"
+                        required
+                    >
+
+                </div>
+
+
+                <p
+                    id="calculatorResult"
+                    class="calculator-result"
+                ></p>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <div class="calculator-navigation">
+
+        <button
+            type="button"
+            class="calculator-back"
+            id="calculatorBack"
+        >
+            BACK
+        </button>
+
+        <button
+            type="button"
+            class="calculator-next"
+            id="calculatorNext"
+        >
+            NEXT
+        </button>
+
+    </div>
+
+</section>
+
+<!-- =========================================
+     CALCULATOR SUMMARY POPUP
+========================================= -->
+
+<div
+    class="calculator-modal"
+    id="calculatorModal"
+    aria-hidden="true"
+>
+
+    <div class="calculator-modal-overlay"></div>
+
+    <div
+        class="calculator-modal-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="calculatorModalTitle"
+    >
+
+        <!-- CLOSE -->
+
+        <button
+            type="button"
+            class="calculator-modal-close"
+            id="calculatorModalClose"
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+
+        <!-- SUMMARY -->
+
+        <div id="calculatorSummary">
+
+            <p class="calculator-modal-eyebrow">
+                YOUR INTERIOR PLAN
+            </p>
+
+            <h2 id="calculatorModalTitle">
+                Your Selection
+            </h2>
+
+            <p class="calculator-modal-intro">
+                Here's a summary of the details you've selected.
+            </p>
+
+
+            <!-- BHK -->
+
+            <div class="summary-row">
+
+                <span class="summary-label">
+                    BHK TYPE
+                </span>
+
+                <strong id="summaryBhk">
+                    —
+                </strong>
+
+            </div>
+
+
+            <!-- ROOMS -->
+
+            <div class="summary-section">
+
+                <span class="summary-label">
+                    ROOMS TO DESIGN
+                </span>
+
+                <div
+                    class="summary-rooms"
+                    id="summaryRooms"
+                >
+                </div>
+
+            </div>
+
+
+            <!-- PACKAGE -->
+
+            <div class="summary-row">
+
+                <span class="summary-label">
+                    PACKAGE
+                </span>
+
+                <strong id="summaryPackage">
+                    —
+                </strong>
+
+            </div>
+
+
+            <!-- PRICE -->
+
+            <div class="summary-price">
+
+                <span class="summary-price-label">
+                    ESTIMATED PRICE
+                </span>
+
+                <strong id="summaryPrice">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <!-- CTA -->
+
+            <button
+                type="button"
+                class="summary-submit"
+                id="summarySubmit"
+            >
+                WE'LL REACH OUT
+                <span>→</span>
+            </button>
+
+        </div>
+
+
+        <!-- SUCCESS -->
+
+        <div
+            class="calculator-success"
+            id="calculatorSuccess"
+        >
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <p class="calculator-modal-eyebrow">
+                THANK YOU
+            </p>
+
+            <h2>
+                Enquiry Submitted
+            </h2>
+
+            <p>
+                Your enquiry has been submitted successfully.
+                We'll connect with you shortly.
+            </p>
+
+            <button
+                type="button"
+                class="summary-submit"
+                id="summaryDone"
+            >
+                DONE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="/static/js/price_calculator.js"></script>
+
+{% endblock %}

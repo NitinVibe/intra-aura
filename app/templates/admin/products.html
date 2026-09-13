@@ -1,0 +1,244 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <div class="admin-page-header">
+
+        <div>
+            <span>STORE</span>
+            <h1>Products</h1>
+            <p>Manage your Intra Aura products.</p>
+        </div>
+
+        <a href="/admin/products/new" class="admin-primary-btn">
+            + Add Product
+        </a>
+
+    </div>
+
+
+    <div class="product-filters">
+
+        <form method="get" action="/admin/products">
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                placeholder="Search products..."
+            >
+
+            <select name="category_id">
+
+                <option
+                    value="all"
+                    {% if not selected_category or selected_category == "all" %}
+                        selected
+                    {% endif %}
+                >
+                    All Categories
+                </option>
+
+                {% for category in categories %}
+
+                    <option
+                        value="{{ category.id }}"
+                        {% if selected_category == category.id|string %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ category.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button type="submit">
+                Search
+            </button>
+
+            {% if search or (selected_category and selected_category != "all") %}
+
+                <a href="/admin/products">
+                    Clear
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for product in products %}
+
+                <tr>
+
+                    <td>
+                        {{ product.id }}
+                    </td>
+
+
+                    <td class="table-product">
+
+                        {% set primary_image = product.images
+                            |selectattr("is_primary", "equalto", true)
+                            |first %}
+
+                        {% if primary_image %}
+
+                            <img
+                                src="{{ primary_image.image_url }}"
+                                alt="{{ product.name }}"
+                                class="product-table-image"
+                            >
+
+                        {% else %}
+
+                            <div class="product-table-placeholder">
+                                No Image
+                            </div>
+
+                        {% endif %}
+
+                        <span class="table-name">
+                            {{ product.name }}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        {% for category in product.categories %}
+
+                            <span class="category-badge">
+                                {{ category.name }}
+                            </span>
+
+                        {% else %}
+
+                            <span class="category-badge">
+                                Uncategorized
+                            </span>
+
+                        {% endfor %}
+
+                    </td>
+
+
+                    <td>
+
+                        {% if product.discount_price %}
+
+                            <strong>
+                                ₹{{ product.discount_price }}
+                            </strong>
+
+                            <del>
+                                ₹{{ product.price }}
+                            </del>
+
+                        {% else %}
+
+                            ₹{{ product.price }}
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+                        {{ product.stock }}
+                    </td>
+
+
+                    <td>
+
+                        {% if product.is_active %}
+
+                            <span class="status-active">
+                                Active
+                            </span>
+
+                        {% else %}
+
+                            <span class="status-inactive">
+                                Inactive
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td>
+
+                        <a
+                            href="/admin/products/{{ product.id }}/edit"
+                            class="admin-edit-btn"
+                        >
+                            Edit
+                        </a>
+
+                        <button
+                            class="admin-delete-btn"
+                            data-product-id="{{ product.id }}"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="7" class="empty-state">
+                        No products found.
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script src="/static/js/products.js"></script>
+
+{% endblock %}

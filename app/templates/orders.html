@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders | Intra Aura{% endblock %}
+
+{% block content %}
+
+<section class="account-page">
+
+    <div class="account-box">
+
+        <p class="account-eyebrow">
+            MY ACCOUNT
+        </p>
+
+        <h1>My Orders</h1>
+
+        {% if orders %}
+
+            <div class="orders-list">
+
+                {% for order in orders %}
+
+                    <div class="order-card">
+
+                        <div class="order-header">
+
+                            <div>
+                                <span class="order-label">
+                                    ORDER
+                                </span>
+
+                                <h2>
+                                    #{{ order.id }}
+                                </h2>
+                            </div>
+
+                            <span class="order-status">
+                                {{ order.status }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="order-items">
+
+                            {% for item in order.items %}
+
+                                <div class="order-item">
+
+                                    {% if item.product and item.product.image %}
+                                        <img
+                                            src="{{ item.product.image }}"
+                                            alt="{{ item.product_name }}"
+                                        >
+                                    {% endif %}
+
+                                    <div class="order-item-info">
+
+                                        <h3>
+                                            {{ item.product_name }}
+                                        </h3>
+
+                                        <p>
+                                            ₹{{ "%.2f"|format(item.price) }}
+                                            × {{ item.quantity }}
+                                        </p>
+
+                                    </div>
+
+                                    <strong>
+                                        ₹{{ "%.2f"|format(item.price * item.quantity) }}
+                                    </strong>
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="order-footer">
+
+                            <span>
+                                {{ order.created_at.strftime("%d %b %Y") }}
+                            </span>
+
+                            <strong>
+                                ₹{{ "%.2f"|format(order.total_amount) }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-account">
+
+                <h2>No orders yet</h2>
+
+                <p>
+                    Your orders will appear here once you place an order.
+                </p>
+
+                <a
+                    href="/products"
+                    class="account-button"
+                >
+                    Explore Products
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

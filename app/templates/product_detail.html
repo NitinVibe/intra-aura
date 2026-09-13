@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ product.name }} | Intra Aura
+{% endblock %}
+
+{% block content %}
+
+<section class="product-detail-page">
+
+    <div class="product-detail">
+
+        <!-- =========================
+             IMAGE SECTION
+        ========================== -->
+
+        <div class="product-detail-gallery">
+
+            <div class="product-main-image">
+
+                {% if product.images %}
+
+                    <img
+                        src="{{ product.images[0].image_url }}"
+                        alt="{{ product.name }}"
+                    >
+
+                {% else %}
+
+                    <div class="product-no-image">
+                        INTRA AURA
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if product.images|length > 1 %}
+
+            <div class="product-thumbnails">
+
+                {% for image in product.images %}
+
+                <div class="product-thumbnail">
+
+                    <img
+                        src="{{ image.image_url }}"
+                        alt="{{ product.name }}"
+                    >
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =========================
+             PRODUCT INFORMATION
+        ========================== -->
+
+        <div class="product-detail-info">
+
+            <p class="product-detail-category">
+
+                {% if product.categories %}
+
+                    {% for category in product.categories %}
+
+                        {{ category.name }}{% if not loop.last %} · {% endif %}
+
+                    {% endfor %}
+
+                {% else %}
+
+                    INTRA AURA
+
+                {% endif %}
+
+            </p>
+
+
+            <h1>
+                {{ product.name }}
+            </h1>
+
+
+            {% if product.description %}
+
+            <p class="product-detail-description">
+                {{ product.description }}
+            </p>
+
+            {% endif %}
+
+
+            <!-- PRICE -->
+
+            <div class="product-detail-price">
+
+                {% if product.discount_price %}
+
+                    <strong>
+                        ₹{{ "%.0f"|format(product.discount_price) }}
+                    </strong>
+
+                    <del>
+                        ₹{{ "%.0f"|format(product.price) }}
+                    </del>
+
+                {% else %}
+
+                    <strong>
+                        ₹{{ "%.0f"|format(product.price) }}
+                    </strong>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- DETAILS -->
+
+            <div class="product-specifications">
+
+                {% if product.material %}
+
+                <div class="product-spec">
+
+                    <span>Material</span>
+
+                    <strong>
+                        {{ product.material }}
+                    </strong>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if product.color %}
+
+                <div class="product-spec">
+
+                    <span>Color</span>
+
+                    <strong>
+                        {{ product.color }}
+                    </strong>
+
+                </div>
+
+                {% endif %}
+
+
+                <div class="product-spec">
+
+                    <span>Availability</span>
+
+                    {% if product.stock > 0 %}
+
+                    <strong class="in-stock">
+                        In Stock
+                    </strong>
+
+                    {% else %}
+
+                    <strong class="out-stock">
+                        Out of Stock
+                    </strong>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ACTIONS -->
+
+<div class="product-detail-actions">
+
+    <button
+        type="button"
+        class="detail-add-cart-btn"
+        data-product-id="{{ product.id }}"
+        data-product-name="{{ product.name }}"
+        data-product-price="{{ product.discount_price or product.price }}"
+        data-product-image="{% if product.images %}{{ product.images[0].image_url }}{% endif %}"
+    >
+        Add to Cart
+        <span>→</span>
+    </button>
+
+
+    <button
+        type="button"
+        class="detail-wishlist-btn"
+        data-product-id="{{ product.id }}"
+        data-product-name="{{ product.name }}"
+        data-product-price="{{ product.discount_price or product.price }}"
+        data-product-image="{% if product.images %}{{ product.images[0].image_url }}{% endif %}"
+        aria-label="Add to wishlist"
+    >
+        ♡
+    </button>
+
+
+    <a
+        href="/products/{{ product.id }}/enquire"
+        class="product-enquire-btn"
+    >
+        Enquire About This Product
+        <span>→</span>
+    </a>
+
+</div>
+
+
+            <a
+                href="/products"
+                class="product-back-link"
+            >
+                ← Back to Products
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

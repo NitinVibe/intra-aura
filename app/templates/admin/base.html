@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Admin Panel{% endblock %} | Intra Aura</title>
+
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+
+<body class="admin-body">
+<button class="admin-mobile-toggle" id="adminMobileToggle" type="button" aria-label="Open admin menu">☰</button>
+<div class="admin-sidebar-backdrop" id="adminSidebarBackdrop"></div>
+
+    <aside class="admin-sidebar" id="adminSidebar">
+
+        <div class="admin-logo">
+            <img src="/static/images/intraaura_logo3.png" alt="Intra Aura">
+        </div>
+
+        <nav class="admin-nav">
+
+            <a href="/admin">
+                Dashboard
+            </a>
+
+            <div class="admin-nav-label">CATALOG</div>
+            <a href="/admin/products">
+                Products
+            </a>
+            <a href="/admin/categories">
+                Categories
+            </a>
+
+            <div class="admin-nav-label">WEBSITE</div>
+            <a href="/admin/website">
+                Website Editor
+            </a>
+            <a href="/admin/media">
+                Media Library
+            </a>
+            <a href="/admin/settings">
+                Site Settings
+            </a>
+
+            <div class="admin-nav-label">CUSTOMERS</div>
+            <a href="/admin/enquiries">
+                Enquiries
+            </a>
+            <a href="/admin/customers">
+                Customers
+            </a>
+            <a href="/admin/orders">
+                Orders
+            </a>
+
+            <div class="admin-nav-label">QUICK ACCESS</div>
+            <a href="/" target="_blank">
+                View Website ↗
+            </a>
+            <a
+                href="/auth/logout"
+                class="admin-logout"
+                onclick="return confirm('Are you sure you want to logout?');">
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="admin-main">
+
+        <header class="admin-topbar">
+
+            <div>
+                <span>INTRA AURA</span>
+                <strong>Admin Panel</strong>
+            </div>
+
+        </header>
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+<script>
+(function(){const b=document.getElementById('adminMobileToggle'),s=document.getElementById('adminSidebar'),o=document.getElementById('adminSidebarBackdrop'); if(!b||!s||!o)return; const close=()=>{s.classList.remove('is-open');o.classList.remove('is-open');}; b.onclick=()=>{s.classList.toggle('is-open');o.classList.toggle('is-open')}; o.onclick=close; s.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));})();
+</script>
+</body>
+</html>

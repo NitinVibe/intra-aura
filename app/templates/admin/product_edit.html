@@ -1,0 +1,490 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block content %}
+
+<div class="admin-page edit-product-page">
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <div class="admin-page-header">
+
+        <div>
+            <span class="admin-eyebrow">
+                STORE
+            </span>
+
+            <h1>
+                Edit Product
+            </h1>
+
+            <p>
+                Update product information, pricing and images.
+            </p>
+        </div>
+
+        <a
+            href="/admin/products"
+            class="admin-back-link"
+        >
+            ← Back to Products
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         PRODUCT INFORMATION
+    ================================================== -->
+
+    <section class="admin-card">
+
+        <div class="admin-card-header">
+
+            <div>
+                <span class="admin-section-label">
+                    PRODUCT DETAILS
+                </span>
+
+                <h2>
+                    Product Information
+                </h2>
+
+                <p>
+                    Keep your product details accurate and up to date.
+                </p>
+            </div>
+
+        </div>
+
+
+        <form
+            id="editProductForm"
+            class="product-form"
+        >
+
+            <input
+                type="hidden"
+                id="editProductId"
+                value="{{ product.id }}"
+            >
+
+
+            <!-- Product Name -->
+
+            <div class="form-group">
+
+                <label for="editProductName">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="editProductName"
+                    value="{{ product.name }}"
+                    placeholder="Enter product name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Slug -->
+
+            <div class="form-group">
+
+                <label for="editProductSlug">
+                    Slug
+                </label>
+
+                <input
+                    type="text"
+                    id="editProductSlug"
+                    value="{{ product.slug }}"
+                    placeholder="product-slug"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Categories -->
+
+<div class="form-group">
+
+    <label for="editProductCategories">
+        Categories
+    </label>
+
+    {% set selected_category_ids = product.categories | map(attribute='id') | list %}
+
+    <select
+        id="editProductCategories"
+        multiple
+        required
+    >
+
+        {% for category in categories %}
+
+        <option
+            value="{{ category.id }}"
+            {% if category.id in selected_category_ids %}
+                selected
+            {% endif %}
+        >
+            {{ category.name }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <small class="form-help">
+        Hold Ctrl (Windows) or Command (Mac) to select multiple categories.
+    </small>
+
+</div>
+            <!-- Price -->
+
+            <div class="form-group">
+
+                <label for="editProductPrice">
+                    Price
+                </label>
+
+                <div class="input-with-prefix">
+                    <span>₹</span>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="editProductPrice"
+                        value="{{ product.price }}"
+                        placeholder="0.00"
+                        required
+                    >
+                </div>
+
+            </div>
+
+
+            <!-- Discount Price -->
+
+            <div class="form-group">
+
+                <label for="editProductDiscount">
+                    Discount Price
+                </label>
+
+                <div class="input-with-prefix">
+                    <span>₹</span>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        id="editProductDiscount"
+                        value="{{ product.discount_price or '' }}"
+                        placeholder="Optional"
+                    >
+                </div>
+
+            </div>
+
+
+            <!-- Stock -->
+
+            <div class="form-group">
+
+                <label for="editProductStock">
+                    Stock
+                </label>
+
+                <input
+                    type="number"
+                    id="editProductStock"
+                    value="{{ product.stock }}"
+                    min="0"
+                    placeholder="0"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Material -->
+
+            <div class="form-group">
+
+                <label for="editProductMaterial">
+                    Material
+                </label>
+
+                <input
+                    type="text"
+                    id="editProductMaterial"
+                    value="{{ product.material or '' }}"
+                    placeholder="e.g. Solid Wood"
+                >
+
+            </div>
+
+
+            <!-- Color -->
+
+            <div class="form-group">
+
+                <label for="editProductColor">
+                    Color
+                </label>
+
+                <input
+                    type="text"
+                    id="editProductColor"
+                    value="{{ product.color or '' }}"
+                    placeholder="e.g. Walnut Brown"
+                >
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="form-group product-full">
+
+                <label for="editProductDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="editProductDescription"
+                    rows="7"
+                    placeholder="Describe the product..."
+                >{{ product.description or '' }}</textarea>
+
+            </div>
+
+
+            <!-- Product Status -->
+
+            <div class="form-group">
+
+                <label for="editProductActive">
+                    Product Status
+                </label>
+
+                <select id="editProductActive">
+                    <option
+                        value="true"
+                        {% if product.is_active %}selected{% endif %}
+                    >
+                        Active
+                    </option>
+                    <option
+                        value="false"
+                        {% if not product.is_active %}selected{% endif %}
+                    >
+                        Inactive
+                    </option>
+                </select>
+
+            </div>
+
+
+            <!-- Form Actions -->
+
+            <div class="product-form-actions">
+
+                <a
+                    href="/admin/products"
+                    class="admin-secondary-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="admin-primary-btn"
+                >
+                    Save Changes
+                    <span>→</span>
+                </button>
+
+            </div>
+
+
+            <p id="editProductMessage"></p>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =================================================
+         PRODUCT IMAGES
+    ================================================== -->
+
+    <section class="admin-card product-images-admin">
+
+        <div class="admin-card-header">
+
+            <div>
+
+                <span class="admin-section-label">
+                    PRODUCT MEDIA
+                </span>
+
+                <h2>
+                    Product Images
+                </h2>
+
+                <p>
+                    Manage product photography and choose the primary image.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Existing Images -->
+
+        <div class="admin-image-grid">
+
+            {% for image in images %}
+
+            <div class="admin-image-card">
+
+                <div class="admin-image-preview">
+
+                    <img
+                        src="{{ image.image_url }}"
+                        alt="{{ product.name }}"
+                    >
+
+                    {% if image.is_primary %}
+
+                    <span class="primary-badge">
+                        Primary
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="image-actions">
+
+                    {% if not image.is_primary %}
+
+                    <button
+                        type="button"
+                        class="set-primary-btn"
+                        data-product-id="{{ product.id }}"
+                        data-image-id="{{ image.id }}"
+                    >
+                        Set Primary
+                    </button>
+
+                    {% endif %}
+
+
+                    <button
+                        type="button"
+                        class="delete-image-btn"
+                        data-product-id="{{ product.id }}"
+                        data-image-id="{{ image.id }}"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            {% else %}
+
+            <div class="no-images">
+
+                <span class="no-images-icon">
+                    +
+                </span>
+
+                <h3>
+                    No images yet
+                </h3>
+
+                <p>
+                    Upload your first product image below.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Upload -->
+
+        <div class="upload-image-box">
+
+            <div class="upload-content">
+
+                <span class="admin-section-label">
+                    ADD IMAGE
+                </span>
+
+                <h3>
+                    Upload product photography
+                </h3>
+
+                <p>
+                    JPG, PNG or WebP. Use a high-quality image
+                    with good lighting for the best result.
+                </p>
+
+            </div>
+
+
+            <div class="upload-controls">
+
+                <label
+                    for="editProductImage"
+                    class="image-file-label"
+                >
+                    Choose Image
+                </label>
+
+                <input
+                    type="file"
+                    id="editProductImage"
+                    name="image"
+                    accept="image/jpeg,image/png,image/webp"
+                >
+
+                <button
+                    type="button"
+                    id="uploadProductImage"
+                    class="admin-primary-btn"
+                >
+                    Upload Image
+                    <span>↑</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script src="/static/js/products.js?v=20260902-2"></script>
+
+{% endblock %}

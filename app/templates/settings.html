@@ -1,0 +1,438 @@
+{% extends "base.html" %}
+
+{% block title %}Settings | Intra Aura{% endblock %}
+
+{% block content %}
+
+<section class="account-page settings-page">
+
+    <div class="account-box">
+
+        <!-- HEADER -->
+
+<div class="account-header">
+
+    <div class="account-breadcrumb">
+        <a href="/" style="color: inherit; text-decoration: none;">
+            Home
+        </a>
+
+        <span>›</span>
+
+        <a href="/account/profile" style="color: inherit; text-decoration: none;">
+            My Account
+        </a>
+
+        <span>›</span>
+
+        Settings
+    </div>
+
+    <p class="account-eyebrow">
+        MY ACCOUNT
+    </p>
+
+    <h1>Settings</h1>
+
+    <p class="account-subtitle">
+        Manage your account preferences and security.
+    </p>
+
+</div>
+
+
+        <!-- SETTINGS LAYOUT -->
+
+        <div class="settings-layout">
+
+            <!-- SIDEBAR -->
+
+            <aside class="account-sidebar">
+
+                <div class="account-sidebar-header">
+
+                    <div class="sidebar-avatar">
+                        {{ user.name[0]|upper }}
+                    </div>
+
+                    <div>
+                        <strong>My Account</strong>
+                    </div>
+
+                </div>
+
+
+                <nav class="account-sidebar-nav">
+
+                    <a href="/account/profile">
+                        <span>♙</span>
+                        My Profile
+                    </a>
+
+                    <a href="/account/enquiries">
+                        <span>□</span>
+                        My Enquiries
+                    </a>
+
+                    <!-- <a href="/account/orders">
+                        <span>▢</span>
+                        My Orders
+                    </a> -->
+
+                    <a href="/account/wishlist">
+                        <span>♡</span>
+                        My Wishlist
+                    </a>
+
+                    <div class="sidebar-divider"></div>
+
+                    <a
+                        href="/account/settings"
+                        class="active"
+                    >
+                        <span>⚙</span>
+                        Settings
+                    </a>
+
+                    <a
+                        href="/account/logout"
+                        class="logout-link"
+                    >
+                        <span>↪</span>
+                        Logout
+                    </a>
+
+                </nav>
+
+            </aside>
+
+
+            <!-- MAIN SETTINGS -->
+
+            <main class="settings-content">
+
+
+                <!-- ACCOUNT SETTINGS -->
+
+                <div class="settings-card">
+
+                    <div class="settings-card-header">
+
+                        <div>
+                            <span class="settings-label">
+                                ACCOUNT
+                            </span>
+
+                            <h2>
+                                Account Information
+                            </h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                Full Name
+                            </strong>
+
+                            <span>
+                                {{ user.name }}
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/account/profile"
+                            class="settings-action"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                Email Address
+                            </strong>
+
+                            <span>
+                                {{ user.email }}
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/account/profile"
+                            class="settings-action"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                Phone Number
+                            </strong>
+
+                            <span>
+                                {{ user.phone or "Not added" }}
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/account/profile"
+                            class="settings-action"
+                        >
+                            View
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PREFERENCES -->
+
+                <div class="settings-card">
+
+                    <div class="settings-card-header">
+
+                        <div>
+
+                            <span class="settings-label">
+                                PREFERENCES
+                            </span>
+
+                            <h2>
+                                Notifications
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                Enquiry Updates
+                            </strong>
+
+                            <span>
+                                Receive updates about your enquiries.
+                            </span>
+
+                        </div>
+
+                        <label class="settings-toggle">
+
+                            <input
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                Order Updates
+                            </strong>
+
+                            <span>
+                                Receive updates about your orders.
+                            </span>
+
+                        </div>
+
+                        <label class="settings-toggle">
+
+                            <input
+                                type="checkbox"
+                                checked
+                            >
+
+                            <span></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                New Arrivals & Offers
+                            </strong>
+
+                            <span>
+                                Stay updated with new products and offers.
+                            </span>
+
+                        </div>
+
+                        <label class="settings-toggle">
+
+                            <input
+                                type="checkbox"
+                            >
+
+                            <span></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SECURITY -->
+
+                <div class="settings-card">
+
+                    <div class="settings-card-header">
+
+                        <div>
+
+                            <span class="settings-label">
+                                SECURITY
+                            </span>
+
+                            <h2>
+                                Password & Security
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                Password
+                            </strong>
+
+                            <span>
+                                Keep your account secure with a strong password.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/account/change-password"
+                            class="settings-action"
+                        >
+                            Change
+                        </a>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                Account Status
+                            </strong>
+
+                            <span>
+                                Your Intra Aura account is active.
+                            </span>
+
+                        </div>
+
+                        <span class="account-status">
+                            <i></i>
+                            Active
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DANGER / LOGOUT -->
+
+                <div class="settings-card settings-danger">
+
+                    <div class="settings-card-header">
+
+                        <div>
+
+                            <span class="settings-label">
+                                ACCOUNT
+                            </span>
+
+                            <h2>
+                                Sign Out
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-row">
+
+                        <div class="settings-row-info">
+
+                            <strong>
+                                Logout
+                            </strong>
+
+                            <span>
+                                Sign out from your Intra Aura account on this device.
+                            </span>
+
+                        </div>
+
+                        <a
+                            href="/account/logout"
+                            class="settings-logout"
+                        >
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </main>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
