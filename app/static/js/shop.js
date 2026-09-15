@@ -838,38 +838,46 @@ function renderCart() {
 
                     <div class="cart-item-actions">
 
-                        <div class="quantity-control">
+    <div class="quantity-control">
 
-                            <button
-                                type="button"
-                                onclick="changeCartQuantity(${item.id}, -1)"
-                            >
-                                −
-                            </button>
+        <button
+            type="button"
+            onclick="changeCartQuantity(${item.id}, -1)"
+        >
+            −
+        </button>
 
-                            <span>
-                                ${item.quantity}
-                            </span>
+        <span>
+            ${item.quantity}
+        </span>
 
-                            <button
-                                type="button"
-                                onclick="changeCartQuantity(${item.id}, 1)"
-                            >
-                                +
-                            </button>
+        <button
+            type="button"
+            onclick="changeCartQuantity(${item.id}, 1)"
+        >
+            +
+        </button>
 
-                        </div>
+    </div>
 
+    <button
+        type="button"
+        class="cart-remove-btn"
+        onclick="removeFromCart(${item.id})"
+    >
+        Remove
+    </button>
 
-                        <button
-                            type="button"
-                            class="cart-remove-btn"
-                            onclick="removeFromCart(${item.id})"
-                        >
-                            Remove
-                        </button>
+    <button
+        type="button"
+        class="cart-buy-item-btn"
+        onclick="buyCartItem(${item.id})"
+    >
+        Buy Now
+        <span>→</span>
+    </button>
 
-                    </div>
+</div>
 
                 </div>
 
@@ -1098,6 +1106,59 @@ function connectCart() {
 }
 
 
+
+/* =========================================
+   CART → BUY NOW
+========================================= */
+
+function buyCartItem(productId) {
+
+    const cart = getCart();
+
+    const item = cart.find(
+        item => item.id === productId
+    );
+
+    if (!item) {
+        alert("Product not found in cart.");
+        return;
+    }
+
+    sessionStorage.setItem(
+        "intraAuraBuyNow",
+        JSON.stringify({
+            product: item,
+            quantity: item.quantity
+        })
+    );
+
+    window.location.href = `/products/${productId}`;
+}
+
+
+/* =========================================
+   CART → BUY ALL
+========================================= */
+
+function buyAllCartItems() {
+
+    const cart = getCart();
+
+    if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+    }
+
+    sessionStorage.setItem(
+        "intraAuraBuyNow",
+        JSON.stringify({
+            products: cart
+        })
+    );
+
+    window.location.href = "/products";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const connectButton =
@@ -1108,6 +1169,19 @@ document.addEventListener("DOMContentLoaded", () => {
         connectButton.addEventListener(
             "click",
             connectCart
+        );
+
+    }
+
+
+    const buyAllButton =
+        document.getElementById("cartBuyAllBtn");
+
+    if (buyAllButton) {
+
+        buyAllButton.addEventListener(
+            "click",
+            buyAllCartItems
         );
 
     }

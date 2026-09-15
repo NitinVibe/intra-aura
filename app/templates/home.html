@@ -23,25 +23,217 @@
 </section>
 
 <section class="featured-section">
-<div class="section-heading">
-<span>{{ site().home.featured.eyebrow }}</span><h2>{{ site().home.featured.title }}</h2><p>{{ site().home.featured.description }}</p>
-</div>
-<div class="featured-grid" id="featuredTrack">
-{% for product in featured_products %}
-<article class="featured-card">
-<a href="/products/{{ product.id }}" class="featured-image">
-{% if product.images %}<img src="{{ product.images[0].image_url }}" alt="{{ product.name }}">{% else %}<span>INTRA AURA</span>{% endif %}
-</a>
-<div class="featured-info">
-<span class="featured-category">{{ product.categories[0].name if product.categories else "" }}</span>
-<h3>{{ product.name }}</h3>
-<div class="featured-bottom">
-{% if product.discount_price %}<strong>₹{{ "%.0f"|format(product.discount_price) }}</strong><del>₹{{ "%.0f"|format(product.price) }}</del>{% else %}<strong>₹{{ "%.0f"|format(product.price) }}</strong>{% endif %}
-<a href="/products/{{ product.id }}">View</a>
-</div></div></article>
-{% endfor %}
-</div>
-<div class="section-action"><a href="/products" class="home-section-button">View All Products</a></div>
+
+    <div class="featured-header">
+
+        <div class="featured-heading">
+
+            <span class="featured-eyebrow">
+                {{ site().home.featured.eyebrow }}
+            </span>
+
+            <h2>
+                {{ site().home.featured.title }}
+            </h2>
+
+            <p>
+                {{ site().home.featured.description }}
+            </p>
+
+        </div>
+
+        <div class="featured-decoration">
+
+            <span class="featured-decoration-line"></span>
+
+            <em>Crafted for a better living</em>
+            <span class="featured-decoration-line"></span>
+
+            
+
+        </div>
+
+    </div>
+
+
+    <div class="featured-grid" id="featuredTrack">
+
+        {% for product in featured_products %}
+
+        <article class="featured-card">
+
+            <!-- IMAGE -->
+
+            <div class="featured-image">
+
+                {% if loop.index == 1 %}
+                    <span class="featured-badge">NEW ARRIVAL</span>
+                {% elif loop.index == 2 %}
+                    <span class="featured-badge">NEW ARRIVAL</span>
+                {% elif loop.index == 3 %}
+                    <span class="featured-badge">NEW ARRIVAL</span>
+                {% elif loop.index == 4 %}
+                    <span class="featured-badge">NEW ARRIVAL</span>
+                {% else %}
+                    <span class="featured-badge">NEW ARRIVAL</span>
+                {% endif %}
+
+
+                <a href="/products/{{ product.id }}" class="featured-image-link">
+
+                    {% if product.images %}
+
+                        <img
+                            src="{{ product.images[0].image_url }}"
+                            alt="{{ product.name }}"
+                        >
+
+                    {% else %}
+
+                        <span class="featured-placeholder">
+                            INTRA AURA
+                        </span>
+
+                    {% endif %}
+
+                </a>
+
+
+                <button
+                    type="button"
+                    class="featured-wishlist product-wishlist-btn"
+                    data-product-id="{{ product.id }}"
+                    data-product-name="{{ product.name }}"
+                    data-product-price="{{ product.discount_price or product.price }}"
+                    data-product-image="{{ product.images[0].image_url if product.images else '' }}"
+                >
+                    ♡
+                </button>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="featured-info">
+
+                <span class="featured-category">
+
+                    {{ product.categories[0].name if product.categories else "COLLECTION" }}
+
+                </span>
+
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+
+                {% if product.description %}
+
+                <p class="featured-description">
+
+                    {{ product.description }}
+
+                </p>
+
+                {% endif %}
+
+
+                <!-- PRICE -->
+
+                <div class="featured-price-row">
+
+                    <div class="featured-prices">
+
+                        {% if product.discount_price %}
+
+                            <strong>
+                                ₹{{ "%.0f"|format(product.discount_price) }}
+                            </strong>
+
+                            <del>
+                                ₹{{ "%.0f"|format(product.price) }}
+                            </del>
+
+                        {% else %}
+
+                            <strong>
+                                ₹{{ "%.0f"|format(product.price) }}
+                            </strong>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if product.discount_price %}
+
+                    <span class="featured-discount">
+
+                        {{
+                            "%.0f"|format(
+                                ((product.price - product.discount_price)
+                                / product.price) * 100
+                            )
+                        }}% OFF
+
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="featured-actions">
+
+                    <a
+                        href="/products/{{ product.id }}"
+                        class="featured-view-btn"
+                    >
+                        View Details
+                    </a>
+
+
+                    <button
+                        type="button"
+                        class="featured-cart-btn product-add-cart-btn"
+                        data-product-id="{{ product.id }}"
+                        data-product-name="{{ product.name }}"
+                        data-product-price="{{ product.discount_price or product.price }}"
+                        data-product-image="{{ product.images[0].image_url if product.images else '' }}"
+                    >
+                        <span>🛒</span>
+                        Add to Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- VIEW ALL -->
+
+    <div class="featured-view-all">
+
+        <span></span>
+
+        <a href="/products">
+            View All Products
+        </a>
+
+        <span></span>
+
+    </div>
+
 </section>
 
 <section class="categories-section">

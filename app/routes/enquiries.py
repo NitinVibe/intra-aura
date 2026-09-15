@@ -278,19 +278,6 @@ async def create_general_enquiry(
     if user:
         user_id = user.id
 
-        # Use the account's actual details when available.
-        # This prevents small email/name differences from
-        # breaking the enquiry association.
-
-        if user.name:
-            name = user.name
-
-        if user.email:
-            email = user.email
-
-        if user.phone:
-            phone = user.phone
-
     # ========================================================
     # CREATE ENQUIRY
     # ========================================================
