@@ -28,13 +28,14 @@ def home_page(
         db.query(Product)
         .filter(Product.is_active == True)
         .order_by(Product.id.desc())
-        .limit(6)
+        .limit(5)
         .all()
     )
 
     categories = (
         db.query(Category)
         .order_by(Category.name.asc())
+        .limit(5)
         .all()
     )
 

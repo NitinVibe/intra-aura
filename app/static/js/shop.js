@@ -13,14 +13,48 @@ async function loadCurrentUser() {
 
         if (data.logged_in) {
 
-            currentUserId =
-                String(data.id);
+    currentUserId =
+        String(data.id);
 
-        } else {
+    // Show first letter of logged-in user's name
+    const initial =
+        data.name
+            ? data.name.trim().charAt(0).toUpperCase()
+            : "";
 
-            currentUserId = "guest";
+    const avatar =
+        document.getElementById("profileAvatar");
 
-        }
+    const avatarLarge =
+        document.getElementById("profileAvatarLarge");
+
+    const welcome =
+        document.getElementById("profileWelcome");
+
+    const email =
+        document.getElementById("profileEmail");
+
+    if (avatar) {
+        avatar.textContent = initial;
+    }
+
+    if (avatarLarge) {
+        avatarLarge.textContent = initial;
+    }
+
+    if (welcome) {
+        welcome.textContent = data.name;
+    }
+
+    if (email) {
+        email.textContent = data.email;
+    }
+
+} else {
+
+    currentUserId = "guest";
+
+}
 
     } catch (error) {
 

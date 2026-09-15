@@ -50,11 +50,99 @@ document.addEventListener("DOMContentLoaded", () => {
     ========================= */
 
     const productForm =
-        document.getElementById("productForm");
+    document.getElementById("productForm");
 
-    if (!productForm) {
-        return;
-    }
+
+/* =========================
+   DELETE PRODUCT
+========================= */
+
+document.querySelectorAll(
+    ".admin-delete-btn"
+).forEach(button => {
+
+    button.addEventListener(
+        "click",
+        async () => {
+
+            const productId =
+                button.dataset.productId;
+
+            if (!productId) {
+                alert("Product ID not found.");
+                return;
+            }
+
+            if (!confirm(
+                "Are you sure you want to delete this product?"
+            )) {
+                return;
+            }
+
+            try {
+
+                button.disabled = true;
+
+                const response =
+                    await fetch(
+                        `/products/${productId}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+                const text =
+                    await response.text();
+
+                let result = {};
+
+                try {
+                    result = text
+                        ? JSON.parse(text)
+                        : {};
+                } catch {
+                    result = {};
+                }
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.detail ||
+                        "Failed to delete product."
+                    );
+
+                }
+
+                alert(
+                    result.message ||
+                    "Product deleted successfully!"
+                );
+
+                window.location.reload();
+
+            } catch (error) {
+
+                console.error(
+                    "Delete product error:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Failed to delete product."
+                );
+
+                button.disabled = false;
+            }
+        }
+    );
+
+});
+
+
+if (!productForm) {
+    return;
+}
 
     const readResponse = async (response) => {
         const responseText = await response.text();

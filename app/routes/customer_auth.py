@@ -444,6 +444,8 @@ def current_user(
         }
 
     return {
-        "logged_in": True,
-        "id": user.id
-    }
+    "logged_in": True,
+    "id": user.id,
+    "name": user.name,
+    "email": user.email
+}

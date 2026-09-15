@@ -26,7 +26,7 @@
 <div class="section-heading">
 <span>{{ site().home.featured.eyebrow }}</span><h2>{{ site().home.featured.title }}</h2><p>{{ site().home.featured.description }}</p>
 </div>
-<div class="featured-carousel"><div class="featured-track" id="featuredTrack">
+<div class="featured-grid" id="featuredTrack">
 {% for product in featured_products %}
 <article class="featured-card">
 <a href="/products/{{ product.id }}" class="featured-image">
@@ -40,20 +40,21 @@
 <a href="/products/{{ product.id }}">View</a>
 </div></div></article>
 {% endfor %}
-</div></div>
-<div class="section-action"><a href="/products">View All Products</a></div>
+</div>
+<div class="section-action"><a href="/products" class="home-section-button">View All Products</a></div>
 </section>
 
 <section class="categories-section">
 <div class="section-heading"><span>{{ site().home.categories.eyebrow }}</span><h2>{{ site().home.categories.title }}</h2><p>{{ site().home.categories.description }}</p></div>
-<div class="categories-carousel"><div class="categories-track">
+<div class="categories-grid">
 {% for category in categories %}
-<a href="/products?category={{ category.slug }}" class="category-card">
+<a href="/products?category_id={{ category.id }}" class="category-card">
 <div class="category-image">{% if category.image_url %}<img src="{{ category.image_url }}" alt="{{ category.name }}">{% else %}<div class="category-image-placeholder">INTRA AURA</div>{% endif %}</div>
-<div class="category-card-content"><span class="category-number">{{ "%02d"|format(loop.index) }}</span><h3>{{ category.name }}</h3>{% if category.description %}<p>{{ category.description }}</p>{% endif %}<strong>Explore</strong></div>
+<div class="category-card-content"><h3>{{ category.name }}</h3>{% if category.description %}<p>{{ category.description }}</p>{% endif %}<strong>Explore</strong></div>
 </a>
 {% endfor %}
-</div></div>
+</div>
+<div class="section-action"><a href="/categories" class="home-section-button">View All Categories</a></div>
 </section>
 
 <section class="home-about">

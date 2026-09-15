@@ -32,6 +32,46 @@ Categories | Intra Aura
 
     </div>
 
+    <div class="product-filters">
+    <form method="get" action="/products" class="product-filter-form" onsubmit="this.category_id.value === '' && this.category_id.removeAttribute('name')">
+
+        <div class="filter-search">
+            <span class="filter-icon">⌕</span>
+            <input
+                type="text"
+                name="q"
+                placeholder="Search products..."
+                value="{{ request.query_params.get('q', '') }}"
+            >
+        </div>
+
+        <div class="filter-category">
+            <span class="filter-icon">▦</span>
+            <select name="category_id">
+                <option value="">All Categories</option>
+
+                {% for category in categories %}
+                <option
+                    value="{{ category.id }}"
+                    {% if request.query_params.get('category_id') == category.id|string %}selected{% endif %}
+                >
+                    {{ category.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="product-search-btn">
+            Search <span>→</span>
+        </button>
+
+        <a href="/categories" class="product-reset">
+            ↻ Reset
+        </a>
+
+    </form>
+</div>
+
 
     <!-- CATEGORY SECTION -->
 

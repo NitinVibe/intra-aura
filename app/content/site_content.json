@@ -3,7 +3,7 @@
     "announcement_1": "PREMIUM FURNITURE",
     "announcement_2": "CUSTOM DESIGNS",
     "announcement_3": "PAN INDIA DELIVERY",
-    "logo": "/static/images/intraaura_logo3.png",
+    "logo": "/static/uploads/site/83cb751bc51e4620a1b1ae2bf46fc730.webp",
     "cta": "Price Calculator",
     "nav_links": [
       {
@@ -41,7 +41,7 @@
       "eyebrow": "ELEVATE YOUR SPACE",
       "title_html": "Furniture that<br>makes <em>your space yours.</em>",
       "description": "Discover thoughtfully designed furniture and interior solutions created for modern living.",
-      "image": "/static/images/home/hero-1.jpg",
+      "image": "/static/uploads/site/071e701327634cd8adcee16f91ec5b1e.webp",
       "primary": "Explore Products",
       "secondary": "Price Calculator"
     },
@@ -49,7 +49,7 @@
       "eyebrow": "DESIGNED FOR MODERN LIVING",
       "title_html": "Comfort that<br>feels <em>like home.</em>",
       "description": "Timeless furniture designed to bring comfort, character and elegance into your space.",
-      "image": "/static/images/home/hero-2.jpg",
+      "image": "/static/uploads/site/0b15e27a48c140e3a345ea5e12f20fdc.webp",
       "primary": "Explore Collection",
       "secondary": "Price Calculator"
     },
@@ -57,7 +57,7 @@
       "eyebrow": "CRAFTED WITH PURPOSE",
       "title_html": "Spaces made<br><em>beautifully yours.</em>",
       "description": "Premium furniture crafted to complement the way you live.",
-      "image": "/static/images/home/hero-3.jpg",
+      "image": "/static/uploads/site/1ecec726c7844962bf738f817ee06ba3.webp",
       "primary": "View Products",
       "secondary": "Price Calculator"
     },

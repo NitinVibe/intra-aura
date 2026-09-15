@@ -78,7 +78,7 @@ Products | Intra Aura
 
 <div class="product-filters">
 
-    <form method="get" action="/products" class="product-filter-form">
+    <form method="get" action="/products" class="product-filter-form" onsubmit="this.category_id.value === '' && this.category_id.removeAttribute('name')">
 
         <!-- Search -->
         <div class="filter-search">
@@ -102,7 +102,7 @@ Products | Intra Aura
 
             <select name="category_id">
 
-                <option value="all">
+                <option value="">
                     All Categories
                 </option>
 

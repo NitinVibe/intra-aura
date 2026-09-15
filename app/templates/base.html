@@ -30,7 +30,7 @@
 <header class="site-header">
 
     <!-- TOP ANNOUNCEMENT BAR -->
-    <div class="luxury-bar">
+    <!-- <div class="luxury-bar">
 
         <div class="luxury-bar-inner">
 
@@ -40,7 +40,7 @@
             <span class="luxury-dot">•</span>
             <span>{{ site().header.announcement_3 }}</span>
 
-        </div>
+        </div> -->
 
     </div>
 
@@ -146,11 +146,7 @@
     >
 
         <span class="profile-avatar" id="profileAvatar">
-            {% if user %}
-                {{ user.name[0]|upper }}
-            {% else %}
-                Hi
-            {% endif %}
+            <span id="profileInitial">Hi</span>
         </span>
 
         <!-- <svg
@@ -309,7 +305,7 @@
     <div class="mobile-menu-header">
 
         <img
-            src="/static/images/intraaura_logo3.png"
+            src="{{ site().header.logo }}"
             alt="Intra Aura"
         >
 
@@ -530,6 +526,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        const response = await fetch("/account/current-user");
+        const data = await response.json();
+
+        if (data.logged_in && data.name) {
+            const initial = data.name.trim().charAt(0).toUpperCase();
+
+            const profileInitial =
+                document.getElementById("profileInitial");
+
+            const profileAvatarLarge =
+                document.getElementById("profileAvatarLarge");
+
+            if (profileInitial) {
+                profileInitial.textContent = initial;
+            }
+
+            if (profileAvatarLarge) {
+                profileAvatarLarge.textContent = initial;
+            }
+        }
+    } catch (error) {
+        console.error("Failed to load profile:", error);
+    }
 });
 </script>
 </body>
