@@ -1108,8 +1108,41 @@ function connectCart() {
 
 
 /* =========================================
-   CART → BUY NOW
+   CART → BUY NOW / CHECKOUT
 ========================================= */
+
+let checkoutContext = null;
+
+
+function getCheckoutCartItems() {
+    return getCart().map(item => ({
+        id: Number(item.id),
+        quantity: Number(item.quantity)
+    }));
+}
+
+
+function checkoutItemsAreValid(items) {
+    return Array.isArray(items)
+        && items.length > 0
+        && items.every(
+            item =>
+                Number(item.id) > 0
+                && Number(item.quantity) > 0
+        );
+}
+
+
+function setCheckoutContext(items, source) {
+    checkoutContext = {
+        items: items.map(item => ({
+            id: Number(item.id),
+            quantity: Number(item.quantity)
+        })),
+        source: source || "product"
+    };
+}
+
 
 function buyCartItem(productId) {
 
@@ -1124,66 +1157,1065 @@ function buyCartItem(productId) {
         return;
     }
 
-    sessionStorage.setItem(
-        "intraAuraBuyNow",
-        JSON.stringify({
-            product: item,
-            quantity: item.quantity
-        })
+    startCheckout(
+        [{
+            id: Number(item.id),
+            quantity: Number(item.quantity)
+        }],
+        "single",
+        "/cart"
     );
-
-    window.location.href = `/products/${productId}`;
 }
 
 
-/* =========================================
-   CART → BUY ALL
-========================================= */
-
 function buyAllCartItems() {
 
-    const cart = getCart();
+    const cart = getCheckoutCartItems();
 
-    if (cart.length === 0) {
+    if (!cart.length) {
         alert("Your cart is empty.");
         return;
     }
 
-    sessionStorage.setItem(
-        "intraAuraBuyNow",
-        JSON.stringify({
-            products: cart
-        })
+    startCheckout(
+        cart,
+        "all",
+        "/cart"
     );
-
-    window.location.href = "/products";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
 
-    const connectButton =
-        document.getElementById("cartConnectBtn");
+function startProductCheckout(productId, quantity = 1) {
 
-    if (connectButton) {
+    const items = [{
+        id: Number(productId),
+        quantity: Number(quantity)
+    }];
 
-        connectButton.addEventListener(
-            "click",
-            connectCart
+    startCheckout(
+        items,
+        "product",
+        `/products/${Number(productId)}?buy_now=1`
+    );
+}
+
+
+async function startCheckout(
+    items,
+    source = "product",
+    returnPath = "/cart"
+) {
+
+    if (!checkoutItemsAreValid(items)) {
+        alert("Unable to start checkout.");
+        return;
+    }
+
+    setCheckoutContext(items, source);
+
+    const button = document.getElementById("cartBuyAllBtn");
+
+    if (button) {
+        button.disabled = true;
+    }
+
+    try {
+
+        const response = await fetch(
+            "/account/checkout",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    items: checkoutContext.items
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if (response.status === 401) {
+
+            window.location.href =
+                `/account/login?next=${encodeURIComponent(returnPath)}`;
+
+            return;
+        }
+
+
+        if (
+            response.status === 409
+            && result.detail?.code === "profile_incomplete"
+        ) {
+
+            openCheckoutProfileModal(
+                result.detail.profile || {}
+            );
+
+            if (
+                result.detail.field_errors
+                && Object.keys(result.detail.field_errors).length
+            ) {
+
+                showCheckoutErrors(
+                    result.detail.field_errors,
+                    "Some saved details need to be corrected."
+                );
+
+            }
+
+            return;
+        }
+
+
+        if (response.status === 503) {
+
+            const message =
+                result.detail?.message
+                || "Online payment is not configured yet.";
+
+            alert(message);
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            const detail = result.detail;
+
+            throw new Error(
+                typeof detail === "string"
+                    ? detail
+                    : detail?.message
+                    || "Unable to start checkout."
+            );
+
+        }
+
+
+        launchRazorpayCheckout(result.payment);
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message
+            || "Unable to start checkout. Please try again."
+        );
+
+    } finally {
+
+        if (button) {
+            button.disabled = false;
+        }
+
+    }
+}
+
+
+/* =========================================
+   CHECKOUT PROFILE MODAL
+========================================= */
+
+function openCheckoutProfileModal(profile) {
+
+    const modal =
+        document.getElementById("checkoutProfileModal");
+
+    if (!modal) {
+        alert("Checkout form is unavailable. Please refresh the page.");
+        return;
+    }
+
+    const fields = {
+
+        name: "checkoutName",
+        email: "checkoutEmail",
+        phone: "checkoutPhone",
+        address: "checkoutAddress",
+        area_street: "checkoutArea",
+        landmark: "checkoutLandmark",
+        city: "checkoutCity",
+        state: "checkoutState",
+        pincode: "checkoutPincode"
+
+    };
+
+
+    Object.entries(fields).forEach(
+        ([key, id]) => {
+
+            const input =
+                document.getElementById(id);
+
+            if (input) {
+                input.value =
+                    profile[key] || "";
+            }
+
+        }
+    );
+
+
+    clearCheckoutErrors();
+
+    modal.classList.add("active");
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    document.body.classList.add(
+        "checkout-modal-open"
+    );
+
+
+    setTimeout(
+        () =>
+            document
+                .getElementById("checkoutName")
+                ?.focus(),
+        50
+    );
+}
+
+
+function closeCheckoutProfileModal() {
+
+    const modal =
+        document.getElementById("checkoutProfileModal");
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove("active");
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    document.body.classList.remove(
+        "checkout-modal-open"
+    );
+}
+
+
+function clearCheckoutErrors() {
+
+    const errors =
+        document.getElementById(
+            "checkoutFieldErrors"
+        );
+
+    const message =
+        document.getElementById(
+            "checkoutFormMessage"
+        );
+
+
+    if (errors) {
+        errors.innerHTML = "";
+    }
+
+    if (message) {
+        message.textContent = "";
+    }
+
+
+    document
+        .querySelectorAll(
+            "#checkoutProfileForm .checkout-field.invalid"
+        )
+        .forEach(
+            el =>
+                el.classList.remove("invalid")
+        );
+
+}
+
+
+function showCheckoutErrors(
+    fieldErrors,
+    message
+) {
+
+    clearCheckoutErrors();
+
+
+    const errors =
+        document.getElementById(
+            "checkoutFieldErrors"
+        );
+
+    const formMessage =
+        document.getElementById(
+            "checkoutFormMessage"
+        );
+
+
+    if (formMessage) {
+        formMessage.textContent =
+            message
+            || "Please correct the highlighted fields.";
+    }
+
+
+    Object.entries(
+        fieldErrors || {}
+    ).forEach(
+        ([field, error]) => {
+
+            const map = {
+
+                name: "checkoutName",
+                email: "checkoutEmail",
+                phone: "checkoutPhone",
+                address: "checkoutAddress",
+                area_street: "checkoutArea",
+                landmark: "checkoutLandmark",
+                city: "checkoutCity",
+                state: "checkoutState",
+                pincode: "checkoutPincode"
+
+            };
+
+
+            const input =
+                document.getElementById(
+                    map[field]
+                );
+
+
+            if (input) {
+
+                input
+                    .closest(".checkout-field")
+                    ?.classList.add("invalid");
+
+                input.setAttribute(
+                    "aria-invalid",
+                    "true"
+                );
+
+            }
+
+
+            if (errors) {
+
+                const row =
+                    document.createElement("div");
+
+                row.textContent =
+                    `${field.replaceAll("_", " ")}: ${error}`;
+
+                errors.appendChild(row);
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   SUBMIT PROFILE → CREATE PAYMENT
+========================================= */
+
+async function submitCheckoutProfile(event) {
+
+    event.preventDefault();
+
+
+    const form =
+        event.currentTarget;
+
+    const button =
+        document.getElementById(
+            "checkoutContinueBtn"
+        );
+
+
+    if (
+        !checkoutContext
+        || !checkoutItemsAreValid(
+            checkoutContext.items
+        )
+    ) {
+
+        closeCheckoutProfileModal();
+
+        alert(
+            "Your checkout session has expired. Please try again."
+        );
+
+        return;
+    }
+
+
+    clearCheckoutErrors();
+
+
+    button.disabled = true;
+
+    button.classList.add("loading");
+
+
+    const arrow =
+        button.querySelector("span");
+
+    if (arrow) {
+        arrow.textContent = "…";
+    }
+
+
+    const profile =
+        Object.fromEntries(
+            new FormData(form).entries()
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/account/checkout",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        profile,
+
+                        items:
+                            checkoutContext.items
+
+                    })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (response.status === 401) {
+
+            window.location.href =
+                `/account/login?next=${encodeURIComponent(
+                    "/cart"
+                )}`;
+
+            return;
+
+        }
+
+
+        if (!response.ok) {
+
+            const detail =
+                result.detail || {};
+
+
+            if (
+                detail.code
+                === "validation_error"
+            ) {
+
+                showCheckoutErrors(
+                    detail.field_errors || {},
+                    "Please correct the highlighted fields."
+                );
+
+                return;
+
+            }
+
+
+            throw new Error(
+                typeof detail === "string"
+                    ? detail
+                    : detail.message
+                    || "Please check your details and try again."
+            );
+
+        }
+
+
+        closeCheckoutProfileModal();
+
+        launchRazorpayCheckout(
+            result.payment
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        const message =
+            document.getElementById(
+                "checkoutFormMessage"
+            );
+
+        if (message) {
+
+            message.textContent =
+                error.message
+                || "Unable to continue checkout.";
+
+        }
+
+    } finally {
+
+        button.disabled = false;
+
+        button.classList.remove(
+            "loading"
+        );
+
+        if (arrow) {
+            arrow.textContent = "→";
+        }
+
+    }
+
+}
+
+
+/* =========================================
+   RAZORPAY CHECKOUT
+========================================= */
+
+function launchRazorpayCheckout(payment) {
+
+    if (!payment || !payment.razorpay_order_id) {
+
+        alert(
+            "Payment session could not be created."
+        );
+
+        return;
+
+    }
+
+
+    if (typeof Razorpay === "undefined") {
+
+        alert(
+            "Razorpay Checkout could not load. Please check your internet connection and try again."
+        );
+
+        return;
+
+    }
+
+
+    const options = {
+
+        key: payment.key_id,
+
+        amount: payment.amount,
+
+        currency: payment.currency || "INR",
+
+        name: "Intra Aura",
+
+        description:
+            payment.description
+            || `Order #${payment.local_order_id}`,
+
+        order_id:
+            payment.razorpay_order_id,
+
+
+        prefill: {
+
+            name: payment.name || "",
+
+            email: payment.email || "",
+
+            contact: payment.contact || ""
+
+        },
+
+
+        theme: {
+            color: "#b58a4a"
+        },
+
+
+        handler:
+            function (response) {
+
+                verifyRazorpayPayment(
+                    response,
+                    payment.local_order_id
+                );
+
+            },
+
+
+        modal: {
+
+            ondismiss:
+                function () {
+
+                    alert(
+                        "Payment window closed. Your order is still pending. You can continue payment from My Orders."
+                    );
+
+                }
+
+        }
+
+    };
+
+
+    const razorpay =
+        new Razorpay(options);
+
+
+    razorpay.on(
+        "payment.failed",
+        function (response) {
+
+            const orderId =
+                response?.error?.metadata?.order_id;
+
+            if (orderId) {
+
+                markPaymentFailed(
+                    orderId
+                );
+
+            } else {
+
+                alert(
+                    "Payment failed. Please try again from My Orders."
+                );
+
+            }
+
+        }
+    );
+
+
+    razorpay.open();
+
+}
+
+
+async function verifyRazorpayPayment(
+    response,
+    localOrderId
+) {
+
+    try {
+
+        const result =
+            await fetch(
+                "/account/payments/verify",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        local_order_id:
+                            localOrderId,
+
+                        razorpay_payment_id:
+                            response.razorpay_payment_id,
+
+                        razorpay_order_id:
+                            response.razorpay_order_id,
+
+                        razorpay_signature:
+                            response.razorpay_signature
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await result.json();
+
+
+        if (!result.ok) {
+
+            const detail =
+                data.detail;
+
+
+            throw new Error(
+                typeof detail === "string"
+                    ? detail
+                    : detail?.message
+                    || "Payment verification failed."
+            );
+
+        }
+
+
+        finalizeSuccessfulCheckout(
+            Number(localOrderId),
+            data.redirect_url
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            error.message
+            || "Payment verification failed. Please check My Orders."
+        );
+
+        window.location.href =
+            `/account/orders/${Number(localOrderId)}`;
+
+    }
+
+}
+
+
+async function markPaymentFailed(
+    razorpayOrderId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/account/payments/failed",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        razorpay_order_id:
+                            razorpayOrderId
+                    })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            response.ok
+            && result.redirect_url
+        ) {
+
+            window.location.href =
+                result.redirect_url;
+
+        } else {
+
+            alert(
+                "Payment failed. You can try again from My Orders."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Payment failed. Please open My Orders."
+        );
+
+    }
+
+}
+
+
+function finalizeSuccessfulCheckout(
+    orderId,
+    redirectUrl
+) {
+
+    if (
+        checkoutContext
+        && checkoutContext.source === "all"
+    ) {
+
+        saveCart([]);
+
+    }
+
+
+    if (
+        checkoutContext
+        && checkoutContext.source === "single"
+    ) {
+
+        const ids =
+            new Set(
+                checkoutContext.items.map(
+                    item => Number(item.id)
+                )
+            );
+
+
+        saveCart(
+            getCart().filter(
+                item =>
+                    !ids.has(
+                        Number(item.id)
+                    )
+            )
         );
 
     }
 
 
-    const buyAllButton =
-        document.getElementById("cartBuyAllBtn");
+    updateCartCount();
+    renderCart();
 
-    if (buyAllButton) {
 
-        buyAllButton.addEventListener(
-            "click",
-            buyAllCartItems
+    window.location.href =
+        redirectUrl
+        || `/account/orders/${orderId}?payment=success`;
+
+}
+
+
+/* =========================================
+   RESUME PAYMENT FOR EXISTING ORDER
+========================================= */
+
+async function resumeOrderPayment(orderId) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/account/orders/${Number(orderId)}/pay`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (response.status === 401) {
+
+            window.location.href =
+                `/account/login?next=${encodeURIComponent(
+                    `/account/orders/${Number(orderId)}`
+                )}`;
+
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            const detail =
+                result.detail;
+
+            throw new Error(
+                typeof detail === "string"
+                    ? detail
+                    : detail?.message
+                    || "This order cannot be paid right now."
+            );
+
+        }
+
+
+        checkoutContext = {
+            items: [],
+            source: "resume"
+        };
+
+        launchRazorpayCheckout(
+            result.payment
+        );
+
+    } catch (error) {
+
+        alert(
+            error.message
+            || "Unable to start payment."
         );
 
     }
 
-});
+}
+
+/* =========================================
+   GLOBAL CHECKOUT FUNCTIONS
+========================================= */
+
+window.buyCartItem =
+    buyCartItem;
+
+window.buyAllCartItems =
+    buyAllCartItems;
+
+window.startCheckout =
+    startCheckout;
+
+window.startProductCheckout =
+    startProductCheckout;
+
+window.resumeOrderPayment =
+    resumeOrderPayment;
+
+window.openCheckoutProfileModal =
+    openCheckoutProfileModal;
+
+window.closeCheckoutProfileModal =
+    closeCheckoutProfileModal;
+
+
+/* =========================================
+   CHECKOUT EVENTS
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const checkoutForm =
+            document.getElementById(
+                "checkoutProfileForm"
+            );
+
+        if (checkoutForm) {
+
+            checkoutForm.addEventListener(
+                "submit",
+                submitCheckoutProfile
+            );
+
+        }
+
+
+        document
+            .getElementById(
+                "checkoutModalClose"
+            )
+            ?.addEventListener(
+                "click",
+                closeCheckoutProfileModal
+            );
+
+
+        document
+            .getElementById(
+                "checkoutCancelBtn"
+            )
+            ?.addEventListener(
+                "click",
+                closeCheckoutProfileModal
+            );
+
+
+        document
+            .querySelector(
+                "[data-checkout-close]"
+            )
+            ?.addEventListener(
+                "click",
+                closeCheckoutProfileModal
+            );
+
+
+        const connectButton =
+            document.getElementById(
+                "cartConnectBtn"
+            );
+
+        if (connectButton) {
+
+            connectButton.addEventListener(
+                "click",
+                connectCart
+            );
+
+        }
+
+
+        const buyAllButton =
+            document.getElementById(
+                "cartBuyAllBtn"
+            );
+
+        if (buyAllButton) {
+
+            buyAllButton.addEventListener(
+                "click",
+                buyAllCartItems
+            );
+
+        }
+
+
+        /* Auto-start a product Buy Now flow after
+           login redirects back to the product page. */
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        if (
+            params.get("buy_now") === "1"
+        ) {
+
+            const productId =
+                window.INTRA_AURA_PRODUCT_ID;
+
+            if (productId) {
+
+                setTimeout(
+                    () =>
+                        startProductCheckout(
+                            Number(productId),
+                            1
+                        ),
+                    200
+                );
+
+            }
+
+        }
+
+    }
+);

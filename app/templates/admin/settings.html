@@ -1,1 +1,300 @@
-{% extends "admin/base.html" %}{% block title %}Site Settings{% endblock %}{% block topbar %}Site Settings{% endblock %}{% block content %}<div class="page-head"><div><span class="eyebrow">WEBSITE</span><h1>Site Settings</h1><p>Manage the site identity and navigation labels used across the public website.</p></div><a class="btn btn-light" href="/admin/content">Open Content Studio</a></div>{% if request.query_params.get('saved') %}<div class="notice success">✓ Site settings saved.</div>{% endif %}<form method="post" action="/admin/settings" class="settings-card"><section><span class="eyebrow">IDENTITY</span><h2>Brand details</h2><label>Site name<input name="name" value="{{ content.site.name|default('Intra Aura') }}"></label><label>Tagline<input name="tagline" value="{{ content.site.tagline|default('') }}"></label><label>Copyright<input name="copyright" value="{{ content.site.copyright|default('') }}"></label></section><section><span class="eyebrow">NAVIGATION</span><h2>Menu labels</h2><div class="settings-grid">{% for key,label in [('home','Home'),('products','Products'),('categories','Categories'),('services','Services'),('portfolio','Portfolio'),('about','About Us'),('contact','Contact')] %}<label>{{ label }}<input name="nav_{{ key }}" value="{{ content.header.nav[key]|default(label) }}"></label>{% endfor %}</div></section><div class="settings-actions"><a class="btn btn-light" href="/admin">Cancel</a><button class="btn btn-dark" type="submit">Save settings</button></div></form>{% endblock %}
+{% extends "admin/base.html" %}
+
+{% block title %}Site Settings{% endblock %}
+{% block topbar %}Site Settings{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <div class="page-head">
+        <div>
+            <span class="eyebrow">WEBSITE</span>
+            <h1>Site Settings</h1>
+            <p>
+                Manage website identity and payment configuration.
+            </p>
+        </div>
+
+        <a
+            class="btn btn-light"
+            href="/admin/content"
+        >
+            Open Content Studio
+        </a>
+    </div>
+
+
+    {% if request.query_params.get("saved") %}
+        <div class="notice success">
+            ✓ Settings saved successfully.
+        </div>
+    {% endif %}
+
+
+    {% if request.query_params.get("payment_error") %}
+        <div class="notice error">
+            {% if request.query_params.get("payment_error") == "key_id" %}
+                Razorpay Key ID is required when payments are enabled.
+            {% elif request.query_params.get("payment_error") == "key_secret" %}
+                Razorpay Key Secret is required when payments are enabled.
+            {% else %}
+                Please check the payment settings.
+            {% endif %}
+        </div>
+    {% endif %}
+
+
+    <form
+        method="post"
+        action="/admin/settings"
+        class="settings-card"
+    >
+
+        <!-- SITE IDENTITY -->
+
+        <section>
+
+            <span class="eyebrow">IDENTITY</span>
+
+            <h2>Brand details</h2>
+
+            <label>
+                Site name
+                <input
+                    name="name"
+                    value="{{ content.get('site', {}).get('name', 'Intra Aura') }}"
+                >
+            </label>
+
+            <label>
+                Tagline
+                <input
+                    name="tagline"
+                    value="{{ content.get('site', {}).get('tagline', '') }}"
+                >
+            </label>
+
+            <label>
+                Copyright
+                <input
+                    name="copyright"
+                    value="{{ content.get('site', {}).get('copyright', '') }}"
+                >
+            </label>
+
+        </section>
+
+
+        <!-- NAVIGATION -->
+
+        <section>
+
+            <span class="eyebrow">NAVIGATION</span>
+
+            <h2>Menu labels</h2>
+
+            <div class="settings-grid">
+
+                {% for key,label in [
+                    ('home','Home'),
+                    ('products','Products'),
+                    ('categories','Categories'),
+                    ('services','Services'),
+                    ('portfolio','Portfolio'),
+                    ('about','About Us'),
+                    ('contact','Contact')
+                ] %}
+
+                    <label>
+                        {{ label }}
+
+                        <input
+                            name="nav_{{ key }}"
+                            value="{{ content.get('header', {}).get('nav', {}).get(key, label) }}"
+                        >
+                    </label>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- RAZORPAY -->
+
+        <section id="payments">
+
+            <span class="eyebrow">PAYMENTS</span>
+
+            <h2>Razorpay Checkout</h2>
+
+            <p class="settings-help">
+                Put your Razorpay credentials here. The Key Secret and
+                Webhook Secret stay server-side and are never sent to
+                customers or rendered into the public website.
+            </p>
+
+
+            <div class="payment-settings-status">
+
+                {% if payment and payment.enabled and payment.key_id and payment.key_secret %}
+
+                    <span class="payment-configured">
+                        ✓ Razorpay is enabled
+                    </span>
+
+                {% else %}
+
+                    <span class="payment-not-configured">
+                        Payment gateway is not configured
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="settings-grid">
+
+                <label>
+                    Payment mode
+
+                    <select name="razorpay_mode">
+
+                        <option
+                            value="test"
+                            {% if not payment or payment.mode != "live" %}
+                                selected
+                            {% endif %}
+                        >
+                            Test Mode
+                        </option>
+
+                        <option
+                            value="live"
+                            {% if payment and payment.mode == "live" %}
+                                selected
+                            {% endif %}
+                        >
+                            Live Mode
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+                <label>
+                    Enable Razorpay
+
+                    <select name="razorpay_enabled">
+
+                        <option
+                            value="0"
+                            {% if not payment or not payment.enabled %}
+                                selected
+                            {% endif %}
+                        >
+                            Disabled
+                        </option>
+
+                        <option
+                            value="1"
+                            {% if payment and payment.enabled %}
+                                selected
+                            {% endif %}
+                        >
+                            Enabled
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+                <label>
+                    Razorpay Key ID
+
+                    <input
+                        name="razorpay_key_id"
+                        value="{{ payment.key_id if payment else '' }}"
+                        placeholder="rzp_test_..."
+                        autocomplete="off"
+                    >
+                </label>
+
+
+                <label>
+                    Razorpay Key Secret
+
+                    <input
+                        type="password"
+                        name="razorpay_key_secret"
+                        value=""
+                        placeholder="{% if payment and payment.key_secret %}Leave blank to keep existing secret{% else %}Enter Key Secret{% endif %}"
+                        autocomplete="new-password"
+                    >
+                </label>
+
+
+                <label class="settings-field-wide">
+                    Webhook Secret
+
+                    <input
+                        type="password"
+                        name="razorpay_webhook_secret"
+                        value=""
+                        placeholder="{% if payment and payment.webhook_secret %}Leave blank to keep existing secret{% else %}Enter webhook secret{% endif %}"
+                        autocomplete="new-password"
+                    >
+                </label>
+
+            </div>
+
+
+            <div class="payment-webhook-info">
+
+                <strong>Razorpay Webhook URL</strong>
+
+                <code>
+                    {{ webhook_url }}
+                </code>
+
+                <p>
+                    In Razorpay Dashboard, create a webhook using this URL
+                    and use the same Webhook Secret above. Recommended events:
+                    <strong>payment.captured</strong>,
+                    <strong>payment.failed</strong>,
+                    <strong>order.paid</strong>.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <div class="settings-actions">
+
+            <a
+                class="btn btn-light"
+                href="/admin"
+            >
+                Cancel
+            </a>
+
+            <button
+                class="btn btn-dark"
+                type="submit"
+            >
+                Save settings
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,281 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block topbar %}Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <div class="admin-page-header">
+
+        <div>
+            <span class="admin-eyebrow">ORDER #{{ order.id }}</span>
+            <h1>Order Details</h1>
+            <p>
+                {{ order.created_at.strftime("%d %B %Y, %I:%M %p") }}
+            </p>
+        </div>
+
+        <a
+            href="/admin/orders"
+            class="admin-secondary-btn"
+        >
+            ← All Orders
+        </a>
+
+    </div>
+
+
+    {% if request.query_params.get("updated") %}
+        <div class="admin-order-notice">
+            ✓ Order status updated.
+        </div>
+    {% endif %}
+
+    {% if order.payment_status == "Paid" and order.status == "Cancelled" %}
+        <div class="admin-order-notice admin-order-notice-warning">
+            ⚠ Payment was captured after cancellation. A refund must be handled through the Razorpay Dashboard.
+        </div>
+    {% endif %}
+
+
+    <div class="admin-order-layout">
+
+        <section class="admin-order-card">
+
+            <div class="admin-order-card-head">
+                <div>
+                    <span class="admin-eyebrow">CUSTOMER</span>
+                    <h2>
+                        {{ order.user.name if order.user else "Customer" }}
+                    </h2>
+                </div>
+
+                {% if order.user %}
+                    <a
+                        href="/admin/customers/{{ order.user.id }}"
+                        class="admin-secondary-btn"
+                    >
+                        Customer Profile
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="admin-order-info-grid">
+
+                <div>
+                    <span>Name</span>
+                    <strong>{{ order.shipping_name or "—" }}</strong>
+                </div>
+
+                <div>
+                    <span>Email</span>
+                    <strong>{{ order.shipping_email or "—" }}</strong>
+                </div>
+
+                <div>
+                    <span>Mobile</span>
+                    <strong>{{ order.shipping_phone or "—" }}</strong>
+                </div>
+
+                <div>
+                    <span>Payment</span>
+                    <strong>{{ order.payment_status }}</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-order-card">
+
+            <div class="admin-order-card-head">
+                <div>
+                    <span class="admin-eyebrow">DELIVERY</span>
+                    <h2>Shipping Address</h2>
+                </div>
+            </div>
+
+            <div class="admin-shipping-address">
+
+                <strong>
+                    {{ order.shipping_name or "—" }}
+                </strong>
+
+                <p>{{ order.shipping_address or "—" }}</p>
+                <p>{{ order.shipping_area_street or "" }}</p>
+
+                {% if order.shipping_landmark %}
+                    <p>Landmark: {{ order.shipping_landmark }}</p>
+                {% endif %}
+
+                <p>
+                    {{ order.shipping_city or "" }},
+                    {{ order.shipping_state or "" }}
+                    - {{ order.shipping_pincode or "" }}
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-order-card admin-order-items-card">
+
+            <div class="admin-order-card-head">
+                <div>
+                    <span class="admin-eyebrow">ITEMS</span>
+                    <h2>Products</h2>
+                </div>
+            </div>
+
+            {% for item in order.items %}
+
+                <div class="admin-order-item">
+
+                    <div class="admin-order-item-image">
+
+                        {% set primary_image = (
+                            item.product.images
+                            |selectattr("is_primary", "equalto", true)
+                            |first
+                        ) if item.product else none %}
+
+                        {% if primary_image %}
+                            <img
+                                src="{{ primary_image.image_url }}"
+                                alt="{{ item.product_name }}"
+                            >
+                        {% else %}
+                            <span>IA</span>
+                        {% endif %}
+
+                    </div>
+
+                    <div>
+                        <strong>{{ item.product_name }}</strong>
+                        <small>
+                            ₹{{ "%.2f"|format(item.price) }}
+                            × {{ item.quantity }}
+                        </small>
+                    </div>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(item.price * item.quantity) }}
+                    </strong>
+
+                </div>
+
+            {% endfor %}
+
+            <div class="admin-order-total">
+                <span>Total</span>
+                <strong>
+                    ₹{{ "%.2f"|format(order.total_amount) }}
+                </strong>
+            </div>
+
+        </section>
+
+
+        <section class="admin-order-card">
+
+            <div class="admin-order-card-head">
+                <div>
+                    <span class="admin-eyebrow">PAYMENT</span>
+                    <h2>Razorpay</h2>
+                </div>
+            </div>
+
+            <div class="admin-order-info-grid">
+
+                <div>
+                    <span>Payment Status</span>
+                    <strong>{{ order.payment_status }}</strong>
+                </div>
+
+                <div>
+                    <span>Razorpay Order ID</span>
+                    <strong class="admin-break">
+                        {{ order.razorpay_order_id or "—" }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Payment ID</span>
+                    <strong class="admin-break">
+                        {{ order.razorpay_payment_id or "—" }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Verified</span>
+                    <strong>
+                        {% if order.payment_verified_at %}
+                            {{ order.payment_verified_at.strftime("%d %b %Y, %I:%M %p") }}
+                        {% else %}
+                            —
+                        {% endif %}
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-order-card">
+
+            <div class="admin-order-card-head">
+                <div>
+                    <span class="admin-eyebrow">FULFILMENT</span>
+                    <h2>Order Status</h2>
+                </div>
+            </div>
+
+            <form
+                method="post"
+                action="/admin/orders/{{ order.id }}/status"
+                class="admin-order-status-form"
+            >
+
+                <select name="status">
+                    {% for status in allowed_statuses %}
+                        <option
+                            value="{{ status }}"
+                            {% if order.status == status %}selected{% endif %}
+                        >
+                            {{ status }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <button
+                    type="submit"
+                    class="admin-primary-btn"
+                >
+                    Update Status
+                </button>
+
+            </form>
+
+            {% if order.payment_status != "Paid" %}
+                <p class="admin-order-help">
+                    Cancelling an unpaid order releases its reserved stock.
+                </p>
+            {% else %}
+                <p class="admin-order-help">
+                    Paid orders cannot be cancelled here. Process refunds
+                    through your payment workflow before changing fulfilment.
+                </p>
+            {% endif %}
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}

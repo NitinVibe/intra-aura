@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Order #{{ order.id }} | Intra Aura{% endblock %}
+
+{% block content %}
+
+<section class="account-page">
+
+    <div class="account-box order-detail-page">
+
+        <div class="order-detail-top">
+
+            <div>
+                <p class="account-eyebrow">ORDER DETAILS</p>
+
+                <h1>
+                    Order #{{ order.id }}
+                </h1>
+
+                <p class="order-detail-date">
+                    Placed on
+                    {{ order.created_at.strftime("%d %B %Y, %I:%M %p") }}
+                </p>
+            </div>
+
+            <div class="order-detail-statuses">
+                <span class="order-status">
+                    {{ order.status }}
+                </span>
+
+                <span class="order-payment-status">
+                    Payment: {{ order.payment_status }}
+                </span>
+            </div>
+
+        </div>
+
+
+        {% if request.query_params.get("payment") == "success" %}
+            <div class="account-success">
+                Payment successful. Your order has been confirmed.
+            </div>
+        {% elif order.payment_status == "Paid" and order.status == "Cancelled" %}
+            <div class="account-error">
+                Payment was received, but this order is cancelled. Please contact us for the refund process.
+            </div>
+        {% elif request.query_params.get("payment") == "failed" %}
+            <div class="account-error">
+                Payment failed. Your reserved stock has been released.
+            </div>
+        {% endif %}
+
+
+        <div class="order-detail-grid">
+
+            <div class="order-detail-section">
+
+                <p class="account-eyebrow">ITEMS</p>
+
+                {% for item in order.items %}
+
+                    <div class="order-detail-item">
+
+                        <div>
+
+                            {% set primary_image = (
+                                item.product.images
+                                |selectattr("is_primary", "equalto", true)
+                                |first
+                            ) if item.product else none %}
+
+                            {% if primary_image %}
+                                <img
+                                    src="{{ primary_image.image_url }}"
+                                    alt="{{ item.product_name }}"
+                                >
+                            {% endif %}
+
+                        </div>
+
+                        <div class="order-detail-item-info">
+
+                            <h3>
+                                {{ item.product_name }}
+                            </h3>
+
+                            <p>
+                                ₹{{ "%.2f"|format(item.price) }}
+                                × {{ item.quantity }}
+                            </p>
+
+                        </div>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(item.price * item.quantity) }}
+                        </strong>
+
+                    </div>
+
+                {% endfor %}
+
+                <div class="order-detail-total">
+                    <span>Total</span>
+                    <strong>
+                        ₹{{ "%.2f"|format(order.total_amount) }}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="order-detail-section">
+
+                <p class="account-eyebrow">DELIVERY ADDRESS</p>
+
+                <div class="order-address">
+
+                    <strong>
+                        {{ order.shipping_name }}
+                    </strong>
+
+                    <p>
+                        {{ order.shipping_address }}
+                    </p>
+
+                    <p>
+                        {{ order.shipping_area_street }}
+                    </p>
+
+                    {% if order.shipping_landmark %}
+                        <p>
+                            Landmark: {{ order.shipping_landmark }}
+                        </p>
+                    {% endif %}
+
+                    <p>
+                        {{ order.shipping_city }},
+                        {{ order.shipping_state }}
+                        - {{ order.shipping_pincode }}
+                    </p>
+
+                    <p>
+                        {{ order.shipping_phone }}
+                    </p>
+
+                    <p>
+                        {{ order.shipping_email }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="order-detail-actions">
+
+            {% if order.payment_status == "Pending" and not order.stock_released %}
+
+                <button
+                    type="button"
+                    class="account-button order-pay-button"
+                    onclick="resumeOrderPayment({{ order.id }})"
+                >
+                    Complete Payment →
+                </button>
+
+                <form
+                    method="post"
+                    action="/account/orders/{{ order.id }}/cancel"
+                    onsubmit="return confirm('Cancel this order?');"
+                >
+                    <button
+                        type="submit"
+                        class="account-button order-cancel-button"
+                    >
+                        Cancel Order
+                    </button>
+                </form>
+
+            {% elif order.payment_status == "Paid" %}
+
+                <span class="order-paid-message">
+                    ✓ Payment received
+                </span>
+
+            {% endif %}
+
+            <a
+                href="/account/orders"
+                class="account-button order-back-button"
+            >
+                ← All Orders
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

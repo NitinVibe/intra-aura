@@ -371,6 +371,172 @@
     </div>
 </footer>
 
+<!-- GLOBAL CHECKOUT / DELIVERY DETAILS MODAL -->
+<div class="checkout-modal" id="checkoutProfileModal" aria-hidden="true">
+    <div class="checkout-modal-backdrop" data-checkout-close></div>
+
+    <div
+        class="checkout-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="checkoutModalTitle"
+    >
+        <button
+            type="button"
+            class="checkout-modal-close"
+            id="checkoutModalClose"
+            aria-label="Close"
+        >×</button>
+
+        <div class="checkout-modal-head">
+            <p class="cart-summary-eyebrow">CHECKOUT</p>
+
+            <h2 id="checkoutModalTitle">
+                Complete Your Delivery Details
+            </h2>
+
+            <p>
+                We need these details to place your order.
+                They will be saved to your profile for faster
+                future checkouts.
+            </p>
+        </div>
+
+        <div
+            id="checkoutFormMessage"
+            class="checkout-form-message"
+            role="alert"
+            aria-live="polite"
+        ></div>
+
+        <form
+            id="checkoutProfileForm"
+            class="checkout-profile-form"
+            novalidate
+        >
+            <div class="checkout-form-grid">
+
+                <div class="checkout-field">
+                    <label for="checkoutName">
+                        Full Name <span>*</span>
+                    </label>
+                    <input id="checkoutName" name="name" required>
+                </div>
+
+                <div class="checkout-field">
+                    <label for="checkoutEmail">
+                        Email Address <span>*</span>
+                    </label>
+                    <input
+                        id="checkoutEmail"
+                        name="email"
+                        type="email"
+                        required
+                    >
+                </div>
+
+                <div class="checkout-field">
+                    <label for="checkoutPhone">
+                        Mobile Number <span>*</span>
+                    </label>
+                    <input
+                        id="checkoutPhone"
+                        name="phone"
+                        inputmode="numeric"
+                        maxlength="10"
+                        required
+                    >
+                </div>
+
+                <div class="checkout-field checkout-field-wide">
+                    <label for="checkoutAddress">
+                        House / Flat / Plot No. / Address <span>*</span>
+                    </label>
+                    <textarea
+                        id="checkoutAddress"
+                        name="address"
+                        rows="3"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="checkout-field checkout-field-wide">
+                    <label for="checkoutArea">
+                        Area / Street <span>*</span>
+                    </label>
+                    <input
+                        id="checkoutArea"
+                        name="area_street"
+                        required
+                    >
+                </div>
+
+                <div class="checkout-field">
+                    <label for="checkoutLandmark">
+                        Landmark
+                    </label>
+                    <input
+                        id="checkoutLandmark"
+                        name="landmark"
+                    >
+                </div>
+
+                <div class="checkout-field">
+                    <label for="checkoutCity">
+                        City <span>*</span>
+                    </label>
+                    <input id="checkoutCity" name="city" required>
+                </div>
+
+                <div class="checkout-field">
+                    <label for="checkoutState">
+                        State <span>*</span>
+                    </label>
+                    <input id="checkoutState" name="state" required>
+                </div>
+
+                <div class="checkout-field">
+                    <label for="checkoutPincode">
+                        Pincode <span>*</span>
+                    </label>
+                    <input
+                        id="checkoutPincode"
+                        name="pincode"
+                        inputmode="numeric"
+                        maxlength="6"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div id="checkoutFieldErrors" class="checkout-field-errors"></div>
+
+            <div class="checkout-modal-actions">
+                <button
+                    type="button"
+                    class="checkout-cancel-btn"
+                    id="checkoutCancelBtn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="checkout-continue-btn"
+                    id="checkoutContinueBtn"
+                >
+                    Continue to Payment
+                    <span>→</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
 
 <script src="{{ url_for('static', path='js/main.js') }}"></script>
 

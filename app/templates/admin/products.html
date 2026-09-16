@@ -175,7 +175,19 @@
 
 
                     <td>
-                        {{ product.stock }}
+                        {% if product.stock <= 0 %}
+                            <span class="stock-badge stock-out">
+                                Out of stock
+                            </span>
+                        {% elif product.stock <= 5 %}
+                            <span class="stock-badge stock-low">
+                                {{ product.stock }} left
+                            </span>
+                        {% else %}
+                            <span class="stock-badge stock-ok">
+                                {{ product.stock }} in stock
+                            </span>
+                        {% endif %}
                     </td>
 
 

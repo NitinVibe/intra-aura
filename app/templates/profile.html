@@ -23,6 +23,12 @@
             Manage your account details and view your activity.
         </p>
 
+        {% if request.query_params.get("profile_updated") == "1" %}
+        <div class="profile-success-message" role="status">
+            Your profile has been updated successfully.
+        </div>
+        {% endif %}
+
     </div>
 
 
@@ -195,8 +201,8 @@
                     </div>
 
 
-                    <!-- <a
-                        href="/edit-profile"
+                    <a
+                        href="/account/profile/edit"
                         class="edit-profile-button"
                     >
 
@@ -207,7 +213,7 @@
 
                         Edit Profile
 
-                    </a> -->
+                    </a>
 
                 </div>
 
@@ -266,6 +272,47 @@
 
                         </div>
 
+
+                        <div class="profile-info-item">
+
+                            <span class="info-label">
+                                DELIVERY ADDRESS
+                            </span>
+
+                            <strong>
+                                {{ user.address or "Not added" }}
+                                {% if user.area_street %}, {{ user.area_street }}{% endif %}
+                            </strong>
+
+                        </div>
+
+                        <div class="profile-info-item">
+
+                            <span class="info-label">
+                                CITY / STATE / PINCODE
+                            </span>
+
+                            <strong>
+                                {% if user.city or user.state or user.pincode %}
+                                    {{ user.city or "" }}{% if user.state %}, {{ user.state }}{% endif %}{% if user.pincode %} - {{ user.pincode }}{% endif %}
+                                {% else %}
+                                    Not added
+                                {% endif %}
+                            </strong>
+
+                        </div>
+
+                        <div class="profile-info-item">
+
+                            <span class="info-label">
+                                LANDMARK
+                            </span>
+
+                            <strong>
+                                {{ user.landmark or "Not added" }}
+                            </strong>
+
+                        </div>
 
                         <div class="profile-info-item">
 

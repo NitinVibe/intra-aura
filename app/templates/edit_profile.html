@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile | Intra Aura{% endblock %}
+{% block content %}
+<section class="account-page profile-edit-page">
+  <div class="account-header">
+    <div class="account-breadcrumb">Home <span>›</span> My Account <span>›</span> Edit Profile</div>
+    <p class="account-eyebrow">MY ACCOUNT</p>
+    <h1>Edit Profile</h1>
+    <p class="account-subtitle">Keep your contact and delivery details ready for a faster checkout.</p>
+  </div>
+
+  <div class="profile-edit-card">
+    <div class="profile-edit-head">
+      <div><p class="card-eyebrow">PERSONAL & DELIVERY DETAILS</p><h2>Your Information</h2></div>
+      <a href="/account/profile" class="profile-cancel-link">Cancel</a>
+    </div>
+
+    {% if profile_error %}<div class="profile-form-alert" role="alert">{{ profile_error }}</div>{% endif %}
+
+    <form method="post" action="/account/profile/edit" class="profile-edit-form" novalidate>
+      <div class="profile-form-grid">
+        {% for key,label,placeholder,required in [
+          ("name","Full Name","Your full name",true),
+          ("email","Email Address","you@example.com",true),
+          ("phone","Mobile Number","10-digit Indian mobile number",true),
+          ("address","House / Flat / Plot No. / Address","House / flat / plot number and address",true),
+          ("area_street","Area / Street","Area, street or locality",true),
+          ("landmark","Landmark","Nearby landmark (optional)",false),
+          ("city","City","Your city",true),
+          ("state","State","Your state",true),
+          ("pincode","Pincode","6-digit pincode",true)
+        ] %}
+        <div class="profile-form-field{% if key in ['address','area_street'] %} profile-form-wide{% endif %}">
+          <label for="{{ key }}">{{ label }}{% if required %} <span>*</span>{% endif %}</label>
+          {% if key == 'address' %}<textarea id="{{ key }}" name="{{ key }}" rows="3" placeholder="{{ placeholder }}" {% if required %}required{% endif %}>{{ profile.get(key, '') }}</textarea>{% else %}<input id="{{ key }}" name="{{ key }}" value="{{ profile.get(key, '') }}" placeholder="{{ placeholder }}" {% if required %}required{% endif %} {% if key == 'phone' %}inputmode="numeric" maxlength="10"{% elif key == 'pincode' %}inputmode="numeric" maxlength="6"{% elif key == 'email' %}type="email"{% endif %}>{% endif %}
+          {% if errors and errors.get(key) %}<small class="profile-field-error">{{ errors.get(key) }}</small>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="profile-edit-actions">
+        <a href="/account/profile" class="profile-secondary-btn">Cancel</a>
+        <button type="submit" class="profile-primary-btn">Save Changes <span>→</span></button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

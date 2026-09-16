@@ -2,6 +2,8 @@
 
 {% block title %}
 {{ product.name }} | Intra Aura
+<script>window.INTRA_AURA_PRODUCT_ID = {{ product.id }};</script>
+
 {% endblock %}
 
 {% block content %}
@@ -186,6 +188,17 @@
 
 <div class="product-detail-actions">
 
+    {% if product.stock > 0 %}
+    <button
+        type="button"
+        class="detail-buy-now-btn"
+        onclick="startProductCheckout({{ product.id }}, 1)"
+    >
+        Buy Now
+        <span>→</span>
+    </button>
+    {% endif %}
+
     <button
         type="button"
         class="detail-add-cart-btn"
@@ -235,5 +248,7 @@
     </div>
 
 </section>
+
+<script>window.INTRA_AURA_PRODUCT_ID = {{ product.id }};</script>
 
 {% endblock %}

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Request, Form, Depends
+from fastapi import APIRouter, Request, Form, Depends, HTTPException
 from fastapi.responses import RedirectResponse
 from app.template_config import Jinja2Templates
 
@@ -13,6 +13,8 @@ from app.config.database import get_db
 from app.config.settings import settings
 from app.models.user import User
 from app.models.enquiry import Enquiry
+from app.schemas.account import ProfileUpdate
+from pydantic import ValidationError
 
 
 router = APIRouter(
@@ -106,6 +108,58 @@ def get_current_user(
 
         return None
 # ============================================================
+# PROFILE VALIDATION / SERIALIZATION
+# ============================================================
+
+REQUIRED_CHECKOUT_FIELDS = (
+    "name", "email", "phone", "address", "area_street",
+    "city", "state", "pincode"
+)
+
+
+def user_profile_dict(user):
+    return {
+        "name": user.name or "",
+        "email": user.email or "",
+        "phone": user.phone or "",
+        "address": user.address or "",
+        "area_street": user.area_street or "",
+        "landmark": user.landmark or "",
+        "city": user.city or "",
+        "state": user.state or "",
+        "pincode": user.pincode or "",
+    }
+
+
+def profile_validation_issues(user):
+    data = user_profile_dict(user)
+    missing = [
+        field for field in REQUIRED_CHECKOUT_FIELDS
+        if not str(data.get(field, "")).strip()
+    ]
+    field_errors = {}
+    try:
+        ProfileUpdate.model_validate(data)
+    except ValidationError as exc:
+        for error in exc.errors():
+            field = str(error.get("loc", ["profile"])[0])
+            field_errors[field] = error.get("msg", "Invalid value")
+    return missing, field_errors
+
+
+def profile_missing_fields(user):
+    return profile_validation_issues(user)[0]
+
+
+def apply_profile(user, profile: ProfileUpdate):
+    for field in (
+        "name", "email", "phone", "address", "area_street",
+        "landmark", "city", "state", "pincode"
+    ):
+        setattr(user, field, getattr(profile, field))
+
+
+# ============================================================
 # LOGIN PAGE
 # ============================================================
 
@@ -113,11 +167,25 @@ def get_current_user(
 def login_page(
     request: Request
 ):
-
     return templates.TemplateResponse(
         request=request,
-        name="login.html"
+        name="login.html",
+        context={
+            "next_url": _safe_next(request.query_params.get("next"))
+        },
     )
+
+
+def _safe_next(value: str | None) -> str:
+    """
+    Accept only local relative paths to prevent an open redirect.
+    """
+    value = (value or "").strip()
+
+    if not value or not value.startswith("/") or value.startswith("//"):
+        return "/account/profile"
+
+    return value
 
 
 # ============================================================
@@ -125,11 +193,12 @@ def login_page(
 # ============================================================
 @router.post("/login")
 def login(
+    request: Request,
     email: str = Form(...),
     password: str = Form(...),
+    next_url: str = Form(""),
     db: Session = Depends(get_db)
 ):
-
     email = email.strip().lower()
 
     user = (
@@ -140,7 +209,8 @@ def login(
 
     if not user:
         return RedirectResponse(
-            url="/account/login?error=1",
+            url="/account/login?error=1"
+            + (f"&next={_safe_next(next_url)}" if next_url else ""),
             status_code=303
         )
 
@@ -149,7 +219,8 @@ def login(
         user.password_hash
     ):
         return RedirectResponse(
-            url="/account/login?error=1",
+            url="/account/login?error=1"
+            + (f"&next={_safe_next(next_url)}" if next_url else ""),
             status_code=303
         )
 
@@ -168,7 +239,7 @@ def login(
     )
 
     response = RedirectResponse(
-        url="/account/profile",
+        url=_safe_next(next_url),
         status_code=303
     )
 
@@ -181,7 +252,105 @@ def login(
     )
 
     return response
-    # ============================================================
+
+# ============================================================
+# EDIT PROFILE
+# ============================================================
+
+@router.get("/profile/edit")
+def edit_profile_page(
+    request: Request,
+    user=Depends(get_current_user)
+):
+    if not user:
+        return RedirectResponse(url="/account/login", status_code=303)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="edit_profile.html",
+        context={"user": user, "profile": user_profile_dict(user)}
+    )
+
+
+@router.post("/profile/edit")
+def update_profile(
+    request: Request,
+    name: str = Form(...),
+    email: str = Form(...),
+    phone: str = Form(...),
+    address: str = Form(...),
+    area_street: str = Form(...),
+    landmark: str = Form(""),
+    city: str = Form(...),
+    state: str = Form(...),
+    pincode: str = Form(...),
+    user=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    if not user:
+        return RedirectResponse(url="/account/login", status_code=303)
+
+    raw = {
+        "name": name, "email": email, "phone": phone,
+        "address": address, "area_street": area_street,
+        "landmark": landmark, "city": city, "state": state,
+        "pincode": pincode,
+    }
+
+    try:
+        profile = ProfileUpdate.model_validate(raw)
+    except ValidationError as exc:
+        messages = {}
+        for error in exc.errors():
+            field = str(error.get("loc", ["profile"])[0])
+            messages[field] = error.get("msg", "Invalid value")
+        return templates.TemplateResponse(
+            request=request,
+            name="edit_profile.html",
+            context={"user": user, "profile": raw, "errors": messages, "profile_error": "Please correct the highlighted fields."},
+            status_code=422
+        )
+
+    duplicate = (
+        db.query(User)
+        .filter(User.email == profile.email, User.id != user.id)
+        .first()
+    )
+    if duplicate:
+        raw["email"] = profile.email
+        return templates.TemplateResponse(
+            request=request,
+            name="edit_profile.html",
+            context={"user": user, "profile": raw, "errors": {"email": "This email is already registered."}, "profile_error": "Please use a different email address."},
+            status_code=409
+        )
+
+    try:
+        apply_profile(user, profile)
+        db.commit()
+        db.refresh(user)
+    except Exception:
+        db.rollback()
+        return templates.TemplateResponse(
+            request=request,
+            name="edit_profile.html",
+            context={"user": user, "profile": raw, "errors": {}, "profile_error": "We could not save your profile. Please try again."},
+            status_code=500
+        )
+
+    return RedirectResponse(url="/account/profile?profile_updated=1", status_code=303)
+
+
+@router.get("/profile-data")
+def profile_data(
+    user=Depends(get_current_user)
+):
+    if not user:
+        raise HTTPException(status_code=401, detail="Please log in to continue")
+    return user_profile_dict(user)
+
+
+# ============================================================
 # SETTINGS
 # ============================================================
 
@@ -411,16 +580,15 @@ def my_enquiries(
         )
 
     enquiries = (
-        db.query(Enquiry)
-        .filter(
-            (Enquiry.user_id == user.id) |
-            (Enquiry.email == user.email)
-        )
-        .order_by(
-            Enquiry.created_at.desc()
-        )
-        .all()
+    db.query(Enquiry)
+    .filter(
+        Enquiry.user_id == user.id
     )
+    .order_by(
+        Enquiry.created_at.desc()
+    )
+    .all()
+)
 
     return templates.TemplateResponse(
         request=request,

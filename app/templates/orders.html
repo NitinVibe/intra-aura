@@ -14,13 +14,25 @@
 
         <h1>My Orders</h1>
 
+        {% if request.query_params.get("created") %}
+            <div class="account-success">
+                Order created. Complete the payment to confirm it.
+            </div>
+        {% endif %}
+
+        {% if request.query_params.get("cancelled") %}
+            <div class="account-success">
+                Your order was cancelled successfully.
+            </div>
+        {% endif %}
+
         {% if orders %}
 
             <div class="orders-list">
 
                 {% for order in orders %}
 
-                    <div class="order-card">
+                    <article class="order-card">
 
                         <div class="order-header">
 
@@ -32,11 +44,21 @@
                                 <h2>
                                     #{{ order.id }}
                                 </h2>
+
+                                <small>
+                                    {{ order.created_at.strftime("%d %b %Y, %I:%M %p") }}
+                                </small>
                             </div>
 
-                            <span class="order-status">
-                                {{ order.status }}
-                            </span>
+                            <div class="order-status-group">
+                                <span class="order-status">
+                                    {{ order.status }}
+                                </span>
+
+                                <span class="order-payment-status">
+                                    Payment: {{ order.payment_status }}
+                                </span>
+                            </div>
 
                         </div>
 
@@ -47,9 +69,15 @@
 
                                 <div class="order-item">
 
-                                    {% if item.product and item.product.image %}
+                                    {% set primary_image = (
+                                        item.product.images
+                                        |selectattr("is_primary", "equalto", true)
+                                        |first
+                                    ) if item.product else none %}
+
+                                    {% if primary_image %}
                                         <img
-                                            src="{{ item.product.image }}"
+                                            src="{{ primary_image.image_url }}"
                                             alt="{{ item.product_name }}"
                                         >
                                     {% endif %}
@@ -80,17 +108,20 @@
 
                         <div class="order-footer">
 
-                            <span>
-                                {{ order.created_at.strftime("%d %b %Y") }}
-                            </span>
-
                             <strong>
-                                ₹{{ "%.2f"|format(order.total_amount) }}
+                                Total ₹{{ "%.2f"|format(order.total_amount) }}
                             </strong>
+
+                            <a
+                                href="/account/orders/{{ order.id }}"
+                                class="account-button"
+                            >
+                                View Order →
+                            </a>
 
                         </div>
 
-                    </div>
+                    </article>
 
                 {% endfor %}
 

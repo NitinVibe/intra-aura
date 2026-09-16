@@ -1,1 +1,210 @@
-{% extends "admin/base.html" %}{% block title %}Customer{% endblock %}{% block topbar %}Customer{% endblock %}{% block content %}<div class="page-head"><div><span class="eyebrow">CUSTOMER #{{ customer.id }}</span><h1>{{ customer.name }}</h1><p>{{ customer.email }} · {{ customer.phone or 'No phone' }}</p></div><a class="btn btn-light" href="/admin/customers">← Customers</a></div><div class="dashboard-grid"><section class="panel"><div class="panel-head"><div><span class="eyebrow">ORDERS</span><h2>Order history</h2></div></div>{% for o in orders %}<div class="activity-row"><div class="activity-avatar">#</div><div class="activity-main"><strong>Order #{{ o.id }}</strong><span>{{ o.created_at.strftime('%d %b %Y') }}</span></div><div class="activity-side"><strong>₹{{ '%.0f'|format(o.total_amount) }}</strong><small>{{ o.status }}</small></div></div>{% else %}<div class="empty-inline">No orders.</div>{% endfor %}</section><section class="panel"><div class="panel-head"><div><span class="eyebrow">ENQUIRIES</span><h2>Enquiry history</h2></div></div>{% for e in enquiries %}<a class="activity-row" href="/admin/enquiries/{{ e.id }}"><div class="activity-avatar">✉</div><div class="activity-main"><strong>Enquiry #{{ e.id }}</strong><span>{{ e.message or 'No message' }}</span></div><div class="activity-side"><span class="status-pill {{ e.status }}">{{ e.status }}</span></div></a>{% else %}<div class="empty-inline">No enquiries.</div>{% endfor %}</section></div>{% endblock %}
+{% extends "admin/base.html" %}
+{% block title %}Customer{% endblock %}
+{% block topbar %}Customer{% endblock %}
+{% block content %}
+
+<div class="page-head">
+    <div>
+        <span class="eyebrow">CUSTOMER #{{ customer.id }}</span>
+        <h1>{{ customer.name }}</h1>
+        <p>{{ customer.email }} · {{ customer.phone or 'No phone' }}</p>
+    </div>
+
+    <a class="btn btn-light" href="/admin/customers">
+        ← Customers
+    </a>
+</div>
+
+
+<!-- CUSTOMER INFORMATION -->
+<section class="admin-customer-info">
+
+    <div class="admin-customer-info-head">
+        <div>
+            <span class="eyebrow">CUSTOMER INFORMATION</span>
+            <h2>Profile &amp; delivery details</h2>
+        </div>
+
+        <span class="admin-customer-id">
+            #{{ customer.id }}
+        </span>
+    </div>
+
+
+    <div class="admin-customer-info-grid">
+
+        <div class="admin-customer-field">
+            <span>Full Name</span>
+            <strong>{{ customer.name or '—' }}</strong>
+        </div>
+
+        <div class="admin-customer-field">
+            <span>Email Address</span>
+            <strong>{{ customer.email or '—' }}</strong>
+        </div>
+
+        <div class="admin-customer-field">
+            <span>Mobile Number</span>
+            <strong>{{ customer.phone or '—' }}</strong>
+        </div>
+
+        <div class="admin-customer-field">
+            <span>Joined</span>
+            <strong>
+                {{ customer.created_at.strftime('%d %b %Y')
+                   if customer.created_at else '—' }}
+            </strong>
+        </div>
+
+
+        <div class="admin-customer-field admin-customer-field-wide">
+            <span>House / Flat / Plot No. / Address</span>
+            <strong>
+                {{ customer.address or 'Not provided' }}
+            </strong>
+        </div>
+
+        <div class="admin-customer-field">
+            <span>Area / Street</span>
+            <strong>
+                {{ customer.area_street or 'Not provided' }}
+            </strong>
+        </div>
+
+        <div class="admin-customer-field">
+            <span>Landmark</span>
+            <strong>
+                {{ customer.landmark or 'Not provided' }}
+            </strong>
+        </div>
+
+        <div class="admin-customer-field">
+            <span>City</span>
+            <strong>
+                {{ customer.city or 'Not provided' }}
+            </strong>
+        </div>
+
+        <div class="admin-customer-field">
+            <span>State</span>
+            <strong>
+                {{ customer.state or 'Not provided' }}
+            </strong>
+        </div>
+
+        <div class="admin-customer-field">
+            <span>Pincode</span>
+            <strong>
+                {{ customer.pincode or 'Not provided' }}
+            </strong>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ORDERS + ENQUIRIES -->
+<div class="dashboard-grid">
+
+    <section class="panel">
+
+        <div class="panel-head">
+            <div>
+                <span class="eyebrow">ORDERS</span>
+                <h2>Order history</h2>
+            </div>
+            <a href="/admin/orders" class="admin-secondary-btn">All Orders</a>
+        </div>
+
+        {% for o in orders %}
+
+        <a class="activity-row" href="/admin/orders/{{ o.id }}">
+
+            <div class="activity-avatar">
+                #
+            </div>
+
+            <div class="activity-main">
+                <strong>Order #{{ o.id }}</strong>
+                <span>
+                    {{ o.created_at.strftime('%d %b %Y') }}
+                </span>
+            </div>
+
+            <div class="activity-side">
+                <strong>
+                    ₹{{ '%.0f'|format(o.total_amount) }}
+                </strong>
+
+                <small>
+                    {{ o.payment_status }} · {{ o.status }}
+                </small>
+            </div>
+
+        </a>
+
+        {% else %}
+
+        <div class="empty-inline">
+            No orders.
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <section class="panel">
+
+        <div class="panel-head">
+            <div>
+                <span class="eyebrow">ENQUIRIES</span>
+                <h2>Enquiry history</h2>
+            </div>
+        </div>
+
+        {% for e in enquiries %}
+
+        <a
+            class="activity-row"
+            href="/admin/enquiries/{{ e.id }}"
+        >
+
+            <div class="activity-avatar">
+                ✉
+            </div>
+
+            <div class="activity-main">
+                <strong>
+                    Enquiry #{{ e.id }}
+                </strong>
+
+                <span>
+                    {{ e.message or 'No message' }}
+                </span>
+            </div>
+
+            <div class="activity-side">
+
+                <span class="status-pill {{ e.status }}">
+                    {{ e.status }}
+                </span>
+
+            </div>
+
+        </a>
+
+        {% else %}
+
+        <div class="empty-inline">
+            No enquiries.
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}

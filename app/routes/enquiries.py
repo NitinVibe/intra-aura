@@ -78,6 +78,7 @@ def submit_product_enquiry(
     email: str = Form(...),
     phone: str = Form(...),
     message: str = Form(...),
+    user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
 
@@ -94,6 +95,7 @@ def submit_product_enquiry(
         )
 
     enquiry = Enquiry(
+        user_id=user.id if user else None,
         name=name,
         email=email,
         phone=phone,

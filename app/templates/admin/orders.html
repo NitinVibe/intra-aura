@@ -1,30 +1,122 @@
 {% extends "admin/base.html" %}
+
 {% block title %}Orders{% endblock %}
+{% block topbar %}Orders{% endblock %}
+
 {% block content %}
-<div class="admin-container">
-  <div class="admin-header">
-    <span>STORE MANAGEMENT</span>
-    <h1>Orders</h1>
-    <p>Order management is ready for when the orders database module is enabled.</p>
-  </div>
-  {% if not orders_enabled %}
-    <section class="admin-empty-state">
-      <div class="admin-empty-icon">○</div>
-      <h2>Orders are not enabled yet</h2>
-      <p>The <code>orders</code> table does not exist in the current database, so this page stays safe and empty instead of throwing an error.</p>
-      <a class="admin-button" href="/admin">Back to Dashboard</a>
-    </section>
-  {% else %}
-    <div class="admin-table-wrap">
-      <table class="admin-table">
-        <thead><tr><th>ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Created</th></tr></thead>
-        <tbody>
-        {% for order in orders %}
-          <tr><td>#{{ order.id }}</td><td>{{ order.user.email if order.user else "—" }}</td><td>₹{{ "%.2f"|format(order.total_amount) }}</td><td>{{ order.status }}</td><td>{{ order.created_at }}</td></tr>
-        {% else %}<tr><td colspan="5">No orders yet.</td></tr>{% endfor %}
-        </tbody>
-      </table>
+
+<div class="admin-page">
+
+    <div class="admin-page-header">
+        <div>
+            <span class="admin-eyebrow">STORE MANAGEMENT</span>
+            <h1>Orders</h1>
+            <p>Review payments, delivery details and fulfilment status.</p>
+        </div>
     </div>
-  {% endif %}
+
+    {% if not orders_enabled %}
+
+        <section class="admin-empty-state">
+            <div class="admin-empty-icon">○</div>
+            <h2>Orders are not enabled yet</h2>
+            <p>
+                The orders table does not exist in the current database.
+                Run the supplied migration first.
+            </p>
+            <a class="admin-primary-btn" href="/admin">
+                Back to Dashboard
+            </a>
+        </section>
+
+    {% else %}
+
+        <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for order in orders %}
+
+                    <tr>
+
+                        <td>
+                            <strong>#{{ order.id }}</strong>
+                        </td>
+
+                        <td>
+                            <div>
+                                <strong>
+                                    {{ order.user.name if order.user else "—" }}
+                                </strong>
+                            </div>
+                            <small>
+                                {{ order.user.email if order.user else "—" }}
+                            </small>
+                        </td>
+
+                        <td>
+                            ₹{{ "%.2f"|format(order.total_amount) }}
+                        </td>
+
+                        <td>
+                            <span class="admin-order-payment {{ order.payment_status|lower|replace(' ', '-') }}">
+                                {{ order.payment_status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="admin-order-status">
+                                {{ order.status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ order.created_at.strftime("%d %b %Y, %I:%M %p") }}
+                        </td>
+
+                        <td>
+                            <a
+                                href="/admin/orders/{{ order.id }}"
+                                class="admin-edit-btn"
+                            >
+                                View
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="7" class="empty-state">
+                            No orders yet.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% endif %}
+
 </div>
+
 {% endblock %}

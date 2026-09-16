@@ -334,5 +334,10 @@
     ],
     "last_updated": "September 2026",
     "note": "This page is general website terms information and does not replace a separately agreed quotation, order document or contract."
+  },
+  "site": {
+    "name": "Intra Aura",
+    "tagline": "",
+    "copyright": ""
   }
 }

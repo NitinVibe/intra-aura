@@ -13,6 +13,7 @@ from app.routes.auth import router as auth_router
 from app.routes.customer_auth import router as customer_auth_router
 from app.routes.profile import router as profile_router
 from app.routes.orders import router as orders_router
+from app.routes.payments import router as payments_router
 from app.routes.cms import router as cms_router
 
 app = FastAPI(
@@ -42,4 +43,5 @@ app.include_router(auth_router)
 app.include_router(customer_auth_router)
 app.include_router(profile_router)
 app.include_router(orders_router)
+app.include_router(payments_router)
 app.include_router(cms_router)

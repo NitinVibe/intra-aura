@@ -32,6 +32,38 @@ class User(Base):
         nullable=True
     )
 
+    # Delivery profile fields. Nullable for backward compatibility with
+    # existing customers; checkout enforces them when an order is placed.
+    address: Mapped[str | None] = mapped_column(
+        String(300),
+        nullable=True
+    )
+
+    area_street: Mapped[str | None] = mapped_column(
+        String(200),
+        nullable=True
+    )
+
+    landmark: Mapped[str | None] = mapped_column(
+        String(200),
+        nullable=True
+    )
+
+    city: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True
+    )
+
+    state: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True
+    )
+
+    pincode: Mapped[str | None] = mapped_column(
+        String(6),
+        nullable=True
+    )
+
     password_hash: Mapped[str] = mapped_column(
         String(255),
         nullable=False
