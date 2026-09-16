@@ -38,25 +38,25 @@
   },
   "home": {
     "hero_1": {
-      "eyebrow": "ELEVATE YOUR SPACE",
-      "title_html": "Furniture that<br>makes <em>your space yours.</em>",
-      "description": "Discover thoughtfully designed furniture and interior solutions created for modern living.",
+      "eyebrow": "",
+      "title_html": "<br>",
+      "description": "",
       "image": "/static/uploads/site/e04f16e9cafe47789445b48bfc0025c8.webp",
       "primary": "Explore Products",
       "secondary": "Price Calculator"
     },
     "hero_2": {
-      "eyebrow": "DESIGNED FOR MODERN LIVING",
-      "title_html": "Comfort that<br>feels <em>like home.</em>",
-      "description": "Timeless furniture designed to bring comfort, character and elegance into your space.",
+      "eyebrow": "",
+      "title_html": "<br>",
+      "description": "",
       "image": "/static/uploads/site/40fd5729e5444f6eb79eecbae704837d.webp",
       "primary": "Explore Collection",
       "secondary": "Price Calculator"
     },
     "hero_3": {
-      "eyebrow": "CRAFTED WITH PURPOSE",
-      "title_html": "Spaces made<br><em>beautifully yours.</em>",
-      "description": "Premium furniture crafted to complement the way you live.",
+      "eyebrow": "",
+      "title_html": "<br>",
+      "description": "",
       "image": "/static/uploads/site/f90e1897dac8477bad5a3eee7a6b2c9a.webp",
       "primary": "View Products",
       "secondary": "Price Calculator"

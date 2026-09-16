@@ -841,27 +841,22 @@ a {
 }
 
 .categories-page .categories-hero {
-    min-height: 400px;
+    min-height: 575px;
     padding: 65px 8%;
     display: flex;
     align-items: center;
     background:
         linear-gradient(
             90deg,
-            rgba(248,247,244,0.55) 0%,
-            rgba(248,247,244,0.45) 45%,
-            rgba(248,247,244,0.15) 100%
+            rgba(20, 20, 20, .68) 0%,
+            rgba(20, 20, 20, .38) 48%,
+            rgba(20, 20, 20, .12) 100%
         ),
         url("/static/images/categories-hero.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
-
-.categories-page .categories-hero-content {
-    max-width: 720px;
-}
-
 .categories-page .categories-eyebrow {
     margin: 0 0 22px;
     font-size: 11px;
@@ -873,18 +868,26 @@ a {
 
 .categories-page .categories-hero h1 {
     margin: 0;
-    font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: clamp(50px, 5.5vw, 78px);
-    line-height: 0.98;
-    font-weight: 400;
-    letter-spacing: -3px;
+
     color: #241811;
+
+    max-width: 850px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(58px, 7vw, 105px);
+    font-weight: 400;
+
+    line-height: .9;
+
+    letter-spacing: -3px;
 }
 
 .categories-page .categories-hero h1 em {
     font-family: Georgia, "Times New Roman", serif;
     font-style: italic;
     font-weight: 400;
+    color: #a87532;
 }
 
 .categories-page .categories-hero-content > p:last-child {
@@ -892,7 +895,7 @@ a {
     margin-top: 24px;
     font-size: 15px;
     line-height: 1.65;
-    color: #666;
+    color: rgb(255, 239, 209);
 }
 
 .categories-page .category-showcase {
@@ -5335,8 +5338,8 @@ footer {
     background:
         linear-gradient(
             90deg,
-            rgba(0, 0, 0, 0.58) 0%,
-            rgba(0, 0, 0, 0.32) 38%,
+            rgba(0, 0, 0, 0.48) 0%,
+            rgba(0, 0, 0, 0.28) 38%,
             rgba(0, 0, 0, 0.08) 75%,
             rgba(0, 0, 0, 0.02) 100%
         );
@@ -5387,15 +5390,16 @@ footer {
 .home-hero-content h1 {
     margin: 0;
 
-    max-width: 760px;
+    color: #241811;
 
-    font-size: clamp(52px, 6vw, 92px);
+    max-width: 850px;
 
-    line-height: 0.98;
+    font-family: Georgia, "Times New Roman", serif;
 
-    font-family: "Bodoni Moda", serif;
-
+    font-size: clamp(48px, 7vw, 85px);
     font-weight: 400;
+
+    line-height: .9;
 
     letter-spacing: -3px;
 }
@@ -5456,9 +5460,9 @@ footer {
 
 .home-btn-primary {
     background: #241811;
-    color: #a1621a;
+    color: #b8863b;
 
-    border: 1px solid #241811;
+    border: 1px solid #b8863b;
 }
 
 
@@ -5468,17 +5472,21 @@ footer {
 
 
 .home-btn-primary:hover {
-    background: #6e4c1b;
-    border-color: #584223;
+    background: #b8863b;
+    border-color: #3a2415;
+    color: #3a2415;
 }
 
 
 .home-btn-secondary {
+    
+    margin-left: 0;
+
     color: #3a2415;
 
-    border: 1px solid #b8863b;
+    border: 1px solid #3a2415;
 
-    background: transparent;
+    background: #b8863b;
 
     backdrop-filter: blur(8px);
 }
@@ -5487,6 +5495,7 @@ footer {
 .home-btn-secondary:hover {
     background: #241811;
     color: #b8863b;
+    border: 1px solid #b8863b;
 }
 
 
@@ -6110,6 +6119,8 @@ footer {
 
     padding: 0 27px;
 
+    border-radius: 5px;
+
     display: inline-flex;
 
     align-items: center;
@@ -6137,7 +6148,7 @@ footer {
 
 
 .services-cta-button:hover {
-    background: #c49759;
+    background: #241811;
 
     transform: translateY(-2px);
 }
@@ -6530,9 +6541,14 @@ footer {
 .portfolio-hero h1 {
     margin: 0;
 
-    color: #3a2415;
+    color: #241811;
 
-    font-size: clamp(60px, 7vw, 105px);
+    max-width: 850px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(58px, 7vw, 105px);
+    font-weight: 400;
 
     line-height: .9;
 
@@ -6549,7 +6565,7 @@ footer {
 
     margin-top: 30px;
 
-    color: #666;
+    color: #ffe6d0;
 
     font-size: 16px;
 
@@ -6764,9 +6780,11 @@ footer {
     align-items: center;
     justify-content: center;
 
+    border-radius: 5px;
+
     gap: 14px;
 
-    background: #202020;
+    background: #241811;
 
     color: white;
 
@@ -6848,9 +6866,15 @@ footer {
 
 .about-hero h1 {
     margin: 0;
+
     color: #241811;
 
-    font-size: clamp(60px, 7vw, 105px);
+    max-width: 850px;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(58px, 7vw, 105px);
+    font-weight: 400;
 
     line-height: .9;
 
@@ -6867,7 +6891,7 @@ footer {
 
     margin-top: 30px;
 
-    color: #666;
+    color: #ffe5cc;
 
     font-size: 16px;
 
@@ -7288,7 +7312,10 @@ footer {
     .services-hero h1,
     .portfolio-hero h1,
     .about-hero h1 {
+        min-width: 850px;
         font-size: 40px;
+
+        font-weight: 900;
 
         line-height: .94;
 
@@ -15744,7 +15771,7 @@ body {
 }
 
 .home-hero-content .home-hero-description {
-    color: #c49d4b !important;
+    color: #f2ce80 !important;
 }
 
 @media (max-width: 400px) {
@@ -16543,45 +16570,21 @@ body {
 /* Soft white/cream haze */
 .home-hero-slide::before {
     content: "";
-
     position: absolute;
-    inset: -25px;
+    inset: -15px;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(20, 20, 20, .68) 0%,
+            rgba(20, 20, 20, .38) 48%,
+            rgba(20, 20, 20, .12) 100%
+        );
 
-    width: 75%;
-    height: calc(100% + 50px);
-
-    z-index: 1;
-    pointer-events: none;
-
-    background: linear-gradient(
-        90deg,
-        rgba(255, 253, 248, 0.22) 90%,
-        rgba(255, 253, 248, 0.15) 95%,
-        rgba(255, 253, 248, 0.10) 98%,
-        rgba(255, 253, 248, 0.5) 99%,
-        rgba(255, 253, 248, 0) 100%
-    );
-
-    backdrop-filter: blur(7px);
-    -webkit-backdrop-filter: blur(7px);
-
-    mask-image: linear-gradient(
-        90deg,
-        black 0%,
-        black 35%,
-        rgba(0,0,0,.75) 55%,
-        rgba(0,0,0,.25) 78%,
-        transparent 100%
-    );
-
-    -webkit-mask-image: linear-gradient(
-        90deg,
-        black 0%,
-        black 35%,
-        rgba(0,0,0,.75) 55%,
-        rgba(0,0,0,.25) 78%,
-        transparent 100%
-    );
+    background-size: cover;
+    background-position: center;
+    filter: blur(1px);
+    transform: scale(1.03);
+    z-index: -1;
 }
 
 

@@ -149,7 +149,7 @@
 <script>
 (function(){
   const form=document.getElementById('websiteForm');
-  const richEditors=document.querySelectorAll('.terms-rich-editor-wrap');
+  const richEditors=document.querySelectorAll('.rich-editor-wrap');
 
   function execCommand(editor, cmd, value){
     editor.focus();
@@ -187,16 +187,15 @@
     richEditors.forEach(w=>{
       const e=w.querySelector('.rich-editor');
       // The hidden textarea is a sibling of the editor wrapper.
-      const field=w.closest('.cms-rich-field');
-      const src=field ? field.querySelector('.rich-source') : null;
+      const src=w.parentElement?.querySelector('.rich-source');
       if(e && src) src.value=e.innerHTML;
     });
   }
   // Keep the actual form fields current as the user edits.
   richEditors.forEach(w=>{
     const e=w.querySelector('.rich-editor');
-    const field=w.closest('.cms-rich-field');
-    const src=field ? field.querySelector('.rich-source') : null;
+    const field = w.closest('label');
+    const src=w.parentElement?.querySelector('.rich-source');
     if(e && src){
       e.addEventListener('input',()=>{ src.value=e.innerHTML; });
       e.addEventListener('blur',()=>{ src.value=e.innerHTML; });
