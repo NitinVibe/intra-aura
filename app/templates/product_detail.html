@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-{{ product.name }} | Intra Aura
+{{ product.name }} | {{ site().site.name }}
 <script>window.INTRA_AURA_PRODUCT_ID = {{ product.id }};</script>
 
 {% endblock %}
@@ -30,7 +30,7 @@
                 {% else %}
 
                     <div class="product-no-image">
-                        INTRA AURA
+                        {{ site().site.name|upper }}
                     </div>
 
                 {% endif %}
@@ -80,7 +80,7 @@
 
                 {% else %}
 
-                    INTRA AURA
+                    {{ site().site.name|upper }}
 
                 {% endif %}
 

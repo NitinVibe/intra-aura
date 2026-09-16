@@ -56,7 +56,8 @@ def _payment_payload(
         "name": order.shipping_name,
         "email": order.shipping_email,
         "contact": order.shipping_phone,
-        "description": f"Intra Aura Order #{order.id}",
+        "description": f"{load_content().get('site', {}).get('name', 'Intra Aura')} Order #{order.id}",
+        "brand_name": str(load_content().get("site", {}).get("name", "Intra Aura")),
     }
 
 

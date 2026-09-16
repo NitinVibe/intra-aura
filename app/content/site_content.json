@@ -72,10 +72,10 @@
       "description": "Find the right pieces for every corner of your home."
     },
     "about": {
-      "eyebrow": "ABOUT INTRA AURA",
+      "eyebrow": "ABOUT SKI DECORE",
       "title": "Designed for the way you live.",
       "image": "/static/images/about-intraaura1.jpg",
-      "paragraph_1": "At Intra Aura, we believe furniture should be more than functional. Every piece should bring comfort, character and a sense of identity to your space.",
+      "paragraph_1": "At SKI Decore, we believe furniture should be more than functional. Every piece should bring comfort, character and a sense of identity to your space.",
       "paragraph_2": "From carefully selected materials to timeless designs, we create pieces made for modern living.",
       "highlight_1": "TIMELESS|Design",
       "highlight_2": "QUALITY|Materials",
@@ -96,16 +96,16 @@
   },
   "about": {
     "hero": {
-      "eyebrow": "ABOUT INTRA AURA",
+      "eyebrow": "ABOUT SKI DECORE",
       "title_html": "Furniture with<br><em>a sense of place.</em>",
       "description": "We believe the furniture around us should do more than fill a room. It should create comfort, character and a feeling of belonging.",
-      "image": "/static/images/about-hero.jpg"
+      "image": "/static/uploads/site/001337168e24447d90007576426b366b.webp"
     },
     "story": {
       "eyebrow": "OUR PHILOSOPHY",
       "title_html": "Designed for<br><em>real living.</em>",
       "image": "/static/images/living-room.jpg",
-      "paragraph_1": "At Intra Aura, we approach furniture with a simple belief: good design should feel effortless.",
+      "paragraph_1": "At SKI Decore, we approach furniture with a simple belief: good design should feel effortless.",
       "paragraph_2": "We bring together considered forms, quality materials and timeless aesthetics to create pieces that naturally belong in your home.",
       "paragraph_3": "Every detail is chosen with purpose — from the proportions of a piece to the materials and finishes that give it character."
     },
@@ -132,17 +132,17 @@
       ]
     },
     "closing": {
-      "eyebrow": "INTRA AURA",
+      "eyebrow": "SKI DECORE",
       "title_html": "Create a space<br>that feels <em>like you.</em>",
       "button": "Start a conversation"
     }
   },
   "services": {
     "hero": {
-      "eyebrow": "INTRA AURA SERVICES",
+      "eyebrow": "SKI DECORE SERVICES",
       "title_html": "Spaces designed<br>with <em>intention.</em>",
       "description": "From bespoke furniture to complete interior solutions, we bring thoughtful design and refined craftsmanship into every space.",
-      "image": "/static/images/services-hero.jpg"
+      "image": "/static/uploads/site/989697053c6a4a309408bd17884a6284.webp"
     },
     "intro": {
       "eyebrow": "WHAT WE DO",
@@ -158,41 +158,41 @@
       [
         "Custom Furniture",
         "Bespoke furniture designed around your space, dimensions and personal style.",
-        "/static/images/premium.jpg"
+        "/static/uploads/site/0b15e27a48c140e3a345ea5e12f20fdc.webp"
       ],
       [
         "Interior Styling",
         "Thoughtfully curated furniture and details that create a refined and cohesive interior.",
-        "/static/images/services-hero.jpg"
+        "/static/uploads/site/071e701327634cd8adcee16f91ec5b1e.webp"
       ],
       [
         "Space Planning",
         "Practical layouts that balance movement, comfort and visual harmony.",
-        "/static/images/services-hero2.jpg"
+        "/static/uploads/site/1ecec726c7844962bf738f817ee06ba3.webp"
       ],
       [
         "Furniture Consultation",
         "Guidance on materials, proportions, finishes and pieces suited to your space.",
-        "/static/images/services-hero.jpg"
+        "/static/uploads/site/071e701327634cd8adcee16f91ec5b1e.webp"
       ],
       [
         "Custom Finishes",
         "Personalised materials, colours and finishes for a distinctive result.",
-        "/static/images/premium.jpg"
+        "/static/uploads/site/0b15e27a48c140e3a345ea5e12f20fdc.webp"
       ],
       [
         "Complete Interior Solutions",
         "From selecting individual pieces to creating a complete, harmonious space.",
-        "/static/images/services-hero2.jpg"
+        "/static/uploads/site/1ecec726c7844962bf738f817ee06ba3.webp"
       ]
     ]
   },
   "portfolio": {
     "hero": {
-      "eyebrow": "INTRA AURA PORTFOLIO",
+      "eyebrow": "SKI DECORE PORTFOLIO",
       "title_html": "Spaces that tell<br>a <em>story.</em>",
       "description": "A selection of interiors and furniture pieces created with a focus on timeless design, thoughtful details and everyday living.",
-      "image": "/static/images/portfolio-hero.jpg"
+      "image": "/static/uploads/site/071e701327634cd8adcee16f91ec5b1e.webp"
     },
     "intro": {
       "eyebrow": "SELECTED WORK",
@@ -204,25 +204,25 @@
         "RESIDENTIAL",
         "Modern Living",
         "Jaipur · 2026",
-        "/static/images/portfolio/project-1.jpg"
+        "/static/uploads/site/4c37eab8693b4a8f9125cc9964dafd0c.webp"
       ],
       [
         "DINING",
         "The Dining Room",
         "Jaipur · 2026",
-        "/static/images/portfolio/project-2.jpg"
+        "/static/uploads/site/a12cdce2386f4f59a3039729ebfe4188.webp"
       ],
       [
         "BEDROOM",
         "Quiet Comfort",
         "Jaipur · 2026",
-        "/static/images/portfolio/project-3.jpg"
+        "/static/uploads/site/40fd5729e5444f6eb79eecbae704837d.webp"
       ],
       [
         "INTERIORS",
         "Contemporary Living",
         "Jaipur · 2026",
-        "/static/images/portfolio/project-4.jpg"
+        "/static/uploads/site/0b15e27a48c140e3a345ea5e12f20fdc.webp"
       ]
     ],
     "cta": {
@@ -295,17 +295,17 @@
         "url": "https://youtube.com"
       }
     ],
-    "copyright": "© 2026 Intra Aura. All rights reserved.",
+    "copyright": "© 2026 SKI Decore. All rights reserved.",
     "bottom_text": "Designed for modern living."
   },
   "terms": {
-    "eyebrow": "INTRA AURA",
+    "eyebrow": "SKI DECORE",
     "title": "Terms & Conditions",
-    "intro": "By accessing or using the Intra Aura website, you agree to these Terms &amp; Conditions. If you do not agree with them, please do not use the website.",
+    "intro": "By accessing or using the SKI Decore website, you agree to these Terms &amp; Conditions. If you do not agree with them, please do not use the website.",
     "sections": [
       [
         "Use of Website",
-        "This website is provided to help visitors explore Intra Aura products, categories, servicey."
+        "This website is provided to help visitors explore SKI Decore products, categories, servicey."
       ],
       [
         "Products & Information",
@@ -313,11 +313,11 @@
       ],
       [
         "Enquiries & Orders",
-        "Submitting an enquiry or request through the website does not by itself guarantee an order, quotation, reservation or product availability. Any final price, specification, delivery arrangement or order confirmation will be communicated separately by Intra Aura."
+        "Submitting an enquiry or request through the website does not by itself guarantee an order, quotation, reservation or product availability. Any final price, specification, delivery arrangement or order confirmation will be communicated separately by SKI Decore."
       ],
       [
         "Images & Content",
-        "Website text, graphics, photographs, logos and other materials are intended for the Intra Aura website. You may not reproduce, redistribute, modify or commercially use website content without appropriate permission."
+        "Website text, graphics, photographs, logos and other materials are intended for the SKI Decore website. You may not reproduce, redistribute, modify or commercially use website content without appropriate permission."
       ],
       [
         "Privacy",
@@ -325,18 +325,18 @@
       ],
       [
         "Changes to These Terms",
-        "Intra Aura may update these Terms &amp; Conditions when the website, services or business practices change. The latest version published on this page will apply to future use of the website."
+        "SKI Decore may update these Terms &amp; Conditions when the website, services or business practices change. The latest version published on this page will apply to future use of the website."
       ],
       [
         "Contact",
-        "If you have a question about these terms or any information on the website, please use the Contact page to get in touch with Intra Aura."
+        "If you have a question about these terms or any information on the website, please use the Contact page to get in touch with SKI Decore."
       ]
     ],
     "last_updated": "September 2026",
     "note": "This page is general website terms information and does not replace a separately agreed quotation, order document or contract."
   },
   "site": {
-    "name": "Intra Aura",
+    "name": "SKI Decore",
     "tagline": "",
     "copyright": ""
   }

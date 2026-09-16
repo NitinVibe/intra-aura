@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Portfolio | Intra Aura{% endblock %}
+{% block title %}Portfolio | {{ site().site.name }}{% endblock %}
 {% block content %}
 <section class="portfolio-page">
 <section class="portfolio-hero" style="background-image:url('{{ site().portfolio.hero.image }}');"><div class="portfolio-hero-content"><p class="portfolio-eyebrow">{{ site().portfolio.hero.eyebrow }}</p><h1>{{ site().portfolio.hero.title_html|safe }}</h1><p>{{ site().portfolio.hero.description }}</p></div></section>

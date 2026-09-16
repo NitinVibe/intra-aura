@@ -12,7 +12,7 @@
             <span class="eyebrow">WEBSITE</span>
             <h1>Site Settings</h1>
             <p>
-                Manage website identity and payment configuration.
+                Manage your website brand identity and payment configuration. The Site name controls the brand shown across the website, checkout, emails and admin panel.
             </p>
         </div>
 
@@ -63,7 +63,7 @@
                 Site name
                 <input
                     name="name"
-                    value="{{ content.get('site', {}).get('name', 'Intra Aura') }}"
+                    value="{{ content.get('site', {}).get('name', '{{ site().site.name }}') }}"
                 >
             </label>
 

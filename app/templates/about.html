@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}About Us | Intra Aura{% endblock %}
+{% block title %}About Us | {{ site().site.name }}{% endblock %}
 {% block content %}
 <section class="about-page">
 <section class="about-hero" style="background-image:url('{{ site().about.hero.image }}');">
 <div class="about-hero-content"><p class="about-eyebrow">{{ site().about.hero.eyebrow }}</p><h1>{{ site().about.hero.title_html|safe }}</h1><p>{{ site().about.hero.description }}</p></div>
 </section>
 <section class="about-story">
-<div class="about-story-image"><img src="{{ site().about.story.image }}" alt="Intra Aura furniture"></div>
+<div class="about-story-image"><img src="{{ site().about.story.image }}" alt="{{ site().site.name }} furniture"></div>
 <div class="about-story-content"><p class="about-eyebrow">{{ site().about.story.eyebrow }}</p><h2>{{ site().about.story.title_html|safe }}</h2><div class="about-story-text"><p>{{ site().about.story.paragraph_1 }}</p><p>{{ site().about.story.paragraph_2 }}</p><p>{{ site().about.story.paragraph_3 }}</p></div></div>
 </section>
 <section class="about-values">

@@ -517,10 +517,26 @@ async def admin_settings_save(
     # -----------------------------
     # Existing site settings
     # -----------------------------
-    content.setdefault("site", {})["name"] = str(
-        form.get("name", "Intra Aura")
-    ).strip()
+    site = content.setdefault("site", {})
+    old_brand = str(site.get("name", "Intra Aura")).strip() or "Intra Aura"
+    new_brand = str(form.get("name", old_brand)).strip() or old_brand
 
+    # When the site name changes, update existing editable CMS text too.
+    # This keeps the whole public brand consistent while preserving internal
+    # storage keys, filenames and code identifiers.
+    if new_brand != old_brand:
+        def _rename_brand(value):
+            if isinstance(value, str):
+                return value.replace(old_brand, new_brand).replace(old_brand.upper(), new_brand.upper())
+            if isinstance(value, list):
+                return [_rename_brand(item) for item in value]
+            if isinstance(value, dict):
+                return {key: _rename_brand(item) for key, item in value.items()}
+            return value
+        content = _rename_brand(content)
+        site = content.setdefault("site", {})
+
+    site["name"] = new_brand
     content["site"]["tagline"] = str(
         form.get("tagline", "")
     ).strip()

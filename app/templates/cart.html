@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Cart | Intra Aura
+Cart | {{ site().site.name }}
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@ Cart | Intra Aura
 
         <div>
             <p class="cart-eyebrow">
-                INTRA AURA
+                {{ site().site.name|upper }}
             </p>
 
             <h1>

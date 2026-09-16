@@ -599,7 +599,7 @@ function renderWishlist() {
                         :
                         `
                         <div class="wishlist-card-placeholder">
-                            INTRA AURA
+                            ${(window.SITE_NAME || "").toUpperCase()}
                         </div>
                         `
                     }
@@ -813,7 +813,7 @@ function renderCart() {
                         >`
                         :
                         `<div class="cart-item-placeholder">
-                            INTRA AURA
+                            ${(window.SITE_NAME || "").toUpperCase()}
                         </div>`
                     }
 
@@ -1730,7 +1730,7 @@ function launchRazorpayCheckout(payment) {
 
         currency: payment.currency || "INR",
 
-        name: "Intra Aura",
+        name: payment.brand_name || window.SITE_NAME || "",
 
         description:
             payment.description

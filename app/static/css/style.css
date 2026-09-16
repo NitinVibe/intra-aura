@@ -5682,30 +5682,39 @@ footer {
 
 .services-hero {
     position: relative;
-
     width: 100%;
-    /* min-height: 620px; */
-
     display: flex;
     align-items: flex-end;
-
     padding: 80px 7%;
-
     box-sizing: border-box;
+    overflow: hidden;
+    isolation: isolate;
+}
 
+.services-hero::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
     background:
         linear-gradient(
             90deg,
-            rgba(20, 20, 20, .78) 0%,
-            rgba(20, 20, 20, .48) 48%,
+            rgba(20, 20, 20, .68) 0%,
+            rgba(20, 20, 20, .38) 48%,
             rgba(20, 20, 20, .12) 100%
         ),
         url("/static/images/services-hero.jpg");
 
     background-size: cover;
     background-position: center;
+    filter: blur(5px);
+    transform: scale(1.03);
+    z-index: -1;
 }
 
+.services-hero > * {
+    position: relative;
+    z-index: 1;
+}
 
 .services-hero-content {
     width: min(850px, 100%);
@@ -5721,7 +5730,7 @@ footer {
 .services-hero h1 {
     margin: 0;
 
-    color: rgba(28, 20, 15, .98);
+    color: #241811;
 
     max-width: 850px;
 
@@ -5738,6 +5747,7 @@ footer {
 
 .services-hero h1 em {
     font-style: italic;
+    color: #a87532;
 }
 
 
@@ -6477,20 +6487,39 @@ footer {
     align-items: center;
 
     padding: 80px 7%;
-
     box-sizing: border-box;
+
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.portfolio-hero::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
 
     background:
         linear-gradient(
             90deg,
-            rgba(248,247,244,.97),
-            rgba(248,247,244,.72),
-            rgba(248,247,244,.12)
+            rgba(20, 20, 20, .48) 0%,
+            rgba(20, 20, 20, .38) 48%,
+            rgba(20, 20, 20, .12) 100%
         ),
         url("/static/images/portfolio-hero.jpg");
 
     background-size: cover;
     background-position: center;
+
+    filter: blur(5px);
+    transform: scale(1.03);
+
+    z-index: -1;
+}
+
+.portfolio-hero > * {
+    position: relative;
+    z-index: 1;
 }
 
 .portfolio-hero-content {
@@ -6499,6 +6528,8 @@ footer {
 
 .portfolio-hero h1 {
     margin: 0;
+
+    color: #3a2415;
 
     font-size: clamp(60px, 7vw, 105px);
 
@@ -6509,6 +6540,7 @@ footer {
 
 .portfolio-hero h1 em {
     font-style: italic;
+    color: #a1621a;
 }
 
 .portfolio-hero-content > p:last-child {
@@ -6772,20 +6804,39 @@ footer {
     align-items: flex-end;
 
     padding: 80px 7%;
-
     box-sizing: border-box;
+
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.about-hero::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
 
     background:
         linear-gradient(
             90deg,
-            rgba(248,247,244,.96),
-            rgba(248,247,244,.65),
-            rgba(248,247,244,.08)
+            rgba(20, 20, 20, .48) 0%,
+            rgba(20, 20, 20, .38) 48%,
+            rgba(20, 20, 20, .12) 100%
         ),
         url("/static/images/about-hero.jpg");
 
     background-size: cover;
     background-position: center;
+
+    filter: blur(5px);
+    transform: scale(1.03);
+
+    z-index: -1;
+}
+
+.about-hero > * {
+    position: relative;
+    z-index: 1;
 }
 
 .about-hero-content {
@@ -6796,6 +6847,7 @@ footer {
 
 .about-hero h1 {
     margin: 0;
+    color: #241811;
 
     font-size: clamp(60px, 7vw, 105px);
 
@@ -6806,6 +6858,7 @@ footer {
 
 .about-hero h1 em {
     font-style: italic;
+    color: #a1621a;
 }
 
 .about-hero-content > p:last-child {
@@ -16499,10 +16552,10 @@ body {
 
     background: linear-gradient(
         90deg,
-        rgba(255, 253, 248, 0.92) 0%,
-        rgba(255, 253, 248, 0.75) 28%,
-        rgba(255, 253, 248, 0.30) 48%,
-        rgba(255, 253, 248, 0.13) 68%,
+        rgba(255, 253, 248, 0.22) 90%,
+        rgba(255, 253, 248, 0.15) 95%,
+        rgba(255, 253, 248, 0.10) 98%,
+        rgba(255, 253, 248, 0.5) 99%,
         rgba(255, 253, 248, 0) 100%
     );
 
@@ -17181,5 +17234,84 @@ body {
 
     .order-back-button {
         margin-left: 0;
+    }
+}
+
+
+/* =========================================================
+   CUSTOMER AUTHENTICATION — OTP / PASSWORD RECOVERY
+========================================================= */
+.auth-otp-box { text-align: center; }
+.auth-otp-box .auth-form { text-align: left; }
+.auth-otp-target {
+    margin: -10px 0 24px;
+    color: #8a6a3e;
+    font-size: 13px;
+    word-break: break-word;
+}
+.auth-otp-box #otp {
+    text-align: center;
+    letter-spacing: 7px;
+    font-size: 22px;
+    font-weight: 600;
+}
+.auth-resend-form { margin-top: 18px; }
+.auth-link-button {
+    border: 0;
+    background: transparent;
+    color: #a87532;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px;
+}
+.auth-link-button:hover { text-decoration: underline; }
+.auth-forgot-row { text-align: right; margin-top: -8px; }
+.auth-forgot-row a { color: #8f672f; font-size: 12px; text-decoration: none; }
+.auth-forgot-row a:hover { text-decoration: underline; }
+.auth-help { color: #8a8580; font-size: 11px; line-height: 1.5; }
+.auth-field-error { color: #a0443e; font-size: 11px; line-height: 1.4; }
+
+.auth-user-menu[hidden], .auth-guest-menu[hidden] { display: none !important; }
+
+
+/* MOBILE MENU - COMPLETE NAVIGATION */
+@media (max-width: 900px) {
+    .mobile-menu {
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .mobile-nav-section-title {
+        margin: 18px 4px 2px;
+        padding: 8px 0 5px;
+        font-size: 11px;
+        letter-spacing: 1.4px;
+        font-weight: 700;
+        color: #8a6a43;
+    }
+
+    .mobile-nav-count {
+        float: right;
+        min-width: 18px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    #mobileAuthUserMenu,
+    #mobileAuthGuestMenu {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #mobileAuthUserMenu[hidden],
+    #mobileAuthGuestMenu[hidden] {
+        display: none;
+    }
+
+    .mobile-menu-bottom {
+        margin-top: 0;
+        padding-top: 4px;
     }
 }

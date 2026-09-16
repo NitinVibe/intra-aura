@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Terms & Conditions | Intra Aura{% endblock %}
+{% block title %}Terms & Conditions | {{ site().site.name }}{% endblock %}
 {% block content %}
 <main class="terms-page">
 {% set t = site().get("terms", {}) %}
-<section class="terms-hero"><div class="terms-kicker">{{ t.get("eyebrow", "INTRA AURA") }}</div><h1>{{ t.get("title", "Terms & Conditions") }}</h1><p>Please read these terms carefully before using our website or submitting an enquiry.</p></section>
+<section class="terms-hero"><div class="terms-kicker">{{ t.get("eyebrow", "{{ site().site.name|upper }}") }}</div><h1>{{ t.get("title", "Terms & Conditions") }}</h1><p>Please read these terms carefully before using our website or submitting an enquiry.</p></section>
 <section class="terms-shell"><aside class="terms-index"><span>CONTENTS</span>{% for item in t.get("sections", []) %}<a href="#terms-{{ loop.index }}">{{ item[0] }}</a>{% endfor %}</aside>
 <article class="terms-content">
 <div class="terms-intro terms-rich-content">{{ t.get("intro", "")|safe }}</div>

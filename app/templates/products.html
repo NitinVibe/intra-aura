@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Products | Intra Aura
+Products | {{ site().site.name }}
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@ Products | Intra Aura
     <div class="products-hero-content">
 
         <p class="eyebrow">
-            INTRA AURA COLLECTION
+            {{ site().site.name|upper }} COLLECTION
         </p>
 
         {% if selected_category %}
@@ -57,7 +57,7 @@ Products | Intra Aura
 
             <img
                 src="{{ products[0].images[0].image_url }}"
-                alt="Intra Aura Furniture"
+                alt="{{ site().site.name }} Furniture"
             >
 
         {% endif %}
@@ -192,7 +192,7 @@ Products | Intra Aura
                 {% else %}
 
                     <div class="product-image-placeholder">
-                        Intra Aura
+                        {{ site().site.name }}
                     </div>
 
                 {% endif %}

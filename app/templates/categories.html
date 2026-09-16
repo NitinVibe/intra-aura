@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Categories | Intra Aura
+Categories | {{ site().site.name }}
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@ Categories | Intra Aura
         <div class="categories-hero-content">
 
             <p class="categories-eyebrow">
-                INTRA AURA COLLECTION
+                {{ site().site.name|upper }} COLLECTION
             </p>
 
             <h1>
@@ -118,7 +118,7 @@ Categories | Intra Aura
                     {% else %}
 
                     <div class="category-placeholder">
-                        INTRA AURA
+                        {{ site().site.name|upper }}
                     </div>
 
                     {% endif %}

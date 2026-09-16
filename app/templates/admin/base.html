@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}Admin Panel{% endblock %} | Intra Aura</title>
+    <title>{% block title %}Admin Panel{% endblock %} | {{ site().site.name }}</title>
 
     <link rel="stylesheet" href="/static/css/admin.css">
 </head>
@@ -23,7 +23,7 @@
     <aside class="admin-sidebar" id="adminSidebar">
 
         <div class="admin-logo">
-    <img src="{{ site().header.logo }}" alt="Intra Aura">
+    <img src="{{ site().header.logo }}" alt="{{ site().site.name }}">
 </div>
 
         <nav class="admin-nav">
@@ -84,7 +84,7 @@
         <header class="admin-topbar">
 
             <div>
-                <span>INTRA AURA</span>
+                <span>{{ site().site.name|upper }}</span>
                 <strong>Admin Panel</strong>
             </div>
 

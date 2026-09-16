@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Enquire About {{ product.name }} | Intra Aura
+Enquire About {{ product.name }} | {{ site().site.name }}
 {% endblock %}
 
 {% block content %}
@@ -26,7 +26,7 @@ Enquire About {{ product.name }} | Intra Aura
                 {% else %}
 
                     <div class="enquiry-no-image">
-                        INTRA AURA
+                        {{ site().site.name|upper }}
                     </div>
 
                 {% endif %}
@@ -84,7 +84,7 @@ Enquire About {{ product.name }} | Intra Aura
         <div class="enquiry-form-container">
 
             <p class="enquiry-eyebrow">
-                INTRA AURA
+                {{ site().site.name|upper }}
             </p>
 
             <h1>

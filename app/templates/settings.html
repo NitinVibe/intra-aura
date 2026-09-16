@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Settings | Intra Aura{% endblock %}
+{% block title %}Settings | {{ site().site.name }}{% endblock %}
 
 {% block content %}
 
@@ -74,10 +74,10 @@
                         My Enquiries
                     </a>
 
-                    <!-- <a href="/account/orders">
+                    <a href="/account/orders">
                         <span>▢</span>
                         My Orders
-                    </a> -->
+                    </a>
 
                     <a href="/account/wishlist">
                         <span>♡</span>
@@ -365,7 +365,7 @@
                             </strong>
 
                             <span>
-                                Your Intra Aura account is active.
+                                Your {{ site().site.name }} account is active.
                             </span>
 
                         </div>
@@ -410,7 +410,7 @@
                             </strong>
 
                             <span>
-                                Sign out from your Intra Aura account on this device.
+                                Sign out from your {{ site().site.name }} account on this device.
                             </span>
 
                         </div>

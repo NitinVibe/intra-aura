@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}My Profile | Intra Aura{% endblock %}
+{% block title %}My Profile | {{ site().site.name }}{% endblock %}
 
 {% block content %}
 
@@ -87,7 +87,7 @@
                 </a>
 
 
-                <!-- <a href="/account/orders" class="account-nav-item">
+                <a href="/account/orders" class="account-nav-item">
 
                     <span class="nav-icon">
                         <svg viewBox="0 0 24 24">
@@ -98,7 +98,7 @@
 
                     <span>My Orders</span>
 
-                </a> -->
+                </a>
 
 
                 <a href="/wishlist" class="account-nav-item">

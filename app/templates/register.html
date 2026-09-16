@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Create Account | Intra Aura{% endblock %}
+{% block title %}Create Account | {{ site().site.name }}{% endblock %}
 
 {% block content %}
 
@@ -8,18 +8,16 @@
 
     <div class="auth-box">
 
-        <p class="auth-eyebrow">JOIN INTRA AURA</p>
+        <p class="auth-eyebrow">JOIN {{ site().site.name|upper }}</p>
 
         <h1>Create Account</h1>
 
         <p class="auth-subtitle">
-            Create your account to manage your enquiries and <!-- orders-->. 
+            Create your account to manage your profile, enquiries and orders.
         </p>
 
-        {% if request.query_params.get("error") == "exists" %}
-            <p class="auth-error">
-                An account with this email already exists.
-            </p>
+        {% if form_error %}
+            <p class="auth-error">{{ form_error }}</p>
         {% endif %}
 
         <form
@@ -28,14 +26,19 @@
             class="auth-form register-form"
         >
 
+            <input type="hidden" name="next_url" value="{{ next_url|default('') }}">
+
             <div class="auth-field">
                 <label>Name</label>
                 <input
                     type="text"
                     name="name"
+                    value="{{ form.name|default('') }}"
                     placeholder="Your full name"
+                    autocomplete="name"
                     required
                 >
+                {% if errors and errors.name %}<small class="auth-field-error">{{ errors.name }}</small>{% endif %}
             </div>
 
             <div class="auth-field">
@@ -43,7 +46,9 @@
                 <input
                     type="email"
                     name="email"
+                    value="{{ form.email|default('') }}"
                     placeholder="Your email address"
+                    autocomplete="email"
                     required
                 >
             </div>
@@ -53,8 +58,14 @@
                 <input
                     type="tel"
                     name="phone"
-                    placeholder="Your phone number"
+                    value="{{ form.phone|default('') }}"
+                    placeholder="Your 10-digit mobile number"
+                    inputmode="numeric"
+                    maxlength="10"
+                    autocomplete="tel"
+                    required
                 >
+                {% if errors and errors.phone %}<small class="auth-field-error">{{ errors.phone }}</small>{% endif %}
             </div>
 
             <div class="auth-field">
@@ -63,8 +74,27 @@
                     type="password"
                     name="password"
                     placeholder="Create a password"
+                    minlength="8"
+                    maxlength="128"
+                    autocomplete="new-password"
                     required
                 >
+                <small class="auth-help">At least 8 characters, including a letter and a number.</small>
+                {% if errors and errors.password %}<small class="auth-field-error">{{ errors.password }}</small>{% endif %}
+            </div>
+
+            <div class="auth-field">
+                <label>Confirm Password</label>
+                <input
+                    type="password"
+                    name="confirm_password"
+                    placeholder="Confirm your password"
+                    minlength="8"
+                    maxlength="128"
+                    autocomplete="new-password"
+                    required
+                >
+                {% if errors and errors.confirm_password %}<small class="auth-field-error">{{ errors.confirm_password }}</small>{% endif %}
             </div>
 
             <button

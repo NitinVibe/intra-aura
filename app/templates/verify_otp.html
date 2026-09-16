@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Verify OTP | {{ site().site.name }}{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-box auth-otp-box">
+        <p class="auth-eyebrow">{% if purpose == "signup" %}VERIFY ACCOUNT{% else %}PASSWORD RESET{% endif %}</p>
+        <h1>Enter OTP</h1>
+        <p class="auth-subtitle">
+            {% if purpose == "signup" %}
+                We sent a 6-digit verification code to your email address.
+            {% else %}
+                We sent a 6-digit password reset code to your email address.
+            {% endif %}
+        </p>
+
+        {% if error == "invalid" %}<p class="auth-error">The OTP is incorrect or invalid. Please try again.</p>{% endif %}
+        {% if error == "expired" %}<p class="auth-error">This OTP has expired. Please request a new one.</p>{% endif %}
+        {% if error == "attempts" %}<p class="auth-error">Too many incorrect attempts. Please request a new OTP.</p>{% endif %}
+        {% if error == "rate" %}<p class="auth-error">Please wait before requesting another OTP.</p>{% endif %}
+        {% if error == "delivery" %}<p class="auth-error">We could not send a new OTP. Please try again later.</p>{% endif %}
+        {% if error == "unverified" %}<p class="auth-error">Please verify your email before signing in.</p>{% endif %}
+        {% if request.query_params.get("resent") %}<p class="auth-success">A new OTP has been sent.</p>{% endif %}
+
+        <p class="auth-otp-target">{{ email }}</p>
+
+        <form method="post" action="/account/verify-otp" class="auth-form">
+            <input type="hidden" name="email" value="{{ email }}">
+            <input type="hidden" name="purpose" value="{{ purpose }}">
+            <input type="hidden" name="next_url" value="{{ next_url }}">
+
+            <div class="auth-field">
+                <label for="otp">6-digit OTP</label>
+                <input id="otp" type="text" name="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="\\d{6}" placeholder="000000" required autofocus>
+            </div>
+
+            <button type="submit" class="auth-button">VERIFY OTP</button>
+        </form>
+
+        <form method="post" action="/account/resend-otp" class="auth-resend-form">
+            <input type="hidden" name="email" value="{{ email }}">
+            <input type="hidden" name="purpose" value="{{ purpose }}">
+            <input type="hidden" name="next_url" value="{{ next_url }}">
+            <button type="submit" class="auth-link-button">Resend OTP</button>
+        </form>
+
+        <p class="auth-switch"><a href="/account/login">Back to Sign In</a></p>
+    </div>
+</section>
+{% endblock %}

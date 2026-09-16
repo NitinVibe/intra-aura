@@ -14,7 +14,7 @@
     >
 
     <title>
-        {% block title %}Intra Aura{% endblock %}
+        {% block title %}{{ site().site.name }}{% endblock %}
     </title>
 
     <link
@@ -56,7 +56,7 @@
 
                 <img
                     src="{{ site().header.logo }}"
-                    alt="Intra Aura"
+                    alt="{{ site().site.name }}"
                 >
 
             </a>
@@ -187,7 +187,7 @@
                 </strong>
 
                 <span id="profileEmail">
-                    {% if user %}{{ user.email }}{% else %}Intra Aura Customer{% endif %}
+                    {% if user %}{{ user.email }}{% else %}{{ site().site.name }} Customer{% endif %}
                 </span>
 
             </div>
@@ -197,6 +197,7 @@
 
         <div class="profile-divider"></div>
 
+        <div class="auth-user-menu" id="authUserMenu">
 
         <!-- PROFILE -->
 
@@ -222,13 +223,13 @@
 
         <!-- ORDERS -->
 
-        <!-- <a
+        <a
             href="/account/orders"
             class="profile-item"
         >
             <span>▣</span>
             Orders
-        </a> -->
+        </a>
 
 
         <!-- WISHLIST -->
@@ -240,6 +241,7 @@
             <span>♡</span>
             Wishlist
         </a>
+        
 
 
         <div class="profile-divider"></div>
@@ -265,6 +267,19 @@
             <span>↪</span>
             Logout
         </a>
+
+        </div>
+
+        <div class="auth-guest-menu" id="authGuestMenu" hidden>
+            <a href="/account/login" class="profile-item">
+                <span>↪</span>
+                Sign In
+            </a>
+            <a href="/account/register" class="profile-item">
+                <span>＋</span>
+                Create Account
+            </a>
+        </div>
 
     </div>
 
@@ -306,7 +321,7 @@
 
         <img
             src="{{ site().header.logo }}"
-            alt="Intra Aura"
+            alt="{{ site().site.name }}"
         >
 
         <button
@@ -323,6 +338,23 @@
         {% for item in site()["header"].get("nav_links", []) %}
         <a href="{{ item.url }}">{{ item.label }}</a>
         {% endfor %}
+
+        <div class="mobile-nav-section-title">SHOP</div>
+        <a href="/wishlist">♡ &nbsp; Wishlist <span class="mobile-nav-count wishlist-count">0</span></a>
+        <a href="/cart">🛒 &nbsp; Cart <span class="mobile-nav-count cart-count">0</span></a>
+
+        <div class="mobile-nav-section-title">ACCOUNT</div>
+        <div id="mobileAuthUserMenu" hidden>
+            <a href="/account/profile">♙ &nbsp; My Profile</a>
+            <a href="/account/enquiries">▢ &nbsp; My Enquiries</a>
+            <a href="/account/orders">▣ &nbsp; Orders</a>
+            <a href="/account/settings">⚙ &nbsp; Settings</a>
+            <a href="/account/logout">↪ &nbsp; Logout</a>
+        </div>
+        <div id="mobileAuthGuestMenu">
+            <a href="/account/login">↪ &nbsp; Sign In</a>
+            <a href="/account/register">＋ &nbsp; Create Account</a>
+        </div>
     </nav>
 
     <div class="mobile-menu-bottom">
@@ -348,7 +380,7 @@
     {% set f = site().get("footer", {}) %}
     <div class="footer-inner">
         <div>
-            <div class="logo">INTRA AURA</div>
+            <div class="logo">{{ site().site.name|upper }}</div>
             <p>{{ f.get("brand_description", "") }}</p>
         </div>
         <div>
@@ -538,6 +570,14 @@
 
 
 
+<div id="site-config"
+     data-site-name="{{ site().site_name }}">
+</div>
+
+<script>
+    window.SITE_NAME = document.getElementById("site-config")?.dataset.siteName || "SKI Decore";
+</script>
+
 <script src="{{ url_for('static', path='js/main.js') }}"></script>
 
 <script>
@@ -700,22 +740,33 @@ document.addEventListener("DOMContentLoaded", async function () {
         const response = await fetch("/account/current-user");
         const data = await response.json();
 
+        const userMenu = document.getElementById("authUserMenu");
+        const guestMenu = document.getElementById("authGuestMenu");
+        const mobileUserMenu = document.getElementById("mobileAuthUserMenu");
+        const mobileGuestMenu = document.getElementById("mobileAuthGuestMenu");
+
         if (data.logged_in && data.name) {
             const initial = data.name.trim().charAt(0).toUpperCase();
 
-            const profileInitial =
-                document.getElementById("profileInitial");
+            const profileInitial = document.getElementById("profileInitial");
+            const profileAvatarLarge = document.getElementById("profileAvatarLarge");
+            const profileWelcome = document.getElementById("profileWelcome");
+            const profileEmail = document.getElementById("profileEmail");
 
-            const profileAvatarLarge =
-                document.getElementById("profileAvatarLarge");
+            if (profileInitial) profileInitial.textContent = initial;
+            if (profileAvatarLarge) profileAvatarLarge.textContent = initial;
+            if (profileWelcome) profileWelcome.textContent = data.name;
+            if (profileEmail) profileEmail.textContent = data.email || "";
 
-            if (profileInitial) {
-                profileInitial.textContent = initial;
-            }
-
-            if (profileAvatarLarge) {
-                profileAvatarLarge.textContent = initial;
-            }
+            if (userMenu) userMenu.hidden = false;
+            if (guestMenu) guestMenu.hidden = true;
+            if (mobileUserMenu) mobileUserMenu.hidden = false;
+            if (mobileGuestMenu) mobileGuestMenu.hidden = true;
+        } else {
+            if (userMenu) userMenu.hidden = true;
+            if (guestMenu) guestMenu.hidden = false;
+            if (mobileUserMenu) mobileUserMenu.hidden = true;
+            if (mobileGuestMenu) mobileGuestMenu.hidden = false;
         }
     } catch (error) {
         console.error("Failed to load profile:", error);

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Intra Aura | Interior & Furniture{% endblock %}
+{% block title %}{{ site().site.name }} | Interior & Furniture{% endblock %}
 {% block content %}
 <section class="home-hero">
 {% for i in range(1,4) %}
@@ -91,7 +91,7 @@
                     {% else %}
 
                         <span class="featured-placeholder">
-                            INTRA AURA
+                            {{ site().site.name|upper }}
                         </span>
 
                     {% endif %}
@@ -241,7 +241,7 @@
 <div class="categories-grid">
 {% for category in categories %}
 <a href="/products?category_id={{ category.id }}" class="category-card">
-<div class="category-image">{% if category.image_url %}<img src="{{ category.image_url }}" alt="{{ category.name }}">{% else %}<div class="category-image-placeholder">INTRA AURA</div>{% endif %}</div>
+<div class="category-image">{% if category.image_url %}<img src="{{ category.image_url }}" alt="{{ category.name }}">{% else %}<div class="category-image-placeholder">{{ site().site.name|upper }}</div>{% endif %}</div>
 <div class="category-card-content"><h3>{{ category.name }}</h3>{% if category.description %}<p>{{ category.description }}</p>{% endif %}<strong>Explore</strong></div>
 </a>
 {% endfor %}
@@ -250,7 +250,7 @@
 </section>
 
 <section class="home-about">
-<div class="home-about-image"><img src="{{ site().home.about.image }}" alt="Intra Aura furniture"></div>
+<div class="home-about-image"><img src="{{ site().home.about.image }}" alt="{{ site().site.name }} furniture"></div>
 <div class="home-about-content">
 <span class="home-about-eyebrow">{{ site().home.about.eyebrow }}</span><h2>{{ site().home.about.title }}</h2>
 <p>{{ site().home.about.paragraph_1 }}</p><p>{{ site().home.about.paragraph_2 }}</p>

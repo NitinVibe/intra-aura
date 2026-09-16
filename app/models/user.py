@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import String, DateTime
+from sqlalchemy import String, DateTime, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.config.database import Base
@@ -66,6 +66,14 @@ class User(Base):
 
     password_hash: Mapped[str] = mapped_column(
         String(255),
+        nullable=False
+    )
+
+    # New customer accounts must verify their email before login. Existing
+    # accounts are migrated as verified for backward compatibility.
+    is_verified: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True,
         nullable=False
     )
 

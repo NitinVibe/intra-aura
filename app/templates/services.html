@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Services | Intra Aura{% endblock %}
+{% block title %}Services | {{ site().site.name }}{% endblock %}
 {% block content %}
 <section class="services-page">
 <section class="services-hero" style="background-image:url('{{ site().services.hero.image }}');"><div class="services-hero-content"><p class="services-eyebrow">{{ site().services.hero.eyebrow }}</p><h1>{{ site().services.hero.title_html|safe }}</h1><p class="services-hero-text">{{ site().services.hero.description }}</p></div></section>

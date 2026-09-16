@@ -3,7 +3,7 @@
 {% block content %}
 <div class="cms-wrap">
   <div class="cms-head">
-    <div><span class="admin-eyebrow">INTRA AURA / CONTENT STUDIO</span><h1>Website Studio</h1><p>Edit text, links, images and sections visually. Nothing important is locked inside the code.</p></div>
+    <div><span class="admin-eyebrow">{{ site().site.name|upper }} / CONTENT STUDIO</span><h1>Website Studio</h1><p>Edit text, links, images and sections visually. Nothing important is locked inside the code.</p></div>
     <a class="admin-primary-btn" href="/" target="_blank">Preview Website ↗</a>
   </div>
   {% if request.query_params.get('saved') %}<div class="cms-success">✓ All website changes were saved.</div>{% endif %}
@@ -66,7 +66,7 @@
 <div class="cms-section-title"><span>08</span><div><h2>Terms & Conditions</h2><p>Edit the public Terms & Conditions page with a full rich-text editor. Formatting, links, lists and headings are saved with the page.</p></div></div>
 {% set t=content.get('terms',{}) %}
 <div class="cms-fields">
-<label>Eyebrow<input name="terms_eyebrow" value="{{ t.get('eyebrow','INTRA AURA') }}"></label>
+<label>Eyebrow<input name="terms_eyebrow" value="{{ t.get('eyebrow','{{ site().site.name|upper }}') }}"></label>
 <label>Page title<input name="terms_title" value="{{ t.get('title','Terms & Conditions') }}"></label>
 </div>
 <div class="cms-rich-field">
