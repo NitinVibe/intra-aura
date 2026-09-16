@@ -5456,7 +5456,7 @@ footer {
 
 .home-btn-primary {
     background: #241811;
-    color: white;
+    color: #a1621a;
 
     border: 1px solid #241811;
 }
@@ -5485,8 +5485,8 @@ footer {
 
 
 .home-btn-secondary:hover {
-    background: white;
-    color: #3a2415;
+    background: #241811;
+    color: #b8863b;
 }
 
 
@@ -5683,6 +5683,7 @@ footer {
 .services-hero {
     position: relative;
     width: 100%;
+    min-height: 575px;
     display: flex;
     align-items: flex-end;
     padding: 80px 7%;
@@ -6481,7 +6482,7 @@ footer {
 /* HERO */
 
 .portfolio-hero {
-    min-height: 560px;
+    min-height: 575px;
 
     display: flex;
     align-items: center;
@@ -6798,7 +6799,7 @@ footer {
 /* HERO */
 
 .about-hero {
-    min-height: 600px;
+    min-height: 575px;
 
     display: flex;
     align-items: flex-end;
@@ -7980,6 +7981,7 @@ footer {
     background: #ffffff;
 
     color: #222;
+    border-radius: 5px;
 
     font-size: 22px;
     font-family: inherit;
@@ -8024,6 +8026,7 @@ footer {
 
     background: #3a2415;
     color: #fff;
+    border-radius: 5px;
 
     font-family: inherit;
     font-size: 12px;
