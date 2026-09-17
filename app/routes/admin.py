@@ -497,7 +497,7 @@ def admin_settings_page(
         request=request,
         name="admin/settings.html",
         context={
-            "content": load_content(),
+            "content": load_content(db),
             "payment": payment,
             "webhook_url": webhook_url,
         },
@@ -512,7 +512,7 @@ async def admin_settings_save(
     from app.content.store import load_content, save_content
 
     form = await request.form()
-    content = load_content()
+    content = load_content(db)
 
     # -----------------------------
     # Existing site settings
@@ -584,7 +584,7 @@ async def admin_settings_save(
         for k, v in labels.items()
     ]
 
-    save_content(content)
+    save_content(content, db)
 
     # -----------------------------
     # Razorpay settings

@@ -5718,8 +5718,7 @@ footer {
             rgba(20, 20, 20, .68) 0%,
             rgba(20, 20, 20, .38) 48%,
             rgba(20, 20, 20, .12) 100%
-        ),
-        url("/static/images/services-hero.jpg");
+        ),;
 
     background-size: cover;
     background-position: center;
@@ -6524,8 +6523,7 @@ footer {
             rgba(20, 20, 20, .48) 0%,
             rgba(20, 20, 20, .38) 48%,
             rgba(20, 20, 20, .12) 100%
-        ),
-        url("/static/images/portfolio-hero.jpg");
+        ),;
 
     background-size: cover;
     background-position: center;
@@ -6848,8 +6846,7 @@ footer {
             rgba(20, 20, 20, .48) 0%,
             rgba(20, 20, 20, .38) 68%,
             rgba(20, 20, 20, .2) 100%
-        ),
-        url("/static/images/about-hero.jpg");
+        ),;
 
     background-size: cover;
     background-position: center;

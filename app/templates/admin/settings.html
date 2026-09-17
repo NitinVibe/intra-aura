@@ -105,13 +105,13 @@
                     ('about','About Us'),
                     ('contact','Contact')
                 ] %}
-
+                    {% set nav_item = content.get('header', {}).get('nav_links', [])[loop.index0] if content.get('header', {}).get('nav_links', [])|length > loop.index0 else {} %}
                     <label>
                         {{ label }}
 
                         <input
                             name="nav_{{ key }}"
-                            value="{{ content.get('header', {}).get('nav', {}).get(key, label) }}"
+                            value="{{ nav_item.get('label', label) }}"
                         >
                     </label>
 

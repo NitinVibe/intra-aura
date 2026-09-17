@@ -1,6 +1,8 @@
 import os, uuid, json
 from pathlib import Path
 from fastapi import APIRouter, Depends, Request, UploadFile, File, HTTPException
+from sqlalchemy.orm import Session
+from app.config.database import get_db
 from app.template_config import Jinja2Templates
 from fastapi.responses import RedirectResponse, JSONResponse
 from app.routes.auth import require_admin
@@ -18,14 +20,108 @@ templates = Jinja2Templates(directory="app/templates")
 UPLOAD_DIR = Path("app/static/uploads/site")
 
 @router.get("/website")
-def website_editor(request: Request):
-    return templates.TemplateResponse(request=request, name="admin/website.html", context={"content": load_content()})
+def website_editor(request: Request, db: Session = Depends(get_db)):
+    return templates.TemplateResponse(
+        request=request,
+        name="admin/website.html",
+        context={"content": load_content(db)},
+    )
+
+
+@router.get("/content")
+def content_studio_compat():
+    # Older admin links used /admin/content. Keep them working and point to
+    # the current Website Studio instead of leaving a dead page.
+    return RedirectResponse("/admin/website", status_code=307)
+
+
+@router.post("/content")
+async def content_studio_compat_save(request: Request, db: Session = Depends(get_db)):
+    """Accept saves from the older Content Studio URL and persist them."""
+    form = await request.form()
+    data = load_content(db)
+
+    def set_path(root, path, value):
+        parts = path.split(".")
+        cur = root
+        for part in parts[:-1]:
+            if isinstance(cur, dict):
+                cur = cur.setdefault(part, {})
+            else:
+                return
+        if isinstance(cur, dict):
+            cur[parts[-1]] = value
+
+    for key, value in form.multi_items():
+        if not key.startswith("field__"):
+            continue
+        path = key[len("field__"):].strip()
+        if path:
+            set_path(data, path, str(value))
+    save_content(data, db)
+    return RedirectResponse("/admin/content?saved=1", status_code=303)
+
+
+@router.get("/content/raw")
+def content_raw_page(request: Request, db: Session = Depends(get_db)):
+    return templates.TemplateResponse(
+        request=request,
+        name="admin/content_raw.html",
+        context={"content": json.dumps(load_content(db), indent=2, ensure_ascii=False)},
+    )
+
+
+@router.post("/content/raw")
+async def content_raw_save(request: Request, db: Session = Depends(get_db)):
+    form = await request.form()
+    raw = str(form.get("content", "")).strip()
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        return templates.TemplateResponse(
+            request=request,
+            name="admin/content_raw.html",
+            context={"content": raw, "error": f"Invalid JSON: {exc}"},
+            status_code=400,
+        )
+    if not isinstance(data, dict):
+        return templates.TemplateResponse(
+            request=request,
+            name="admin/content_raw.html",
+            context={"content": raw, "error": "The root value must be a JSON object."},
+            status_code=400,
+        )
+    save_content(data, db)
+    return RedirectResponse("/admin/content/raw?saved=1", status_code=303)
+
+
+@router.get("/media/data")
+def media_data_compat():
+    # Older Content Studio JavaScript used /admin/media/data.
+    if not cloudinary_configured() and os.getenv("VERCEL"):
+        raise HTTPException(
+            status_code=503,
+            detail="Cloudinary image storage is not configured for Vercel.",
+        )
+    if cloudinary_configured():
+        try:
+            return JSONResponse(list_cloudinary_media(prefix="site"))
+        except Exception as exc:
+            raise HTTPException(status_code=502, detail="Could not load Cloudinary media.") from exc
+
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    files = [
+        {"name": p.name, "file": p.name, "url": f"/static/uploads/site/{p.name}"}
+        for p in sorted(UPLOAD_DIR.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True)
+        if p.is_file()
+    ]
+    return JSONResponse(files)
 
 @router.post("/website/terms")
-async def website_terms_save(request: Request):
+async def website_terms_save(request: Request, db: Session = Depends(get_db)):
     """Save only Terms & Conditions fields without touching the rest of the website content."""
     form = await request.form()
-    data = load_content()
+    data = load_content(db)
     terms = data.setdefault("terms", {})
 
     def val(name, default=""):
@@ -51,13 +147,13 @@ async def website_terms_save(request: Request):
         sections.append([title, text])
     terms["sections"] = sections
 
-    save_content(data)
+    save_content(data, db)
     return RedirectResponse("/admin/website?saved=1#terms", status_code=303)
 
 @router.post("/website")
-async def website_save(request: Request):
+async def website_save(request: Request, db: Session = Depends(get_db)):
     form = await request.form()
-    data = load_content()
+    data = load_content(db)
     def val(name, default=""):
         return str(form.get(name, default)).strip()
 
@@ -151,7 +247,7 @@ async def website_save(request: Request):
         except json.JSONDecodeError as exc:
             raise HTTPException(400,f"Advanced JSON is invalid: {exc}")
 
-    save_content(data)
+    save_content(data, db)
     return RedirectResponse("/admin/website?saved=1", status_code=303)
 
 @router.get("/media")

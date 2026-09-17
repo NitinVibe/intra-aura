@@ -15,6 +15,9 @@ from app.routes.profile import router as profile_router
 from app.routes.orders import router as orders_router
 from app.routes.payments import router as payments_router
 from app.routes.cms import router as cms_router
+from app.config.database import engine, SessionLocal
+from app.models.site_content import SiteContent
+from app.content.store import ensure_seeded
 
 app = FastAPI(
     title="Intra Aura API",
@@ -23,6 +26,18 @@ app = FastAPI(
 )
 
 
+
+
+@app.on_event("startup")
+def initialize_persistent_cms():
+    # Safe, idempotent setup for the one CMS table required by the admin
+    # Website Editor. Existing tables/data are not recreated or deleted.
+    SiteContent.__table__.create(bind=engine, checkfirst=True)
+    db = SessionLocal()
+    try:
+        ensure_seeded(db)
+    finally:
+        db.close()
 
 
 app.mount(

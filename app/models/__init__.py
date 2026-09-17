@@ -7,3 +7,5 @@ from app.models.payment import PaymentSetting
 
 from app.models.otp import AuthOTP
 from app.models.auth_attempt import AuthLoginAttempt
+
+from app.models.site_content import SiteContent
