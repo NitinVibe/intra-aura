@@ -852,7 +852,7 @@ a {
             rgba(20, 20, 20, .38) 48%,
             rgba(20, 20, 20, .12) 100%
         ),
-        url("/static/images/categories-hero.jpg");
+        url("/static/images/categoriesbg.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1031,7 +1031,11 @@ a {
 
 @media (max-width: 1000px) {
     .categories-page .categories-hero {
-        min-height: 380px;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-position: top center;
+        height: auto;
+        min-height: auto;
         padding: 55px 6%;
     }
 
@@ -1052,7 +1056,7 @@ a {
 
 @media (max-width: 600px) {
     .categories-page .categories-hero {
-        min-height: 440px;
+        min-height: auto;
         padding: 55px 24px;
         align-items: flex-end;
     }
@@ -6180,7 +6184,7 @@ footer {
 @media (min-width: 601px) and (max-width: 900px) {
 
     .services-hero {
-        min-height: 520px;
+        min-height: auto;
 
         padding: 70px 6vw;
     }
@@ -6276,7 +6280,7 @@ footer {
 
     .services-hero {
         width: 100%;
-        min-height: 560px;
+        min-height: auto;
 
         padding: 60px 28px 70px;
 
@@ -7232,7 +7236,11 @@ footer {
     .services-hero,
     .portfolio-hero,
     .about-hero {
-        min-height: 320px;
+        min-height: auto;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-position: top center;
+        height: auto;
 
         padding: 65px 6%;
     }
@@ -7305,7 +7313,11 @@ footer {
     .services-hero,
     .portfolio-hero,
     .about-hero {
-        min-height: 300px;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-position: top center;
+        height: auto;
+        min-height: auto;
 
         padding: 50px 24px;
 
@@ -7496,7 +7508,12 @@ footer {
     .services-hero,
     .portfolio-hero,
     .about-hero {
-        min-height: 300px;
+
+        min-height: auto;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-position: top center;
+        height: auto;
 
         padding: 50px 24px;
 
