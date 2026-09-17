@@ -11,7 +11,7 @@
 </section>
 <div class="media-grid">
 {% for file in files %}
-<div class="media-card"><div class="media-thumb"><img src="{{ file.url }}" alt="{{ file.name }}"></div><div class="media-meta"><strong>{{ file.name }}</strong><code>{{ file.url }}</code><button type="button" class="media-copy" data-url="{{ file.url }}">Copy path</button><button type="button" class="media-delete" data-file="{{ file.name }}">Delete</button></div></div>
+<div class="media-card"><div class="media-thumb"><img src="{{ file.url }}" alt="{{ file.name }}"></div><div class="media-meta"><strong>{{ file.name }}</strong><code>{{ file.url }}</code><button type="button" class="media-copy" data-url="{{ file.url }}">Copy path</button><button type="button" class="media-delete" data-file="{{ file.file or file.name }}">Delete</button></div></div>
 {% else %}<div class="empty-state">No uploaded media yet.</div>{% endfor %}
 </div>
 </div>

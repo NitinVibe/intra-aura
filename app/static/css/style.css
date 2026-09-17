@@ -5432,9 +5432,15 @@ footer {
 /* BUTTONS */
 
 .home-hero-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 14px !important;
+    width: 100% !important;
+}
+
+.home-btn-secondary {
+    margin-left: auto;
 }
 
 
@@ -5478,9 +5484,9 @@ footer {
 }
 
 
+
 .home-btn-secondary {
-    
-    margin-left: 0;
+    margin-left: auto;
 
     color: #3a2415;
 
@@ -5495,6 +5501,7 @@ footer {
 .home-btn-secondary:hover {
     background: #241811;
     color: #b8863b;
+
     border: 1px solid #b8863b;
 }
 
@@ -14760,7 +14767,7 @@ footer {
 
     transform: translateY(-50%) !important;
 
-    width: 48% !important;
+    width: 86% !important;
 }
 
 /* =========================================================

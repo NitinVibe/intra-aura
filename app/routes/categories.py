@@ -1,10 +1,9 @@
 from fastapi import UploadFile, File
-from pathlib import Path
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.config.database import get_db
-from app.utils.image_optimizer import save_optimized_webp
+from app.utils.cloudinary_storage import upload_optimized_image
 from app.models.category import Category
 from app.schemas.category import (
     CategoryCreate,
@@ -166,19 +165,15 @@ def upload_category_image(
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
 
-    upload_dir = "app/static/uploads/categories"
-    # Use the optimizer so the file is resized and written atomically.
-    destination = Path(upload_dir) / f"category_{category_id}.webp"
-
     try:
-        save_optimized_webp(
+        stored = upload_optimized_image(
             image,
-            destination,
+            folder="categories",
             max_dimension=1200,
             quality=82,
         )
 
-        category.image_url = f"/static/uploads/categories/{destination.name}"
+        category.image_url = stored["url"]
         db.commit()
         db.refresh(category)
 
@@ -187,10 +182,9 @@ def upload_category_image(
             "image_url": category.image_url,
         }
     except HTTPException:
+        db.rollback()
         raise
     except Exception as exc:
         db.rollback()
-        if destination.exists():
-            destination.unlink(missing_ok=True)
         raise HTTPException(status_code=500, detail="Failed to process category image") from exc
 

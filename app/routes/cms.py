@@ -6,6 +6,12 @@ from fastapi.responses import RedirectResponse, JSONResponse
 from app.routes.auth import require_admin
 from app.content.store import load_content, save_content
 from app.utils.image_optimizer import save_optimized_webp
+from app.utils.cloudinary_storage import (
+    cloudinary_configured,
+    upload_optimized_image,
+    list_cloudinary_media,
+    delete_stored_image,
+)
 
 router = APIRouter(prefix="/admin", tags=["Admin Website"], dependencies=[Depends(require_admin)])
 templates = Jinja2Templates(directory="app/templates")
@@ -150,39 +156,93 @@ async def website_save(request: Request):
 
 @router.get("/media")
 def media_library(request: Request):
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    files=[]
-    for p in sorted(UPLOAD_DIR.iterdir(), key=lambda x:x.stat().st_mtime, reverse=True):
-        if p.is_file(): files.append({"name":p.name,"url":f"/static/uploads/site/{p.name}"})
-    return templates.TemplateResponse(request=request, name="admin/media.html", context={"files":files})
+    if not cloudinary_configured() and os.getenv("VERCEL"):
+        raise HTTPException(
+            status_code=503,
+            detail="Cloudinary image storage is not configured for Vercel.",
+        )
+    if cloudinary_configured():
+        try:
+            files = list_cloudinary_media(prefix="site")
+        except Exception as exc:
+            raise HTTPException(
+                status_code=502,
+                detail="Could not load Cloudinary media. Check Cloudinary settings.",
+            ) from exc
+    else:
+        UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+        files = []
+        for p in sorted(UPLOAD_DIR.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True):
+            if p.is_file():
+                files.append({
+                    "name": p.name,
+                    "file": p.name,
+                    "url": f"/static/uploads/site/{p.name}",
+                })
+
+    return templates.TemplateResponse(
+        request=request,
+        name="admin/media.html",
+        context={"files": files},
+    )
+
 
 @router.get("/media/json")
 def media_json():
+    if not cloudinary_configured() and os.getenv("VERCEL"):
+        raise HTTPException(
+            status_code=503,
+            detail="Cloudinary image storage is not configured for Vercel.",
+        )
+    if cloudinary_configured():
+        try:
+            return JSONResponse(list_cloudinary_media(prefix="site"))
+        except Exception as exc:
+            raise HTTPException(
+                status_code=502,
+                detail="Could not load Cloudinary media.",
+            ) from exc
+
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    files=[{"name":p.name,"url":f"/static/uploads/site/{p.name}"} for p in sorted(UPLOAD_DIR.iterdir(), key=lambda x:x.stat().st_mtime, reverse=True) if p.is_file()]
+    files = [
+        {
+            "name": p.name,
+            "file": p.name,
+            "url": f"/static/uploads/site/{p.name}",
+        }
+        for p in sorted(UPLOAD_DIR.iterdir(), key=lambda x: x.stat().st_mtime, reverse=True)
+        if p.is_file()
+    ]
     return JSONResponse(files)
+
 
 @router.post("/media/upload")
 async def media_upload(image: UploadFile = File(...)):
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    filename = f"{uuid.uuid4().hex}.webp"
-    destination = UPLOAD_DIR / filename
     try:
-        save_optimized_webp(
+        upload_optimized_image(
             image,
-            destination,
+            folder="site",
             max_dimension=1920,
             quality=82,
         )
     except HTTPException:
         raise
     except Exception as exc:
-        destination.unlink(missing_ok=True)
         raise HTTPException(500, "Failed to process image") from exc
+
     return RedirectResponse("/admin/media?uploaded=1", status_code=303)
 
-@router.delete("/media/{filename}")
+
+@router.delete("/media/{filename:path}")
 def media_delete(filename: str):
-    safe=Path(filename).name; path=UPLOAD_DIR/safe
-    if path.exists() and path.is_file(): path.unlink()
-    return {"message":"Media deleted"}
+    if cloudinary_configured():
+        # In Cloudinary mode the picker sends the public_id as `file`.
+        delete_stored_image(f"https://res.cloudinary.com/x/image/upload/{filename}")
+        return {"message": "Media deleted"}
+
+    safe = Path(filename).name
+    path = UPLOAD_DIR / safe
+    if path.exists() and path.is_file():
+        path.unlink()
+    return {"message": "Media deleted"}
+

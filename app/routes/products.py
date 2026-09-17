@@ -1,13 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from pathlib import Path
-from uuid import uuid4
-
 from fastapi import UploadFile, File
 
 from app.config.database import get_db
-from app.utils.image_optimizer import save_optimized_webp
+from app.utils.cloudinary_storage import upload_optimized_image, delete_stored_image
 from app.models.category import Category
 from app.models.product import Product, ProductImage
 from app.schemas.product import (
@@ -390,19 +387,11 @@ def upload_product_image(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    upload_dir = (
-        Path(__file__).resolve().parent.parent
-        / "static"
-        / "images"
-        / "products"
-    )
-    filename = f"{uuid4().hex}.webp"
-    file_path = upload_dir / filename
-
+    stored = None
     try:
-        save_optimized_webp(
+        stored = upload_optimized_image(
             image,
-            file_path,
+            folder="products",
             max_dimension=1600,
             quality=82,
         )
@@ -415,7 +404,7 @@ def upload_product_image(
 
         new_image = ProductImage(
             product_id=product_id,
-            image_url=f"/static/images/products/{filename}",
+            image_url=stored["url"],
             is_primary=(existing_images == 0),
             sort_order=existing_images,
         )
@@ -435,13 +424,15 @@ def upload_product_image(
         }
 
     except HTTPException:
-        if file_path.exists():
-            file_path.unlink(missing_ok=True)
+        db.rollback()
         raise
     except Exception as exc:
         db.rollback()
-        if file_path.exists():
-            file_path.unlink(missing_ok=True)
+        if stored and stored.get("path"):
+            try:
+                stored["path"].unlink(missing_ok=True)
+            except OSError:
+                pass
         raise HTTPException(status_code=500, detail="Failed to process image") from exc
 
 
@@ -474,9 +465,14 @@ def delete_product_image(
 
     was_primary = image.is_primary
 
+    image_url = image.image_url
+
     db.delete(image)
 
     db.commit()
+
+    # Remove the corresponding cloud asset when this image is stored remotely.
+    delete_stored_image(image_url)
 
     if was_primary:
 
