@@ -1,4 +1,5 @@
 import json
+import html
 from pathlib import Path
 from threading import Lock
 
@@ -18,6 +19,26 @@ def _file_content():
             return {}
 
 
+def _normalize_cms_html(data):
+    """Decode HTML entities in trusted CMS rich-text fields once on read.
+
+    This prevents values such as &lt;br&gt; and &lt;em&gt; from appearing literally
+    on the public site after an admin editor/browser has entity-escaped them.
+    """
+    if not isinstance(data, dict):
+        return data
+    result = json.loads(json.dumps(data, ensure_ascii=False))
+    for page in ("home", "about", "services", "portfolio", "contact"):
+        section = result.get(page)
+        if not isinstance(section, dict):
+            continue
+        groups = section.values() if page != "home" else section.values()
+        for group in groups:
+            if isinstance(group, dict) and "title_html" in group and isinstance(group["title_html"], str):
+                group["title_html"] = html.unescape(group["title_html"])
+    return result
+
+
 def load_content(db: Session | None = None):
     """Load CMS content from PostgreSQL when available, otherwise use JSON.
 
@@ -27,8 +48,8 @@ def load_content(db: Session | None = None):
     if db is not None:
         row = db.query(SiteContent).filter(SiteContent.id == 1).first()
         if row and isinstance(row.content, dict):
-            return row.content
-        return _file_content()
+            return _normalize_cms_html(row.content)
+        return _normalize_cms_html(_file_content())
 
     # Used by Jinja's site() helper. Import lazily to avoid import cycles.
     try:
@@ -37,7 +58,7 @@ def load_content(db: Session | None = None):
         try:
             row = session.query(SiteContent).filter(SiteContent.id == 1).first()
             if row and isinstance(row.content, dict):
-                return row.content
+                return _normalize_cms_html(row.content)
         finally:
             session.close()
     except Exception:
@@ -45,7 +66,7 @@ def load_content(db: Session | None = None):
         # fallback so the application can still render its bundled content.
         pass
 
-    return _file_content()
+    return _normalize_cms_html(_file_content())
 
 
 def save_content(data, db: Session | None = None):

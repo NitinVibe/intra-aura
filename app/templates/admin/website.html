@@ -3,222 +3,440 @@
 {% block content %}
 <div class="cms-wrap">
   <div class="cms-head">
-    <div><span class="admin-eyebrow">{{ site().site.name|upper }} / CONTENT STUDIO</span><h1>Website Studio</h1><p>Edit text, links, images and sections visually. Nothing important is locked inside the code.</p></div>
+    <div><span class="admin-eyebrow">{{ site().site.name|upper }} / CONTENT STUDIO</span>
+      <h1>Website Studio</h1>
+      <p>Edit text, links, images and sections visually. Nothing important is locked inside the code.</p>
+    </div>
     <a class="admin-primary-btn" href="/" target="_blank">Preview Website ↗</a>
   </div>
   {% if request.query_params.get('saved') %}<div class="cms-success">✓ All website changes were saved.</div>{% endif %}
   <form method="post" action="/admin/website" id="websiteForm">
     <div class="cms-grid">
       <aside class="cms-toc">
-        <a href="#header">Header</a><a href="#home">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a><a href="#contact">Contact</a><a href="#footer">Footer</a><a href="#terms">Terms & Conditions</a><a href="#advanced">Advanced</a>
+        <a href="#header">Header</a><a href="#home">Home</a><a href="#about">About</a><a href="#services">Services</a><a
+          href="#portfolio">Portfolio</a><a href="#contact">Contact</a><a href="#footer">Footer</a><a
+          href="#terms">Terms & Conditions</a><a href="#advanced">Advanced</a>
         <button type="submit">Save Everything</button>
       </aside>
       <main class="cms-content">
 
-<section id="header" class="cms-section"><div class="cms-section-title"><span>01</span><div><h2>Header & Navigation</h2><p>Announcements, logo, CTA and every navigation label/link.</p></div></div>
-<div class="cms-fields">
-<label>Announcement 1<input name="announcement_1" value="{{ content.header.announcement_1 }}"></label><label>Announcement 2<input name="announcement_2" value="{{ content.header.announcement_2 }}"></label><label>Announcement 3<input name="announcement_3" value="{{ content.header.announcement_3 }}"></label>
-<label>Logo <div class="image-picker-row"><input class="image-field" name="logo" value="{{ content.header.logo }}"><button type="button" class="admin-secondary-btn choose-image">Choose</button></div></label>
-<label>CTA text<input name="cta" value="{{ content.header.cta }}"></label>
-</div>
-<div class="cms-subsection"><h3>Navigation links</h3><div class="cms-fields">{% for i in range(1,8) %}{% set item=(content.header.get('nav_links',[])[i-1] if content.header.get('nav_links',[] )|length >= i else {}) %}<label>Link {{ i }} label<input name="nav_{{ i }}_label" value="{{ item.get('label','') }}"></label><label>Link {{ i }} URL<input name="nav_{{ i }}_url" value="{{ item.get('url','') }}"></label>{% endfor %}</div></div>
-</section>
+        <section id="header" class="cms-section">
+          <div class="cms-section-title"><span>01</span>
+            <div>
+              <h2>Header & Navigation</h2>
+              <p>Announcements, logo, CTA and every navigation label/link.</p>
+            </div>
+          </div>
+          <div class="cms-fields">
+            <label>Announcement 1<input name="announcement_1"
+                value="{{ content.header.announcement_1 }}"></label><label>Announcement 2<input name="announcement_2"
+                value="{{ content.header.announcement_2 }}"></label><label>Announcement 3<input name="announcement_3"
+                value="{{ content.header.announcement_3 }}"></label>
+            <label>Logo <div class="image-picker-row"><input class="image-field" name="logo"
+                  value="{{ content.header.logo }}"><button type="button"
+                  class="admin-secondary-btn choose-image">Choose</button></div></label>
+            <label>CTA text<input name="cta" value="{{ content.header.cta }}"></label>
+          </div>
+          <div class="cms-subsection">
+            <h3>Navigation links</h3>
+            <div class="cms-fields">{% for i in range(1,8) %}{% set item=(content.header.get('nav_links',[])[i-1] if
+              content.header.get('nav_links',[] )|length >= i else {}) %}<label>Link {{ i }} label<input
+                  name="nav_{{ i }}_label" value="{{ item.get('label','') }}"></label><label>Link {{ i }} URL<input
+                  name="nav_{{ i }}_url" value="{{ item.get('url','') }}"></label>{% endfor %}</div>
+          </div>
+        </section>
 
-<section id="home" class="cms-section"><div class="cms-section-title"><span>02</span><div><h2>Home</h2><p>Hero slides and all editable homepage content.</p></div></div>
-{% for i in range(1,4) %}{% set s=content.home['hero_'~i] %}<div class="cms-subsection"><h3>Hero Slide {{ i }}</h3><div class="cms-fields">
-<label>Eyebrow<input name="home_hero_{{ i }}_eyebrow" value="{{ s.eyebrow }}"></label>
-<label>Title <small>Rich text / HTML</small><textarea class="rich-source" hidden name="home_hero_{{ i }}_title_html">{{ s.title_html }}</textarea><div class="rich-editor-wrap"><div class="rich-toolbar"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="italic"><i>I</i></button><button type="button" data-cmd="underline"><u>U</u></button><button type="button" data-cmd="formatBlock" data-value="h2">H</button><button type="button" data-cmd="insertUnorderedList">• List</button><button type="button" data-cmd="createLink">Link</button></div><div class="rich-editor" contenteditable="true">{{ s.title_html|safe }}</div></div></label>
-<label>Description<textarea name="home_hero_{{ i }}_description">{{ s.description }}</textarea></label>
-<label>Background image <div class="image-picker-row"><input class="image-field" name="home_hero_{{ i }}_image" value="{{ s.image }}"><button type="button" class="admin-secondary-btn choose-image">Choose</button></div></label>
-<label>Primary button<input name="home_hero_{{ i }}_primary" value="{{ s.primary }}"></label><label>Secondary button<input name="home_hero_{{ i }}_secondary" value="{{ s.secondary }}"></label>
-</div></div>{% endfor %}
-{% for key,label in [('featured','Featured Products'),('categories','Categories'),('services','Services Intro')] %}{% set s=content.home[key] %}<div class="cms-subsection"><h3>{{ label }}</h3><div class="cms-fields"><label>Eyebrow<input name="home_{{ key }}_eyebrow" value="{{ s.eyebrow }}"></label><label>Title<input name="home_{{ key }}_title" value="{{ s.title }}"></label><label>Description<textarea name="home_{{ key }}_description">{{ s.description }}</textarea></label></div></div>{% endfor %}
-{% set a=content.home.about %}<div class="cms-subsection"><h3>About Preview</h3><div class="cms-fields"><label>Eyebrow<input name="home_about_eyebrow" value="{{ a.eyebrow }}"></label><label>Title<input name="home_about_title" value="{{ a.title }}"></label><label>Image <div class="image-picker-row"><input class="image-field" name="home_about_image" value="{{ a.image }}"><button type="button" class="admin-secondary-btn choose-image">Choose</button></div></label>{% for n in [1,2] %}<label>Paragraph {{ n }}<textarea name="home_about_paragraph_{{ n }}">{{ a['paragraph_'~n] }}</textarea></label>{% endfor %}<label>Highlight 1<input name="home_about_highlight_1" value="{{ a.highlight_1 }}"></label><label>Highlight 2<input name="home_about_highlight_2" value="{{ a.highlight_2 }}"></label><label>Highlight 3<input name="home_about_highlight_3" value="{{ a.highlight_3 }}"></label><label>Button<input name="home_about_button" value="{{ a.button }}"></label></div></div>
-{% set c=content.home.cta %}<div class="cms-subsection"><h3>Home CTA</h3><div class="cms-fields"><label>Eyebrow<input name="home_cta_eyebrow" value="{{ c.eyebrow }}"></label><label>Title<textarea name="home_cta_title_html">{{ c.title_html }}</textarea></label><label>Description<textarea name="home_cta_description">{{ c.description }}</textarea></label><label>Button<input name="home_cta_button" value="{{ c.button }}"></label></div></div>
-</section>
+        <section id="home" class="cms-section">
+          <div class="cms-section-title"><span>02</span>
+            <div>
+              <h2>Home</h2>
+              <p>Hero slides and all editable homepage content.</p>
+            </div>
+          </div>
+          {% for i in range(1,4) %}{% set s=content.home['hero_'~i] %}<div class="cms-subsection">
+            <h3>Hero Slide {{ i }}</h3>
+            <div class="cms-fields">
+              <label>Eyebrow<input name="home_hero_{{ i }}_eyebrow" value="{{ s.eyebrow }}"></label>
+              <label>Title <small>Rich text / HTML</small><textarea class="rich-source" hidden
+                  name="home_hero_{{ i }}_title_html">{{ s.title_html }}</textarea>
+                <div class="rich-editor-wrap">
+                  <div class="rich-toolbar"><button type="button" data-cmd="bold">B</button><button type="button"
+                      data-cmd="italic"><i>I</i></button><button type="button"
+                      data-cmd="underline"><u>U</u></button><button type="button" data-cmd="formatBlock"
+                      data-value="h2">H</button><button type="button" data-cmd="insertUnorderedList">•
+                      List</button><button type="button" data-cmd="createLink">Link</button></div>
+                  <div class="rich-editor" contenteditable="true">{{ s.title_html|safe }}</div>
+                </div>
+              </label>
+              <label>Description<textarea name="home_hero_{{ i }}_description">{{ s.description }}</textarea></label>
+              <label>Background image <div class="image-picker-row"><input class="image-field"
+                    name="home_hero_{{ i }}_image" value="{{ s.image }}"><button type="button"
+                    class="admin-secondary-btn choose-image">Choose</button></div></label>
+              <label>Primary button<input name="home_hero_{{ i }}_primary"
+                  value="{{ s.primary }}"></label><label>Secondary button<input name="home_hero_{{ i }}_secondary"
+                  value="{{ s.secondary }}"></label>
+            </div>
+          </div>{% endfor %}
+          {% for key,label in [('featured','Featured Products'),('categories','Categories'),('services','Services
+          Intro')] %}{% set s=content.home[key] %}<div class="cms-subsection">
+            <h3>{{ label }}</h3>
+            <div class="cms-fields"><label>Eyebrow<input name="home_{{ key }}_eyebrow"
+                  value="{{ s.eyebrow }}"></label><label>Title<input name="home_{{ key }}_title"
+                  value="{{ s.title }}"></label><label>Description<textarea
+                  name="home_{{ key }}_description">{{ s.description }}</textarea></label></div>
+          </div>{% endfor %}
+          {% set a=content.home.about %}<div class="cms-subsection">
+            <h3>About Preview</h3>
+            <div class="cms-fields"><label>Eyebrow<input name="home_about_eyebrow"
+                  value="{{ a.eyebrow }}"></label><label>Title<input name="home_about_title"
+                  value="{{ a.title }}"></label><label>Image <div class="image-picker-row"><input class="image-field"
+                    name="home_about_image" value="{{ a.image }}"><button type="button"
+                    class="admin-secondary-btn choose-image">Choose</button></div></label>{% for n in [1,2]
+              %}<label>Paragraph {{ n }}<textarea
+                  name="home_about_paragraph_{{ n }}">{{ a['paragraph_'~n] }}</textarea></label>{% endfor
+              %}<label>Highlight 1<input name="home_about_highlight_1"
+                  value="{{ a.highlight_1 }}"></label><label>Highlight 2<input name="home_about_highlight_2"
+                  value="{{ a.highlight_2 }}"></label><label>Highlight 3<input name="home_about_highlight_3"
+                  value="{{ a.highlight_3 }}"></label><label>Button<input name="home_about_button"
+                  value="{{ a.button }}"></label></div>
+          </div>
+          {% set c=content.home.cta %}<div class="cms-subsection">
+            <h3>Home CTA</h3>
+            <div class="cms-fields"><label>Eyebrow<input name="home_cta_eyebrow"
+                  value="{{ c.eyebrow }}"></label><label>Title<textarea
+                  name="home_cta_title_html">{{ c.title_html }}</textarea></label><label>Description<textarea
+                  name="home_cta_description">{{ c.description }}</textarea></label><label>Button<input
+                  name="home_cta_button" value="{{ c.button }}"></label></div>
+          </div>
+        </section>
 
-{% for page_key,title,desc in [('about','About','Story, values and closing section.'),('services','Services','Intro, CTA and six services.'),('portfolio','Portfolio','Intro, CTA and four projects.') ] %}
-<section id="{{ page_key }}" class="cms-section"><div class="cms-section-title"><span>{{ '03' if page_key=='about' else ('04' if page_key=='services' else '05') }}</span><div><h2>{{ title }}</h2><p>{{ desc }}</p></div></div>
-{% for key,label in ([('hero','Hero'),('story','Philosophy / Story'),('values','Values'),('closing','Closing CTA')] if page_key=='about' else ([('hero','Hero'),('intro','Intro'),('cta','CTA')] if page_key=='services' else [('hero','Hero'),('intro','Intro'),('cta','CTA')])) %}{% set s=content[page_key][key] %}<div class="cms-subsection"><h3>{{ label }}</h3><div class="cms-fields">
-{% if s.eyebrow is defined %}<label>Eyebrow<input name="{{ page_key }}_{{ key }}_eyebrow" value="{{ s.eyebrow }}"></label>{% endif %}
-{% if s.title_html is defined %}<label>Title<textarea name="{{ page_key }}_{{ key }}_title_html">{{ s.title_html }}</textarea></label>{% endif %}
-{% if s.description is defined %}<label>Description<textarea name="{{ page_key }}_{{ key }}_description">{{ s.description }}</textarea></label>{% endif %}
-{% if s.image is defined %}<label>Image <div class="image-picker-row"><input class="image-field" name="{{ page_key }}_{{ key }}_image" value="{{ s.image }}"><button type="button" class="admin-secondary-btn choose-image">Choose</button></div></label>{% endif %}
-{% for n in [1,2,3] %}{% if s['paragraph_'~n] is defined %}<label>Paragraph {{ n }}<textarea name="{{ page_key }}_{{ key }}_paragraph_{{ n }}">{{ s['paragraph_'~n] }}</textarea></label>{% endif %}{% endfor %}
-{% if key=='closing' or key=='cta' %}<label>Button<input name="{{ page_key }}_{{ key }}_button" value="{{ s.button if s.button is defined else '' }}"></label>{% endif %}
-{% if key=='values' %}{% for item in s['items'] %}<label>Value {{ loop.index }} title<input name="about_value_{{ loop.index }}_title" value="{{ item[0] }}"></label><label>Value {{ loop.index }} description<textarea name="about_value_{{ loop.index }}_description">{{ item[1] }}</textarea></label>{% endfor %}{% endif %}
-</div></div>{% endfor %}
-{% if page_key=='services' %}{% for item in content.services['items'] %}<div class="cms-subsection"><h3>Service {{ loop.index }}</h3><div class="cms-fields"><label>Title<input name="service_{{ loop.index }}_title" value="{{ item[0] }}"></label><label>Description<textarea name="service_{{ loop.index }}_description">{{ item[1] }}</textarea></label><label>Image <div class="image-picker-row"><input class="image-field" name="service_{{ loop.index }}_image" value="{{ item[2] }}"><button type="button" class="admin-secondary-btn choose-image">Choose</button></div></label></div></div>{% endfor %}{% endif %}
-{% if page_key=='portfolio' %}{% for item in content.portfolio['projects'] %}<div class="cms-subsection"><h3>Project {{ loop.index }}</h3><div class="cms-fields"><label>Category<input name="project_{{ loop.index }}_category" value="{{ item[0] }}"></label><label>Title<input name="project_{{ loop.index }}_title" value="{{ item[1] }}"></label><label>Location / Year<input name="project_{{ loop.index }}_meta" value="{{ item[2] }}"></label><label>Image <div class="image-picker-row"><input class="image-field" name="project_{{ loop.index }}_image" value="{{ item[3] }}"><button type="button" class="admin-secondary-btn choose-image">Choose</button></div></label></div></div>{% endfor %}{% endif %}
-</section>
-{% endfor %}
+        {% for page_key,title,desc in [('about','About','Story, values and closing
+        section.'),('services','Services','Intro, CTA and six services.'),('portfolio','Portfolio','Intro, CTA and four
+        projects.') ] %}
+        <section id="{{ page_key }}" class="cms-section">
+          <div class="cms-section-title"><span>{{ '03' if page_key=='about' else ('04' if page_key=='services' else
+              '05') }}</span>
+            <div>
+              <h2>{{ title }}</h2>
+              <p>{{ desc }}</p>
+            </div>
+          </div>
+          {% for key,label in ([('hero','Hero'),('story','Philosophy / Story'),('values','Values'),('closing','Closing
+          CTA')] if page_key=='about' else ([('hero','Hero'),('intro','Intro'),('cta','CTA')] if page_key=='services'
+          else [('hero','Hero'),('intro','Intro'),('cta','CTA')])) %}{% set s=content[page_key][key] %}<div
+            class="cms-subsection">
+            <h3>{{ label }}</h3>
+            <div class="cms-fields">
+              {% if s.eyebrow is defined %}<label>Eyebrow<input name="{{ page_key }}_{{ key }}_eyebrow"
+                  value="{{ s.eyebrow }}"></label>{% endif %}
+              {% if s.title_html is defined %}<label>Title<textarea
+                  name="{{ page_key }}_{{ key }}_title_html">{{ s.title_html }}</textarea></label>{% endif %}
+              {% if s.description is defined %}<label>Description<textarea
+                  name="{{ page_key }}_{{ key }}_description">{{ s.description }}</textarea></label>{% endif %}
+              {% if s.image is defined %}<label>Image <div class="image-picker-row"><input class="image-field"
+                    name="{{ page_key }}_{{ key }}_image" value="{{ s.image }}"><button type="button"
+                    class="admin-secondary-btn choose-image">Choose</button></div></label>{% endif %}
+              {% for n in [1,2,3] %}{% if s['paragraph_'~n] is defined %}<label>Paragraph {{ n }}<textarea
+                  name="{{ page_key }}_{{ key }}_paragraph_{{ n }}">{{ s['paragraph_'~n] }}</textarea></label>{% endif
+              %}{% endfor %}
+              {% if key=='closing' or key=='cta' %}<label>Button<input name="{{ page_key }}_{{ key }}_button"
+                  value="{{ s.button if s.button is defined else '' }}"></label>{% endif %}
+              {% if key=='values' %}{% for item in s['items'] %}<label>Value {{ loop.index }} title<input
+                  name="about_value_{{ loop.index }}_title" value="{{ item[0] }}"></label><label>Value {{ loop.index }}
+                description<textarea name="about_value_{{ loop.index }}_description">{{ item[1] }}</textarea></label>{%
+              endfor %}{% endif %}
+            </div>
+          </div>{% endfor %}
+          {% if page_key=='services' %}{% for item in content.services['items'] %}<div class="cms-subsection">
+            <h3>Service {{ loop.index }}</h3>
+            <div class="cms-fields"><label>Title<input name="service_{{ loop.index }}_title"
+                  value="{{ item[0] }}"></label><label>Description<textarea
+                  name="service_{{ loop.index }}_description">{{ item[1] }}</textarea></label><label>Image <div
+                  class="image-picker-row"><input class="image-field" name="service_{{ loop.index }}_image"
+                    value="{{ item[2] }}"><button type="button" class="admin-secondary-btn choose-image">Choose</button>
+                </div></label></div>
+          </div>{% endfor %}{% endif %}
+          {% if page_key=='portfolio' %}{% for item in content.portfolio['projects'] %}<div class="cms-subsection">
+            <h3>Project {{ loop.index }}</h3>
+            <div class="cms-fields"><label>Category<input name="project_{{ loop.index }}_category"
+                  value="{{ item[0] }}"></label><label>Title<input name="project_{{ loop.index }}_title"
+                  value="{{ item[1] }}"></label><label>Location / Year<input name="project_{{ loop.index }}_meta"
+                  value="{{ item[2] }}"></label><label>Image <div class="image-picker-row"><input class="image-field"
+                    name="project_{{ loop.index }}_image" value="{{ item[3] }}"><button type="button"
+                    class="admin-secondary-btn choose-image">Choose</button></div></label></div>
+          </div>{% endfor %}{% endif %}
+        </section>
+        {% endfor %}
 
-<section id="contact" class="cms-section"><div class="cms-section-title"><span>06</span><div><h2>Contact</h2><p>Contact page introduction.</p></div></div><div class="cms-fields"><label>Eyebrow<input name="contact_eyebrow" value="{{ content.contact.eyebrow }}"></label><label>Title<textarea name="contact_title_html">{{ content.contact.title_html }}</textarea></label><label>Description<textarea name="contact_description">{{ content.contact.description }}</textarea></label></div></section>
+        <section id="contact" class="cms-section">
+          <div class="cms-section-title"><span>06</span>
+            <div>
+              <h2>Contact</h2>
+              <p>Contact page introduction.</p>
+            </div>
+          </div>
+          <div class="cms-fields"><label>Eyebrow<input name="contact_eyebrow"
+                value="{{ content.contact.eyebrow }}"></label><label>Title<textarea
+                name="contact_title_html">{{ content.contact.title_html }}</textarea></label><label>Description<textarea
+                name="contact_description">{{ content.contact.description }}</textarea></label></div>
+        </section>
 
-<section id="footer" class="cms-section"><div class="cms-section-title"><span>07</span><div><h2>Footer & Links</h2><p>Every footer text, label and URL is editable here.</p></div></div>{% set f=content.get('footer',{}) %}
-<div class="cms-fields"><label>Brand description<textarea name="footer_brand_description">{{ f.get('brand_description','') }}</textarea></label><label>Explore heading<input name="footer_explore_title" value="{{ f.get('explore_title','Explore') }}"></label><label>Company heading<input name="footer_company_title" value="{{ f.get('company_title','Company') }}"></label><label>Social heading<input name="footer_social_title" value="{{ f.get('social_title','Follow Us') }}"></label><label>Copyright<input name="footer_copyright" value="{{ f.get('copyright','') }}"></label><label>Bottom text<input name="footer_bottom_text" value="{{ f.get('bottom_text','') }}"></label></div>
-<div class="cms-subsection"><h3>Explore links</h3><div class="cms-fields">{% for i in range(1,8) %}{% set x=(f.get('explore_links',[])[i-1] if f.get('explore_links',[])|length >= i else {}) %}<label>Label {{ i }}<input name="footer_explore_{{ i }}_label" value="{{ x.get('label','') }}"></label><label>URL {{ i }}<input name="footer_explore_{{ i }}_url" value="{{ x.get('url','') }}"></label>{% endfor %}</div></div>
-<div class="cms-subsection"><h3>Company links</h3><div class="cms-fields">{% for i in range(1,6) %}{% set x=(f.get('company_links',[])[i-1] if f.get('company_links',[])|length >= i else {}) %}<label>Label {{ i }}<input name="footer_company_{{ i }}_label" value="{{ x.get('label','') }}"></label><label>URL {{ i }}<input name="footer_company_{{ i }}_url" value="{{ x.get('url','') }}"></label>{% endfor %}</div></div>
-<div class="cms-subsection"><h3>Social links</h3><div class="cms-fields">{% for i in range(1,7) %}{% set x=(f.get('social_links',[])[i-1] if f.get('social_links',[])|length >= i else {}) %}<label>Label {{ i }}<input name="footer_social_{{ i }}_label" value="{{ x.get('label','') }}"></label><label>URL {{ i }}<input name="footer_social_{{ i }}_url" value="{{ x.get('url','') }}"></label>{% endfor %}</div></div>
-</section>
+        <section id="footer" class="cms-section">
+          <div class="cms-section-title"><span>07</span>
+            <div>
+              <h2>Footer & Links</h2>
+              <p>Every footer text, label and URL is editable here.</p>
+            </div>
+          </div>{% set f=content.get('footer',{}) %}
+          <div class="cms-fields"><label>Brand description<textarea
+                name="footer_brand_description">{{ f.get('brand_description','') }}</textarea></label><label>Explore
+              heading<input name="footer_explore_title"
+                value="{{ f.get('explore_title','Explore') }}"></label><label>Company heading<input
+                name="footer_company_title" value="{{ f.get('company_title','Company') }}"></label><label>Social
+              heading<input name="footer_social_title"
+                value="{{ f.get('social_title','Follow Us') }}"></label><label>Copyright<input name="footer_copyright"
+                value="{{ f.get('copyright','') }}"></label><label>Bottom text<input name="footer_bottom_text"
+                value="{{ f.get('bottom_text','') }}"></label></div>
+          <div class="cms-subsection">
+            <h3>Explore links</h3>
+            <div class="cms-fields">{% for i in range(1,8) %}{% set x=(f.get('explore_links',[])[i-1] if
+              f.get('explore_links',[])|length >= i else {}) %}<label>Label {{ i }}<input
+                  name="footer_explore_{{ i }}_label" value="{{ x.get('label','') }}"></label><label>URL {{ i }}<input
+                  name="footer_explore_{{ i }}_url" value="{{ x.get('url','') }}"></label>{% endfor %}</div>
+          </div>
+          <div class="cms-subsection">
+            <h3>Company links</h3>
+            <div class="cms-fields">{% for i in range(1,6) %}{% set x=(f.get('company_links',[])[i-1] if
+              f.get('company_links',[])|length >= i else {}) %}<label>Label {{ i }}<input
+                  name="footer_company_{{ i }}_label" value="{{ x.get('label','') }}"></label><label>URL {{ i }}<input
+                  name="footer_company_{{ i }}_url" value="{{ x.get('url','') }}"></label>{% endfor %}</div>
+          </div>
+          <div class="cms-subsection">
+            <h3>Social links</h3>
+            <div class="cms-fields">{% for i in range(1,7) %}{% set x=(f.get('social_links',[])[i-1] if
+              f.get('social_links',[])|length >= i else {}) %}<label>Label {{ i }}<input
+                  name="footer_social_{{ i }}_label" value="{{ x.get('label','') }}"></label><label>URL {{ i }}<input
+                  name="footer_social_{{ i }}_url" value="{{ x.get('url','') }}"></label>{% endfor %}</div>
+          </div>
+        </section>
 
-<section id="terms" class="cms-section">
-<div class="cms-section-title"><span>08</span><div><h2>Terms & Conditions</h2><p>Edit the public Terms & Conditions page with a full rich-text editor. Formatting, links, lists and headings are saved with the page.</p></div></div>
-{% set t=content.get('terms',{}) %}
-<div class="cms-fields">
-<label>Eyebrow<input name="terms_eyebrow" value="{{ t.get('eyebrow','{{ site().site.name|upper }}') }}"></label>
-<label>Page title<input name="terms_title" value="{{ t.get('title','Terms & Conditions') }}"></label>
-</div>
-<div class="cms-rich-field">
-  <div class="cms-rich-label">Introduction</div>
-  <textarea class="rich-source" name="terms_intro" hidden>{{ t.get('intro','') }}</textarea>
-  <div class="rich-editor-wrap terms-rich-editor-wrap">
-    <div class="rich-toolbar" role="toolbar" aria-label="Introduction formatting">
-      <button type="button" data-cmd="undo" title="Undo">↶</button>
-      <button type="button" data-cmd="redo" title="Redo">↷</button>
-      <span class="rich-toolbar-sep"></span>
-      <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
-      <button type="button" data-cmd="italic" title="Italic"><i>I</i></button>
-      <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
-      <button type="button" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
-      <span class="rich-toolbar-sep"></span>
-      <button type="button" data-cmd="formatBlock" data-value="h3" title="Heading">H</button>
-      <button type="button" data-cmd="formatBlock" data-value="p" title="Paragraph">¶</button>
-      <button type="button" data-cmd="formatBlock" data-value="blockquote" title="Quote">❝</button>
-      <span class="rich-toolbar-sep"></span>
-      <button type="button" data-cmd="insertUnorderedList" title="Bulleted list">• List</button>
-      <button type="button" data-cmd="insertOrderedList" title="Numbered list">1. List</button>
-      <span class="rich-toolbar-sep"></span>
-      <button type="button" data-cmd="justifyLeft" title="Align left">≡</button>
-      <button type="button" data-cmd="justifyCenter" title="Align center">≡</button>
-      <button type="button" data-cmd="justifyRight" title="Align right">≡</button>
-      <span class="rich-toolbar-sep"></span>
-      <button type="button" data-cmd="createLink" title="Insert link">Link</button>
-      <button type="button" data-cmd="unlink" title="Remove link">Unlink</button>
-      <button type="button" data-cmd="insertHorizontalRule" title="Divider">―</button>
-      <button type="button" data-cmd="removeFormat" title="Clear formatting">Clear</button>
+        <section id="terms" class="cms-section">
+          <div class="cms-section-title"><span>08</span>
+            <div>
+              <h2>Terms & Conditions</h2>
+              <p>Edit the public Terms & Conditions page with a full rich-text editor. Formatting, links, lists and
+                headings are saved with the page.</p>
+            </div>
+          </div>
+          {% set t=content.get('terms',{}) %}
+          <div class="cms-fields">
+            <label>Eyebrow<input name="terms_eyebrow"
+                value="{{ t.get('eyebrow','{{ site().site.name|upper }}') }}"></label>
+            <label>Page title<input name="terms_title" value="{{ t.get('title','Terms & Conditions') }}"></label>
+          </div>
+          <div class="cms-rich-field">
+            <div class="cms-rich-label">Introduction</div>
+            <textarea class="rich-source" name="terms_intro" hidden>{{ t.get('intro','') }}</textarea>
+            <div class="rich-editor-wrap terms-rich-editor-wrap">
+              <div class="rich-toolbar" role="toolbar" aria-label="Introduction formatting">
+                <button type="button" data-cmd="undo" title="Undo">↶</button>
+                <button type="button" data-cmd="redo" title="Redo">↷</button>
+                <span class="rich-toolbar-sep"></span>
+                <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+                <button type="button" data-cmd="italic" title="Italic"><i>I</i></button>
+                <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+                <button type="button" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+                <span class="rich-toolbar-sep"></span>
+                <button type="button" data-cmd="formatBlock" data-value="h3" title="Heading">H</button>
+                <button type="button" data-cmd="formatBlock" data-value="p" title="Paragraph">¶</button>
+                <button type="button" data-cmd="formatBlock" data-value="blockquote" title="Quote">❝</button>
+                <span class="rich-toolbar-sep"></span>
+                <button type="button" data-cmd="insertUnorderedList" title="Bulleted list">• List</button>
+                <button type="button" data-cmd="insertOrderedList" title="Numbered list">1. List</button>
+                <span class="rich-toolbar-sep"></span>
+                <button type="button" data-cmd="justifyLeft" title="Align left">≡</button>
+                <button type="button" data-cmd="justifyCenter" title="Align center">≡</button>
+                <button type="button" data-cmd="justifyRight" title="Align right">≡</button>
+                <span class="rich-toolbar-sep"></span>
+                <button type="button" data-cmd="createLink" title="Insert link">Link</button>
+                <button type="button" data-cmd="unlink" title="Remove link">Unlink</button>
+                <button type="button" data-cmd="insertHorizontalRule" title="Divider">―</button>
+                <button type="button" data-cmd="removeFormat" title="Clear formatting">Clear</button>
+              </div>
+              <div class="rich-editor" contenteditable="true" data-placeholder="Write your introduction here…">{{
+                t.get('intro', '')|safe }}</div>
+            </div>
+          </div>
+
+          {% for i in range(1,8) %}{% set x=(t.get('sections',[])[i-1] if t.get('sections',[])|length >= i else ['',
+          '']) %}
+          <div class="cms-subsection terms-editor-subsection">
+            <h3>Section {{ '%02d' % i }}</h3>
+            <div class="cms-fields">
+              <label>Heading<input name="terms_section_{{ i }}_title" value="{{ x[0] }}"></label>
+            </div>
+            <div class="cms-rich-field">
+              <div class="cms-rich-label">Content</div>
+              <textarea class="rich-source" name="terms_section_{{ i }}_text" hidden>{{ x[1] }}</textarea>
+              <div class="rich-editor-wrap terms-rich-editor-wrap">
+                <div class="rich-toolbar" role="toolbar" aria-label="Section {{ i }} formatting">
+                  <button type="button" data-cmd="undo" title="Undo">↶</button><button type="button" data-cmd="redo"
+                    title="Redo">↷</button><span class="rich-toolbar-sep"></span>
+                  <button type="button" data-cmd="bold" title="Bold"><b>B</b></button><button type="button"
+                    data-cmd="italic" title="Italic"><i>I</i></button><button type="button" data-cmd="underline"
+                    title="Underline"><u>U</u></button><button type="button" data-cmd="strikeThrough"
+                    title="Strikethrough"><s>S</s></button><span class="rich-toolbar-sep"></span>
+                  <button type="button" data-cmd="formatBlock" data-value="h3" title="Heading">H</button><button
+                    type="button" data-cmd="formatBlock" data-value="p" title="Paragraph">¶</button><button
+                    type="button" data-cmd="formatBlock" data-value="blockquote" title="Quote">❝</button><span
+                    class="rich-toolbar-sep"></span>
+                  <button type="button" data-cmd="insertUnorderedList" title="Bulleted list">• List</button><button
+                    type="button" data-cmd="insertOrderedList" title="Numbered list">1. List</button><span
+                    class="rich-toolbar-sep"></span>
+                  <button type="button" data-cmd="justifyLeft" title="Align left">≡</button><button type="button"
+                    data-cmd="justifyCenter" title="Align center">≡</button><button type="button"
+                    data-cmd="justifyRight" title="Align right">≡</button><span class="rich-toolbar-sep"></span>
+                  <button type="button" data-cmd="createLink" title="Insert link">Link</button><button type="button"
+                    data-cmd="unlink" title="Remove link">Unlink</button><button type="button"
+                    data-cmd="insertHorizontalRule" title="Divider">―</button><button type="button"
+                    data-cmd="removeFormat" title="Clear formatting">Clear</button>
+                </div>
+                <div class="rich-editor" contenteditable="true" data-placeholder="Write section content here…">{{
+                  x[1]|safe }}</div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+          <div class="cms-fields"><label>Last updated<input name="terms_last_updated"
+                value="{{ t.get('last_updated','') }}"></label></div>
+          <div class="cms-rich-field">
+            <div class="cms-rich-label">Bottom note</div>
+            <textarea class="rich-source" name="terms_note" hidden>{{ t.get('note','') }}</textarea>
+            <div class="rich-editor-wrap terms-rich-editor-wrap">
+              <div class="rich-toolbar" role="toolbar" aria-label="Bottom note formatting"><button type="button"
+                  data-cmd="bold"><b>B</b></button><button type="button" data-cmd="italic"><i>I</i></button><button
+                  type="button" data-cmd="underline"><u>U</u></button><span class="rich-toolbar-sep"></span><button
+                  type="button" data-cmd="createLink">Link</button><button type="button"
+                  data-cmd="removeFormat">Clear</button></div>
+              <div class="rich-editor" contenteditable="true" data-placeholder="Write a closing note…">{{ t.get('note',
+                '')|safe }}</div>
+            </div>
+          </div>
+        </section>
+
+        <div class="terms-save-row">
+          <button class="cms-save-terms" type="submit" formmethod="post" formaction="/admin/website/terms">Save Terms
+            &amp; Conditions</button>
+          <span>Updates only the Terms &amp; Conditions content.</span>
+        </div>
+
+        <section id="advanced" class="cms-section">
+          <div class="cms-section-title"><span>09</span>
+            <div>
+              <h2>Advanced Content</h2>
+              <p>Add or modify future content keys directly. This is your escape hatch when you add a new section later.
+              </p>
+            </div>
+          </div>
+          <div class="advanced-panel">
+            <details>
+              <summary>Open JSON editor</summary><textarea class="json-editor" name="advanced_json"
+                placeholder='{"new_section":{"title":"My new content"}}'></textarea>
+              <p style="color:#817d75;font-size:12px">Only valid JSON objects are accepted. Existing fields can be
+                overridden; new keys are preserved in site_content.json.</p>
+            </details>
+          </div>
+        </section>
+
+        <button class="cms-save-bottom" type="submit">Save All Website Changes</button>
+      </main>
     </div>
-    <div class="rich-editor" contenteditable="true" data-placeholder="Write your introduction here…">{{ t.get('intro', '')|safe }}</div>
-  </div>
+  </form>
 </div>
 
-{% for i in range(1,8) %}{% set x=(t.get('sections',[])[i-1] if t.get('sections',[])|length >= i else ['', '']) %}
-<div class="cms-subsection terms-editor-subsection">
-  <h3>Section {{ '%02d' % i }}</h3>
-  <div class="cms-fields">
-    <label>Heading<input name="terms_section_{{ i }}_title" value="{{ x[0] }}"></label>
-  </div>
-  <div class="cms-rich-field">
-    <div class="cms-rich-label">Content</div>
-    <textarea class="rich-source" name="terms_section_{{ i }}_text" hidden>{{ x[1] }}</textarea>
-    <div class="rich-editor-wrap terms-rich-editor-wrap">
-      <div class="rich-toolbar" role="toolbar" aria-label="Section {{ i }} formatting">
-        <button type="button" data-cmd="undo" title="Undo">↶</button><button type="button" data-cmd="redo" title="Redo">↷</button><span class="rich-toolbar-sep"></span>
-        <button type="button" data-cmd="bold" title="Bold"><b>B</b></button><button type="button" data-cmd="italic" title="Italic"><i>I</i></button><button type="button" data-cmd="underline" title="Underline"><u>U</u></button><button type="button" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button><span class="rich-toolbar-sep"></span>
-        <button type="button" data-cmd="formatBlock" data-value="h3" title="Heading">H</button><button type="button" data-cmd="formatBlock" data-value="p" title="Paragraph">¶</button><button type="button" data-cmd="formatBlock" data-value="blockquote" title="Quote">❝</button><span class="rich-toolbar-sep"></span>
-        <button type="button" data-cmd="insertUnorderedList" title="Bulleted list">• List</button><button type="button" data-cmd="insertOrderedList" title="Numbered list">1. List</button><span class="rich-toolbar-sep"></span>
-        <button type="button" data-cmd="justifyLeft" title="Align left">≡</button><button type="button" data-cmd="justifyCenter" title="Align center">≡</button><button type="button" data-cmd="justifyRight" title="Align right">≡</button><span class="rich-toolbar-sep"></span>
-        <button type="button" data-cmd="createLink" title="Insert link">Link</button><button type="button" data-cmd="unlink" title="Remove link">Unlink</button><button type="button" data-cmd="insertHorizontalRule" title="Divider">―</button><button type="button" data-cmd="removeFormat" title="Clear formatting">Clear</button>
-      </div>
-      <div class="rich-editor" contenteditable="true" data-placeholder="Write section content here…">{{ x[1]|safe }}</div>
+<div class="modal-backdrop" id="imagePicker">
+  <div class="image-picker-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px">
+      <h2 style="font-family:'Playfair Display',serif;font-weight:500;margin:0">Choose Image</h2><button type="button"
+        class="admin-secondary-btn" id="closePicker">Close</button>
     </div>
+    <div class="picker-grid" id="pickerGrid"></div>
   </div>
 </div>
-{% endfor %}
-
-<div class="cms-fields"><label>Last updated<input name="terms_last_updated" value="{{ t.get('last_updated','') }}"></label></div>
-<div class="cms-rich-field">
-  <div class="cms-rich-label">Bottom note</div>
-  <textarea class="rich-source" name="terms_note" hidden>{{ t.get('note','') }}</textarea>
-  <div class="rich-editor-wrap terms-rich-editor-wrap"><div class="rich-toolbar" role="toolbar" aria-label="Bottom note formatting"><button type="button" data-cmd="bold"><b>B</b></button><button type="button" data-cmd="italic"><i>I</i></button><button type="button" data-cmd="underline"><u>U</u></button><span class="rich-toolbar-sep"></span><button type="button" data-cmd="createLink">Link</button><button type="button" data-cmd="removeFormat">Clear</button></div><div class="rich-editor" contenteditable="true" data-placeholder="Write a closing note…">{{ t.get('note', '')|safe }}</div></div>
-</div>
-</section>
-
-<div class="terms-save-row">
-  <button class="cms-save-terms" type="submit" formmethod="post" formaction="/admin/website/terms">Save Terms &amp; Conditions</button>
-  <span>Updates only the Terms &amp; Conditions content.</span>
-</div>
-
-<section id="advanced" class="cms-section"><div class="cms-section-title"><span>09</span><div><h2>Advanced Content</h2><p>Add or modify future content keys directly. This is your escape hatch when you add a new section later.</p></div></div><div class="advanced-panel"><details><summary>Open JSON editor</summary><textarea class="json-editor" name="advanced_json" placeholder='{"new_section":{"title":"My new content"}}'></textarea><p style="color:#817d75;font-size:12px">Only valid JSON objects are accepted. Existing fields can be overridden; new keys are preserved in site_content.json.</p></details></div></section>
-
-<button class="cms-save-bottom" type="submit">Save All Website Changes</button>
-</main></div></form>
-</div>
-
-<div class="modal-backdrop" id="imagePicker"><div class="image-picker-modal"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px"><h2 style="font-family:'Playfair Display',serif;font-weight:500;margin:0">Choose Image</h2><button type="button" class="admin-secondary-btn" id="closePicker">Close</button></div><div class="picker-grid" id="pickerGrid"></div></div></div>
 <script>
-(function(){
-  const form=document.getElementById('websiteForm');
-  const richEditors=document.querySelectorAll('.rich-editor-wrap');
+  (function () {
+    const form = document.getElementById('websiteForm');
+    const richEditors = document.querySelectorAll('.rich-editor-wrap');
 
-  function execCommand(editor, cmd, value){
-    editor.focus();
-    if(cmd==='createLink'){
-      const u=prompt('Enter link URL:','https://');
-      if(u) document.execCommand('createLink',false,u);
-    }else if(cmd==='formatBlock'){
-      document.execCommand('formatBlock',false,value||'p');
-    }else{
-      document.execCommand(cmd,false,value||null);
+    function execCommand(editor, cmd, value) {
+      editor.focus();
+      if (cmd === 'createLink') {
+        const u = prompt('Enter link URL:', 'https://');
+        if (u) document.execCommand('createLink', false, u);
+      } else if (cmd === 'formatBlock') {
+        document.execCommand('formatBlock', false, value || 'p');
+      } else {
+        document.execCommand(cmd, false, value || null);
+      }
+      editor.dispatchEvent(new Event('input', { bubbles: true }));
     }
-    editor.dispatchEvent(new Event('input',{bubbles:true}));
-  }
 
-  // The editor starts directly from the server-rendered current value.
-  // This avoids losing existing Terms text when the page loads.
-  richEditors.forEach(w=>{
-    const e=w.querySelector('.rich-editor');
-    if(!e) return;
-    w.querySelectorAll('[data-cmd]').forEach(b=>{
-      b.addEventListener('mousedown',ev=>ev.preventDefault());
-      b.addEventListener('click',()=>execCommand(e,b.dataset.cmd,b.dataset.value));
+    // The editor starts directly from the server-rendered current value.
+    // This avoids losing existing Terms text when the page loads.
+    richEditors.forEach(w => {
+      const e = w.querySelector('.rich-editor');
+      if (!e) return;
+      w.querySelectorAll('[data-cmd]').forEach(b => {
+        b.addEventListener('mousedown', ev => ev.preventDefault());
+        b.addEventListener('click', () => execCommand(e, b.dataset.cmd, b.dataset.value));
+      });
+      e.addEventListener('keydown', ev => {
+        if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'k') {
+          ev.preventDefault();
+          execCommand(e, 'createLink');
+        }
+      });
     });
-    e.addEventListener('keydown',ev=>{
-      if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==='k'){
-        ev.preventDefault();
-        execCommand(e,'createLink');
+
+    // Sync rich editors into their real form fields before ANY form submission,
+    // including the dedicated Save Terms button.
+    function syncRichEditors() {
+      richEditors.forEach(w => {
+        const e = w.querySelector('.rich-editor');
+        // The hidden textarea is a sibling of the editor wrapper.
+        const src = w.parentElement?.querySelector('.rich-source');
+        if (e && src) src.value = e.innerHTML;
+      });
+    }
+    // Keep the actual form fields current as the user edits.
+    richEditors.forEach(w => {
+      const e = w.querySelector('.rich-editor');
+      const field = w.closest('label');
+      const src = w.parentElement?.querySelector('.rich-source');
+      if (e && src) {
+        e.addEventListener('input', () => { src.value = e.innerHTML; });
+        e.addEventListener('blur', () => { src.value = e.innerHTML; });
       }
     });
-  });
+    form.addEventListener('submit', syncRichEditors);
 
-  // Sync rich editors into their real form fields before ANY form submission,
-  // including the dedicated Save Terms button.
-  function syncRichEditors(){
-    richEditors.forEach(w=>{
-      const e=w.querySelector('.rich-editor');
-      // The hidden textarea is a sibling of the editor wrapper.
-      const src=w.parentElement?.querySelector('.rich-source');
-      if(e && src) src.value=e.innerHTML;
-    });
-  }
-  // Keep the actual form fields current as the user edits.
-  richEditors.forEach(w=>{
-    const e=w.querySelector('.rich-editor');
-    const field = w.closest('label');
-    const src=w.parentElement?.querySelector('.rich-source');
-    if(e && src){
-      e.addEventListener('input',()=>{ src.value=e.innerHTML; });
-      e.addEventListener('blur',()=>{ src.value=e.innerHTML; });
+    const modal = document.getElementById('imagePicker'), grid = document.getElementById('pickerGrid'), close = document.getElementById('closePicker');
+    let target = null;
+    async function openPicker(input) {
+      target = input;
+      modal.classList.add('open');
+      grid.innerHTML = '<p>Loading images…</p>';
+      try {
+        const r = await fetch('/admin/media/json');
+        const files = await r.json();
+        grid.innerHTML = files.length ? files.map(f => `<button type="button" class="picker-item" data-url="${f.url}"><img src="${f.url}"><small>${f.name}</small></button>`).join('') : '<p>No uploaded images. Upload one in Media Library.</p>';
+        grid.querySelectorAll('.picker-item').forEach(x => x.onclick = () => { target.value = x.dataset.url; modal.classList.remove('open'); });
+      } catch (e) { grid.innerHTML = '<p>Could not load media.</p>' }
     }
-  });
-  form.addEventListener('submit',syncRichEditors);
-
-  const modal=document.getElementById('imagePicker'),grid=document.getElementById('pickerGrid'),close=document.getElementById('closePicker');
-  let target=null;
-  async function openPicker(input){
-    target=input;
-    modal.classList.add('open');
-    grid.innerHTML='<p>Loading images…</p>';
-    try{
-      const r=await fetch('/admin/media/json');
-      const files=await r.json();
-      grid.innerHTML=files.length?files.map(f=>`<button type="button" class="picker-item" data-url="${f.url}"><img src="${f.url}"><small>${f.name}</small></button>`).join(''):'<p>No uploaded images. Upload one in Media Library.</p>';
-      grid.querySelectorAll('.picker-item').forEach(x=>x.onclick=()=>{target.value=x.dataset.url;modal.classList.remove('open');});
-    }catch(e){grid.innerHTML='<p>Could not load media.</p>'}
-  }
-  document.querySelectorAll('.choose-image').forEach(b=>b.addEventListener('click',()=>openPicker(b.closest('.image-picker-row').querySelector('input'))));
-  if(close) close.onclick=()=>modal.classList.remove('open');
-  if(modal) modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
-})();
+    document.querySelectorAll('.choose-image').forEach(b => b.addEventListener('click', () => openPicker(b.closest('.image-picker-row').querySelector('input'))));
+    if (close) close.onclick = () => modal.classList.remove('open');
+    if (modal) modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open') });
+  })();
 </script>
 {% endblock %}

@@ -23,6 +23,7 @@
                 {% if product.images %}
 
                     <img
+                        id="mainProductImage"
                         src="{{ product.images[0].image_url }}"
                         alt="{{ product.name }}"
                     >
@@ -44,14 +45,17 @@
 
                 {% for image in product.images %}
 
-                <div class="product-thumbnail">
-
+                <button
+                    type="button"
+                    class="product-thumbnail{% if loop.first %} active{% endif %}"
+                    onclick="changeProductImage('{{ image.image_url|e }}', this)"
+                    aria-label="View product image {{ loop.index }}"
+                >
                     <img
                         src="{{ image.image_url }}"
-                        alt="{{ product.name }}"
+                        alt="{{ product.name }} - image {{ loop.index }}"
                     >
-
-                </div>
+                </button>
 
                 {% endfor %}
 

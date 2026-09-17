@@ -18,7 +18,22 @@
 </div>
 {% endfor %}
 <div class="home-hero-dots">
-{% for i in range(3) %}<button class="hero-dot{% if i == 0 %} active{% endif %}" data-slide="{{ i }}"></button>{% endfor %}
+{% for i in range(3) %}<button type="button" aria-label="Go to slide {{ i + 1 }}" class="hero-dot{% if i == 0 %} active{% endif %}" data-slide="{{ i }}"></button>{% endfor %}
+</div>
+
+<div class="home-hero-features" aria-label="Our values">
+    <div class="home-hero-feature">
+        <span class="home-hero-feature-icon" aria-hidden="true">⌂</span>
+        <span class="home-hero-feature-text">Premium<br>Furniture</span>
+    </div>
+    <div class="home-hero-feature">
+        <span class="home-hero-feature-icon" aria-hidden="true">◇</span>
+        <span class="home-hero-feature-text">Timeless<br>Design</span>
+    </div>
+    <div class="home-hero-feature">
+        <span class="home-hero-feature-icon" aria-hidden="true">◒</span>
+        <span class="home-hero-feature-text">Better<br>Living</span>
+    </div>
 </div>
 </section>
 
