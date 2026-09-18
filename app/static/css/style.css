@@ -898,137 +898,476 @@ a {
     color: rgb(255, 239, 209);
 }
 
+/* =====================================================
+   LUXURY CATEGORY SHOWCASE
+===================================================== */
+
 .categories-page .category-showcase {
     width: min(1380px, calc(100% - 100px));
     margin: 0 auto;
-    padding: 55px 0 100px;
+    padding: 95px 0 120px;
 }
 
+
+/* ================================
+   SECTION HEADER
+================================ */
+
 .categories-page .category-section-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 50px;
-    margin-bottom: 38px;
+    display: grid;
+    grid-template-columns: 1.15fr .85fr;
+    align-items: end;
+    gap: 80px;
+
+    margin-bottom: 55px;
 }
 
 .categories-page .category-section-heading h2 {
     margin: 0;
-    font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: 48px;
+
+    font-family: "Bodoni Moda",
+        "Cormorant Garamond",
+        Georgia,
+        serif;
+
+    font-size: clamp(52px, 6vw, 82px);
     font-weight: 400;
-    letter-spacing: -1.5px;
+
+    line-height: .92;
+    letter-spacing: -2.5px;
+
+    color: #30251d;
 }
 
 .categories-page .category-section-heading > p {
     max-width: 390px;
-    margin: 0;
-    font-size: 15px;
-    line-height: 1.7;
-    color: #666;
+
+    margin: 0 0 5px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+    line-height: 1.8;
+
+    color: #716b63;
 }
+
+
+/* Small luxury line */
+
+.categories-page .category-section-heading::before {
+    /* content: "THE COLLECTION"; */
+
+    position: absolute;
+
+    margin-top: -32px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    color: #b18445;
+}
+
+
+/* ================================
+   CATEGORY GRID
+================================ */
 
 .categories-page .category-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 20px;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    width: 100%;
 }
+
+
+/* ================================
+   CATEGORY CARD
+================================ */
 
 .categories-page .category-card {
     position: relative;
+
     width: 100%;
-    height: 390px;
-    margin-top: 0;
+    height: 440px;
+
+    margin: 0;
+
     overflow: hidden;
-    border-radius: 2px;
+
+    border-radius: 3px;
+
+    background: #ded7cc;
+
     text-decoration: none;
-    background: #eee;
+
+    isolation: isolate;
 }
+
+
+/* ================================
+   IMAGE
+================================ */
 
 .categories-page .category-image {
     position: absolute;
+
     inset: 0;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
 }
 
 .categories-page .category-image img {
     width: 100%;
     height: 100%;
+
     display: block;
+
     object-fit: cover;
     object-position: center;
-    transition: transform 0.6s ease;
+
+    transition:
+        transform .8s cubic-bezier(.2,.7,.2,1);
 }
 
-.categories-page .category-card:hover .category-image img {
-    transform: scale(1.05);
+
+/* Luxury hover */
+
+.categories-page .category-card:hover
+.category-image img {
+    transform: scale(1.055);
 }
+
+
+/* ================================
+   DARK GRADIENT
+================================ */
 
 .categories-page .category-image::after {
     content: "";
+
     position: absolute;
+
     inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.72),
-        rgba(0, 0, 0, 0.05) 65%
-    );
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,0) 35%,
+            rgba(0,0,0,.08) 50%,
+            rgba(0,0,0,.78) 100%
+        );
+
+    pointer-events: none;
 }
+
+
+/* ================================
+   CARD CONTENT
+================================ */
 
 .categories-page .category-card-content {
     position: absolute;
-    left: 22px;
-    right: 22px;
-    bottom: 20px;
+
+    left: 24px;
+    right: 24px;
+    bottom: 25px;
+
     z-index: 2;
+
     color: #fff;
 }
+
+
+/* Number */
 
 .categories-page .category-number {
     display: block;
-    margin-bottom: 12px;
-    font-size: 11px;
+
+    margin-bottom: 13px;
+
+    font-size: 9px;
+
     letter-spacing: 3px;
-    opacity: 0.8;
+
+    color: #d6b77a;
+
+    opacity: 1;
 }
+
+
+/* Name */
 
 .categories-page .category-card-content h3 {
     margin: 0 0 8px;
-    font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: 25px;
-    font-weight: 500;
-    line-height: 1.05;
-}
 
-.categories-page .category-card-content p {
-    margin: 0 0 20px;
-    font-size: 13px;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.85);
-}
+    font-family:
+        "Bodoni Moda",
+        "Cormorant Garamond",
+        Georgia,
+        serif;
 
-.categories-page .category-card-content strong {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+    font-size: 29px;
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    letter-spacing: -.5px;
+
     color: #fff;
 }
 
-.categories-page .category-image-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    letter-spacing: 5px;
-    color: #999;
-    background: #eee;
+
+/* Description */
+
+.categories-page .category-card-content p {
+    margin: 0 0 17px;
+
+    max-width: 230px;
+
+    font-size: 11px;
+
+    line-height: 1.55;
+
+    color: rgba(255,255,255,.78);
 }
 
+
+/* Explore */
+
+.categories-page .category-card-content strong {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    color: #fff;
+
+    transition:
+        color .25s ease,
+        gap .25s ease;
+}
+
+.categories-page .category-card:hover
+.category-card-content strong {
+    gap: 13px;
+
+    color: #d6b77a;
+}
+
+
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 1000px) {
+
+    .categories-page .category-showcase {
+        width: calc(100% - 50px);
+
+        padding:
+            75px 0
+            90px;
+    }
+
+    .categories-page .category-section-heading {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 45px;
+
+        margin-bottom: 42px;
+    }
+
+    .categories-page .category-section-heading h2 {
+        font-size: clamp(48px, 7vw, 68px);
+    }
+
+    .categories-page .category-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 16px;
+    }
+
+    .categories-page .category-card {
+        height: 430px;
+    }
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+    .categories-page .category-showcase {
+        width: calc(100% - 36px);
+
+        padding:
+            65px 0
+            80px;
+    }
+
+
+    /* Header becomes clean vertical layout */
+
+    .categories-page .category-section-heading {
+        display: block;
+
+        margin-bottom: 32px;
+    }
+
+    .categories-page .category-section-heading::before {
+        position: static;
+
+        display: block;
+
+        margin: 0 0 18px;
+    }
+
+    .categories-page .category-section-heading h2 {
+        font-size: clamp(45px, 14vw, 62px);
+
+        line-height: .94;
+
+        letter-spacing: -2px;
+
+        max-width: 330px;
+    }
+
+    .categories-page .category-section-heading > p {
+        max-width: 310px;
+
+        margin: 22px 0 0;
+
+        font-size: 12px;
+
+        line-height: 1.7;
+    }
+
+
+    /* 2 cards per row */
+
+    .categories-page .category-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+
+    /* Elegant mobile card */
+
+    .categories-page .category-card {
+        height: 285px;
+
+        border-radius: 2px;
+    }
+
+
+    .categories-page .category-card-content {
+        left: 14px;
+        right: 14px;
+        bottom: 16px;
+    }
+
+
+    .categories-page .category-number {
+        margin-bottom: 8px;
+
+        font-size: 7px;
+
+        letter-spacing: 2px;
+    }
+
+
+    .categories-page .category-card-content h3 {
+        font-size: 21px;
+
+        line-height: 1;
+    }
+
+
+    .categories-page .category-card-content p {
+        display: none;
+    }
+
+
+    .categories-page .category-card-content strong {
+        font-size: 8px;
+
+        letter-spacing: .8px;
+    }
+}
+
+
+/* ================================
+   VERY SMALL MOBILE
+================================ */
+
+@media (max-width: 400px) {
+
+    .categories-page .category-showcase {
+        width: calc(100% - 28px);
+
+        padding:
+            55px 0
+            65px;
+    }
+
+    .categories-page .category-section-heading h2 {
+        font-size: 44px;
+
+        letter-spacing: -1.5px;
+    }
+
+    .categories-page .category-section-heading > p {
+        font-size: 11px;
+
+        max-width: 290px;
+    }
+
+    .categories-page .category-grid {
+        gap: 8px;
+    }
+
+    .categories-page .category-card {
+        height: 255px;
+    }
+
+    .categories-page .category-card-content {
+        left: 12px;
+        right: 12px;
+        bottom: 13px;
+    }
+
+    .categories-page .category-card-content h3 {
+        font-size: 18px;
+    }
+
+}
 @media (max-width: 1000px) {
 
     .categories-page .categories-hero {
