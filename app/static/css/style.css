@@ -5442,7 +5442,6 @@ footer {
     align-items: center !important;
     gap: 14px !important;
     width: 100% !important;
-    margin-top: 90px !important;
 }
 
 .home-btn-secondary {
@@ -6193,84 +6192,137 @@ footer {
 
 @media (min-width: 601px) and (max-width: 900px) {
 
-    .services-hero {
-        min-height: auto;
+    /* =========================
+       SERVICES HERO
+    ========================= */
 
-        padding: 70px 6vw;
+    .services-hero {
+        min-height: clamp(480px, 65vw, 575px);
+        padding: 65px 6vw;
     }
 
+    .services-hero-content {
+        width: 100%;
+        max-width: 760px;
+    }
 
     .services-hero h1 {
-        font-size: clamp(52px, 8vw, 76px);
+        width: 100%;
+        max-width: 760px;
+        min-width: 0;
 
+        font-size: clamp(48px, 8vw, 76px);
+        line-height: .94;
         letter-spacing: -2px;
     }
 
-
     .services-hero-content > p:last-child {
+        width: 100%;
+        max-width: 520px;
+
         font-size: 14px;
+        line-height: 1.7;
     }
 
 
-    /* INTRO */
+    /* =========================
+       DESIGNED AROUND YOU
+       TABLET
+    ========================= */
 
     .services-intro {
         width: 100%;
         max-width: none;
 
-        grid-template-columns:
-            minmax(0, 1fr)
-            minmax(0, 1fr);
+        display: flex;
+        flex-direction: column;
 
-        min-height: 400px;
+        align-items: flex-start;
 
-        padding: 70px 6vw;
+        min-height: auto;
+
+        padding:
+            clamp(65px, 9vw, 90px)
+            clamp(28px, 7vw, 65px);
+
+        gap: clamp(35px, 6vw, 55px);
+
+        box-sizing: border-box;
     }
-
 
     .services-intro-heading {
-        padding-right: 35px;
-    }
+        width: 100%;
+        max-width: 720px;
 
+        margin: 0;
+        padding: 0;
+
+        box-sizing: border-box;
+    }
 
     .services-intro-heading .services-eyebrow {
         margin-bottom: 20px;
-    }
+        margin-left: 25px;
 
+        font-size: 9px;
+        letter-spacing: .3em;
+    }
 
     .services-intro-heading h2 {
-        font-size: clamp(44px, 7vw, 62px);
-    }
+        width: 100%;
+        max-width: 720px;
+        min-width: 0;
 
+        margin: 20px;
+
+        font-size: clamp(48px, 8vw, 70px);
+
+        line-height: .96;
+        letter-spacing: -.035em;
+    }
 
     .services-intro-text {
-        max-width: none;
+        width: 100%;
+        max-width: 650px;
 
-        padding-left: 30px;
+        margin: 0;
+        padding: 0 0 0 25px;
+
+        box-sizing: border-box;
+
+        border-left: 1px solid rgba(30, 30, 30, .16);
     }
 
-
     .services-intro-text p {
-        max-width: 100%;
+        width: 100%;
+        max-width: 560px;
 
-        font-size: 13px;
+        margin: 0;
+
+        font-size: 14px;
         line-height: 1.8;
     }
 
 
-    /* SERVICE */
+    /* =========================
+       SERVICE CARDS
+    ========================= */
 
     .service-card {
+        width: 100%;
         min-height: 240px;
 
         padding: 35px 6vw;
-    }
 
+        box-sizing: border-box;
+    }
 
     .service-content {
+        width: 100%;
+        max-width: 700px;
+
         margin-top: 38px;
     }
-
 
     .service-content h3 {
         font-size: clamp(30px, 5vw, 44px);
@@ -6377,6 +6429,7 @@ footer {
 
     .services-intro-heading .services-eyebrow {
         margin: 0 0 20px;
+        margin-left: 25px;
 
         font-size: 9px;
         letter-spacing: .28em;
@@ -6387,7 +6440,7 @@ footer {
         width: 100%;
         max-width: none;
 
-        margin: 0;
+        margin: 20px;
 
         font-size: clamp(46px, 13vw, 62px);
 
@@ -7254,13 +7307,58 @@ footer {
     .services-hero,
     .portfolio-hero,
     .about-hero {
-        min-height: auto;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        background-position: top center;
+        width: 100%;
+        min-height: clamp(480px, 70vh, 620px);
+
         height: auto;
 
-        padding: 65px 6%;
+        padding: clamp(55px, 8vw, 80px)
+                 clamp(24px, 6vw, 60px);
+
+        display: flex;
+        align-items: flex-end;
+
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+
+        overflow: hidden;
+    }
+
+    .services-hero-content,
+    .portfolio-hero-content,
+    .about-hero-content {
+        width: 100%;
+        max-width: 760px;
+        margin: 0;
+    }
+
+    .services-hero h1,
+    .portfolio-hero h1,
+    .about-hero h1 {
+        width: 100%;
+        max-width: 760px;
+
+        min-width: 0;
+
+        font-size: clamp(48px, 8vw, 76px);
+        line-height: .94;
+        letter-spacing: -2px;
+
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+
+    .services-hero-content > p:last-child,
+    .portfolio-hero-content > p:last-child,
+    .about-hero-content > p:last-child {
+        width: 100%;
+        max-width: 520px;
+
+        margin-top: 24px;
+
+        font-size: clamp(13px, 1.6vw, 16px);
+        line-height: 1.7;
     }
 
 
@@ -7331,22 +7429,75 @@ footer {
     .services-hero,
     .portfolio-hero,
     .about-hero {
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        background-position: top center;
+        width: 100%;
+
+        min-height: clamp(430px, 72vh, 560px);
+
         height: auto;
-        min-height: auto;
 
-        padding: 50px 24px;
+        padding:
+            clamp(45px, 10vw, 65px)
+            clamp(18px, 6vw, 28px)
+            clamp(50px, 10vw, 70px);
 
+        display: flex;
         align-items: flex-end;
+
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+
+        overflow: hidden;
+    }
+
+    .services-hero-content,
+    .portfolio-hero-content,
+    .about-hero-content {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .services-hero h1,
+    .portfolio-hero h1,
+    .about-hero h1 {
+        width: 100%;
+        max-width: 100%;
+
+        min-width: 0;
+
+        font-size: clamp(38px, 12vw, 58px);
+
+        line-height: .95;
+
+        letter-spacing: -1.5px;
+
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+
+    .services-hero-content > p:last-child,
+    .portfolio-hero-content > p:last-child,
+    .about-hero-content > p:last-child {
+        width: 100%;
+        max-width: 100%;
+
+        margin-top: 20px;
+
+        font-size: clamp(12px, 3.5vw, 14px);
+
+        line-height: 1.65;
     }
 
 
     .services-hero h1,
     .portfolio-hero h1,
     .about-hero h1 {
-        min-width: 850px;
+
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+
         font-size: 40px;
 
         font-weight: 900;
@@ -7526,28 +7677,38 @@ footer {
     .services-hero,
     .portfolio-hero,
     .about-hero {
+        min-height: 430px;
 
-        min-height: auto;
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        background-position: top center;
-        height: auto;
+        padding:
+            42px 18px 50px;
 
-        padding: 50px 24px;
-
-        align-items: flex-end;
+        background-size: cover;
+        background-position: center center;
     }
 
-.services-hero h1,
+    .services-hero h1,
     .portfolio-hero h1,
     .about-hero h1 {
-        font-size: 30px;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
 
-        line-height: .94;
+        font-size: clamp(34px, 11vw, 44px);
 
-        letter-spacing: -2px;
+        line-height: .96;
+
+        letter-spacing: -1.2px;
+    }
+
+    .services-hero-content > p:last-child,
+    .portfolio-hero-content > p:last-child,
+    .about-hero-content > p:last-child {
+        font-size: 12.5px;
+        line-height: 1.6;
     }
 }
+
+
 /* =================================
    PRICE CALCULATOR
 ================================= */
@@ -18212,4 +18373,50 @@ img, svg, video { max-width: 100%; }
     height: 100%;
     object-fit: cover;
     cursor: pointer;
+}
+
+/* Catalog pagination — 12 items per page */
+.catalog-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 42px auto 10px;
+}
+
+.catalog-page-btn {
+    min-width: 42px;
+    height: 42px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(36, 24, 17, 0.22);
+    border-radius: 3px;
+    color: #241811;
+    background: transparent;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.catalog-page-btn:hover,
+.catalog-page-btn.active {
+    background: #241811;
+    color: #fff;
+    border-color: #241811;
+}
+
+@media (max-width: 600px) {
+    .catalog-pagination {
+        margin-top: 28px;
+        gap: 6px;
+    }
+
+    .catalog-page-btn {
+        min-width: 38px;
+        height: 38px;
+        padding: 0 10px;
+    }
 }

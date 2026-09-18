@@ -2,8 +2,6 @@
 
 {% block title %}
 {{ product.name }} | {{ site().site.name }}
-<script>window.INTRA_AURA_PRODUCT_ID = {{ product.id }};</script>
-
 {% endblock %}
 
 {% block content %}
@@ -48,7 +46,8 @@
                 <button
                     type="button"
                     class="product-thumbnail{% if loop.first %} active{% endif %}"
-                    onclick="changeProductImage('{{ image.image_url|e }}', this)"
+                    data-image-url="{{ image.image_url }}"
+                    onclick="changeProductImage(this.dataset.imageUrl, this)"
                     aria-label="View product image {{ loop.index }}"
                 >
                     <img
@@ -196,7 +195,8 @@
     <button
         type="button"
         class="detail-buy-now-btn"
-        onclick="startProductCheckout({{ product.id }}, 1)"
+        data-product-id="{{ product.id }}"
+        onclick="startProductCheckout(this.dataset.productId, 1)"
     >
         Buy Now
         <span>→</span>
@@ -253,6 +253,6 @@
 
 </section>
 
-<script>window.INTRA_AURA_PRODUCT_ID = {{ product.id }};</script>
+
 
 {% endblock %}

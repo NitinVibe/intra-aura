@@ -58,6 +58,8 @@ def products_page(
     request: Request,
     category_id: int | None = None,
     search: str | None = None,
+    q: str | None = None,
+    page: int = 1,
     db: Session = Depends(get_db)
 ):
     # -----------------------------------------
@@ -75,14 +77,29 @@ def products_page(
             .filter(Category.id == category_id)
         )
 
-    if search:
+    # The public catalog is intentionally limited to 12 products per page.
+    try:
+        page = max(1, int(page))
+    except (TypeError, ValueError):
+        page = 1
+
+    search_text = (search or q or "").strip()
+
+    if search_text:
         query = query.filter(
-            Product.name.ilike(f"%{search}%")
+            Product.name.ilike(f"%{search_text}%")
         )
+
+    per_page = 12
+    total_products = query.count()
+    total_pages = max(1, (total_products + per_page - 1) // per_page)
+    page = min(page, total_pages)
 
     products = (
         query
         .order_by(Product.id.desc())
+        .offset((page - 1) * per_page)
+        .limit(per_page)
         .all()
     )
 
@@ -123,7 +140,11 @@ def products_page(
             "products": products,
             "categories": categories,
             "selected_category": selected_category,
-            "search": search or ""
+            "search": search_text,
+            "current_page": page,
+            "total_pages": total_pages,
+            "total_products": total_products,
+            "per_page": per_page,
         }
     )
 
@@ -171,11 +192,25 @@ def product_detail(
 @router.get("/categories")
 def categories_page(
     request: Request,
+    page: int = 1,
     db: Session = Depends(get_db)
 ):
+    per_page = 12
+
+    try:
+        page = max(1, int(page))
+    except (TypeError, ValueError):
+        page = 1
+
+    category_query = db.query(Category).order_by(Category.name.asc())
+    total_categories = category_query.count()
+    total_pages = max(1, (total_categories + per_page - 1) // per_page)
+    page = min(page, total_pages)
+
     categories = (
-        db.query(Category)
-        .order_by(Category.name.asc())
+        category_query
+        .offset((page - 1) * per_page)
+        .limit(per_page)
         .all()
     )
 
@@ -183,7 +218,11 @@ def categories_page(
         request=request,
         name="categories.html",
         context={
-            "categories": categories
+            "categories": categories,
+            "current_page": page,
+            "total_pages": total_pages,
+            "total_categories": total_categories,
+            "per_page": per_page,
         }
     )
 
