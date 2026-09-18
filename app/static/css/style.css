@@ -18139,7 +18139,7 @@ img, svg, video { max-width: 100%; }
     .home-hero-content h1 { font-size: clamp(38px, 12vw, 50px) !important; }
     .home-hero-description { font-size: 12px !important; }
     .home-btn { font-size: 9px !important; }
-    .products-grid { gap: 9px !important; }
+    .products-grid { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; gap: 9px !important; }
     .categories-page .category-grid { gap: 9px !important; }
     .categories-section .categories-grid,
     .categories-section .categories-track { gap: 9px !important; }
