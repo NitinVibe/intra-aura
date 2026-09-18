@@ -874,7 +874,7 @@ function renderCart() {
         onclick="buyCartItem(${item.id})"
     >
         Buy Now
-        <span>→</span>
+        
     </button>
 
 </div>
