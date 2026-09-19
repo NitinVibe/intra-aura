@@ -20761,8 +20761,8 @@ img, svg, video { max-width: 100%; }
 }
 
 .footer-logo img {
-    width: 165px;
-    height: 60px;
+    width: 205px;
+    height: 80px;
     max-width: 100%;
     object-fit: contain;
     display: block;
