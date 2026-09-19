@@ -1739,3 +1739,475 @@
 }
 
 .admin-order-notice-warning { background:#fff1dc; border-color:#ead0a5; color:#875e25; }
+
+
+/* =========================================================
+   FINAL ADMIN RESPONSIVE POLISH
+   Targeted override only — existing admin UI/logic untouched.
+   ========================================================= */
+
+/* ---------- Fix enquiry detail page header ---------- */
+/* enquiry_detail.html has the eyebrow, title and description
+   directly inside .admin-page-header rather than inside a div. */
+.admin-page-header:has(> span + h1) {
+    display: block;
+    align-items: initial;
+}
+
+.admin-page-header:has(> span + h1) > span {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.admin-page-header:has(> span + h1) > h1 {
+    margin: 0 0 6px;
+}
+
+.admin-page-header:has(> span + h1) > p {
+    margin: 0;
+}
+
+
+/* ---------- Enquiry detail ---------- */
+.enquiry-detail-card {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    min-width: 0;
+}
+
+.detail-row {
+    min-width: 0;
+}
+
+.detail-row > strong,
+.detail-row > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.detail-message {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin-top: 20px;
+    padding: 18px;
+    background: #f7f3ec;
+    border: 1px solid var(--a-line);
+    border-radius: 12px;
+    color: #514c45;
+    line-height: 1.7;
+    text-align: left;
+    overflow: hidden;
+}
+
+.detail-message > span {
+    display: block;
+    margin: 0 0 9px;
+    color: var(--a-muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.detail-message > p {
+    margin: 0;
+    min-width: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.enquiry-status-section {
+    margin-top: 22px;
+    padding: 20px;
+    border: 1px solid var(--a-line);
+    border-radius: 15px;
+    background: #fcfaf6;
+}
+
+.enquiry-status-section h3 {
+    margin: 0 0 13px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.enquiry-status-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.enquiry-status-form select {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 38px 0 13px;
+    border: 1px solid #d8d0c3;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--a-ink);
+    font: 600 12px 'DM Sans', Arial, sans-serif;
+    outline: none;
+    cursor: pointer;
+}
+
+.enquiry-status-form select:focus {
+    border-color: var(--a-gold);
+    box-shadow: 0 0 0 3px var(--a-gold-soft);
+}
+
+.enquiry-status-form .admin-primary-btn {
+    min-width: 145px;
+    min-height: 44px;
+}
+
+
+/* ---------- Product images: show complete image ---------- */
+.admin-image-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-image-preview img {
+    object-fit: contain;
+    background: #f4f0e8;
+}
+
+
+/* ---------- Product edit page ---------- */
+.edit-product-page {
+    width: 100%;
+    min-width: 0;
+}
+
+.edit-product-page > .admin-card {
+    width: 100%;
+    min-width: 0;
+}
+
+.product-form {
+    min-width: 0;
+}
+
+.product-form .form-group {
+    min-width: 0;
+}
+
+.product-form input,
+.product-form textarea,
+.product-form select {
+    max-width: 100%;
+}
+
+
+/* ---------- Orders: prevent narrow/mobile breakage ---------- */
+.admin-order-layout,
+.admin-order-card,
+.admin-order-info-grid,
+.admin-order-item,
+.admin-order-status-form {
+    min-width: 0;
+}
+
+.admin-order-card-head > div {
+    min-width: 0;
+}
+
+.admin-order-card-head h2,
+.admin-order-item strong,
+.admin-order-item small {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.admin-order-item-image img {
+    object-fit: contain;
+    background: #f4f0e8;
+}
+
+
+/* ---------- Better admin page width at desktop/tablet ---------- */
+@media (max-width: 1200px) {
+    .admin-container,
+    .cms-wrap,
+    .admin-page {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .enquiry-detail-card {
+        max-width: 100%;
+    }
+
+    .admin-image-grid,
+    .media-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+
+/* ---------- Tablet ---------- */
+@media (max-width: 900px) {
+    .admin-container,
+    .cms-wrap,
+    .admin-page {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .admin-page-header {
+        gap: 14px;
+    }
+
+    .admin-page-header > div {
+        min-width: 0;
+    }
+
+    .admin-page-header h1 {
+        overflow-wrap: anywhere;
+    }
+
+    .enquiry-detail-card {
+        border-radius: 16px;
+    }
+
+    .detail-row {
+        grid-template-columns: 130px minmax(0, 1fr);
+    }
+
+    .admin-image-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-order-card-head {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .admin-order-card-head > .admin-secondary-btn {
+        flex: 0 0 auto;
+    }
+}
+
+
+/* ---------- Mobile ---------- */
+@media (max-width: 640px) {
+    .admin-container,
+    .cms-wrap,
+    .admin-page {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px 14px 45px;
+    }
+
+    .admin-page-header {
+        width: 100%;
+        margin-bottom: 18px;
+    }
+
+    .admin-page-header h1,
+    .admin-header h1 {
+        font-size: 31px;
+        line-height: 1.12;
+    }
+
+    .admin-page-header p {
+        line-height: 1.55;
+    }
+
+    .admin-page-header > .admin-primary-btn,
+    .admin-page-header > div > .admin-primary-btn,
+    .admin-page-header > .admin-secondary-btn {
+        width: 100%;
+    }
+
+    .enquiry-detail-card {
+        padding: 16px;
+        border-radius: 15px;
+    }
+
+    .detail-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        padding: 13px 0;
+    }
+
+    .detail-row > span:first-child {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .detail-row > strong {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .detail-message {
+        margin-top: 16px;
+        padding: 15px;
+    }
+
+    .enquiry-calculator-details {
+        padding: 17px;
+        margin-top: 18px;
+    }
+
+    .enquiry-detail-row {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .enquiry-detail-row strong {
+        max-width: 65%;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .enquiry-estimated-price {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .enquiry-status-section {
+        padding: 16px;
+        margin-top: 18px;
+    }
+
+    .enquiry-status-form {
+        grid-template-columns: 1fr;
+    }
+
+    .enquiry-status-form select,
+    .enquiry-status-form .admin-primary-btn {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .product-form-actions {
+        width: 100%;
+    }
+
+    .product-form-actions > * {
+        min-width: 0;
+    }
+
+    .admin-image-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .admin-image-preview {
+        aspect-ratio: 4 / 3;
+        min-height: 0;
+    }
+
+    .admin-image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .admin-image-card {
+        min-width: 0;
+    }
+
+    .image-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-order-card-head {
+        padding: 18px;
+    }
+
+    .admin-order-card-head h2 {
+        font-size: 22px;
+    }
+
+    .admin-order-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-order-info-grid > div,
+    .admin-order-info-grid > div:nth-child(2n) {
+        border-right: 0;
+    }
+
+    .admin-order-item {
+        grid-template-columns: 54px minmax(0, 1fr);
+        gap: 11px;
+        padding: 14px;
+    }
+
+    .admin-order-item-image {
+        width: 54px;
+        height: 54px;
+    }
+
+    .admin-order-item > strong:last-child {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    .admin-order-total {
+        padding: 17px 14px;
+    }
+
+    .admin-order-status-form {
+        flex-direction: column;
+        padding: 17px 14px;
+    }
+
+    .admin-order-status-form select,
+    .admin-order-status-form .admin-primary-btn {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .admin-order-help {
+        padding: 0 14px 17px;
+    }
+}
+
+
+/* ---------- Very small phones ---------- */
+@media (max-width: 380px) {
+    .admin-container,
+    .cms-wrap,
+    .admin-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .admin-page-header h1,
+    .admin-header h1 {
+        font-size: 28px;
+    }
+
+    .enquiry-detail-card,
+    .admin-form-card,
+    .product-form {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    .admin-image-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .enquiry-detail-row {
+        flex-direction: column;
+    }
+
+    .enquiry-detail-row strong {
+        max-width: 100%;
+        text-align: left;
+    }
+}

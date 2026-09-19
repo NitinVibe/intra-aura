@@ -5872,6 +5872,7 @@ footer {
 
 .home-hero-actions {
     display: flex !important;
+    margin-top: 60px !important;
     flex-direction: row !important;
     align-items: center !important;
     gap: 14px !important;
@@ -6053,6 +6054,7 @@ footer {
         flex-direction: column;
         align-items: stretch;
         width: 100%;
+        margin-top: 29px;
     }
 
     .home-btn {
@@ -18591,6 +18593,7 @@ img, svg, video { max-width: 100%; }
     flex-direction: row !important;
     align-items: center !important;
     gap: 18px !important;
+    margin-top: 60px !important;
 }
 
 .home-btn {
@@ -18909,6 +18912,7 @@ img, svg, video { max-width: 100%; }
     }
     .home-hero-actions {
         width: 100% !important;
+        margin-top: 30px !important;
         gap: 9px !important;
     }
     .home-btn {
@@ -19111,6 +19115,7 @@ img, svg, video { max-width: 100%; }
     justify-content: flex-start !important;
     gap: 18px !important;
     width: auto !important;
+    margin-top: 60px !important;
 }
 
 .home-btn {
@@ -19260,6 +19265,7 @@ img, svg, video { max-width: 100%; }
     }
     .home-hero-actions {
         gap: 9px !important;
+        margin-top: 30px !important;
     }
     .home-btn {
         min-width: 135px !important;
@@ -20474,4 +20480,184 @@ img, svg, video { max-width: 100%; }
 
     line-height: 1.15 !important;
     max-height: calc(1.15em * 2) !important;
+}
+
+
+/* =========================================================
+   PREMIUM GOLD SHIMMER — ADD TO CART
+========================================================= */
+
+.featured-cart-btn,
+.product-add-cart-btn {
+    position: relative;
+    isolation: isolate;
+
+    overflow: hidden;
+
+    /* Keep your existing sizing/layout */
+    min-width: 120px;
+    min-height: 48px;
+
+    /* Premium base */
+    background: #3b2417;
+    color: #ffffff;
+
+    border: 1px solid #3b2417;
+    
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
+}
+
+
+/* Moving golden light */
+.featured-cart-btn::before,
+.product-add-cart-btn::before {
+    content: "";
+
+    position: absolute;
+
+    top: -80%;
+    left: -45%;
+
+    width: 35%;
+    height: 260%;
+
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 220, 120, 0.08) 25%,
+        rgba(255, 224, 132, 0.85) 50%,
+        rgba(255, 220, 120, 0.08) 75%,
+        transparent 100%
+    );
+
+    transform: rotate(18deg);
+
+    filter: blur(3px);
+
+    pointer-events: none;
+
+    z-index: 1;
+
+    animation: cartGoldenShimmer 3.2s ease-in-out infinite;
+}
+
+
+/* Soft golden glow */
+.featured-cart-btn::after,
+.product-add-cart-btn::after {
+    content: "";
+
+    position: absolute;
+    inset: -2px;
+
+    border-radius: inherit;
+
+    box-shadow:
+        0 0 0 1px rgba(221, 169, 62, 0.12),
+        0 0 12px rgba(221, 169, 62, 0.16),
+        0 0 24px rgba(221, 169, 62, 0.08);
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    animation: cartGoldenGlow 2.8s ease-in-out infinite;
+}
+
+
+/* Keep button content above shimmer */
+.featured-cart-btn > *,
+.product-add-cart-btn > * {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* =========================================================
+   SHIMMER MOVEMENT
+========================================================= */
+
+@keyframes cartGoldenShimmer {
+
+    0% {
+        left: -55%;
+        opacity: 0;
+    }
+
+    12% {
+        opacity: 0.25;
+    }
+
+    35% {
+        opacity: 1;
+    }
+
+    55% {
+        left: 120%;
+        opacity: 0.7;
+    }
+
+    100% {
+        left: 120%;
+        opacity: 0;
+    }
+}
+
+
+/* =========================================================
+   SOFT PREMIUM PULSE
+========================================================= */
+
+@keyframes cartGoldenGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 1px rgba(221, 169, 62, 0.08),
+            0 0 10px rgba(221, 169, 62, 0.10),
+            0 0 20px rgba(221, 169, 62, 0.05);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 1px rgba(221, 169, 62, 0.28),
+            0 0 16px rgba(221, 169, 62, 0.25),
+            0 0 30px rgba(221, 169, 62, 0.12);
+    }
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.featured-cart-btn:hover,
+.product-add-cart-btn:hover {
+    transform: translateY(-1px);
+
+    border-color: rgba(221, 169, 62, 0.7);
+
+    box-shadow:
+        0 5px 18px rgba(59, 36, 23, 0.22),
+        0 0 18px rgba(221, 169, 62, 0.18);
+}
+
+
+/* =========================================================
+   MOBILE — PREVENT BUTTON SHRINKING
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .featured-cart-btn,
+    .product-add-cart-btn {
+        min-width: 0;
+        width: 100%;
+        min-height: 44px;
+
+        flex: 1 1 auto;
+    }
 }
