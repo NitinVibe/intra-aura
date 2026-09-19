@@ -380,7 +380,12 @@
     {% set f = site().get("footer", {}) %}
     <div class="footer-inner">
         <div>
-            <div class="logo">{{ site().site.name|upper }}</div>
+            <a href="/" class="footer-logo">
+                <img
+                    src="{{ site().header.logo }}"
+                    alt="{{ site().site.name }}"
+                >
+            </a>
             <p>{{ f.get("brand_description", "") }}</p>
         </div>
         <div>

@@ -20661,3 +20661,109 @@ img, svg, video { max-width: 100%; }
         flex: 1 1 auto;
     }
 }
+
+/* =========================================================
+   FEATURED PRODUCTS — CENTER THE WHOLE PRODUCT ROW
+   ========================================================= */
+
+.featured-section {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.featured-section .featured-grid {
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    justify-content: center;
+}
+
+
+/* Keep the 5 cards centered on large screens */
+@media (min-width: 1200px) {
+    .featured-section .featured-grid {
+        width: min(100%, 1180px);
+    }
+}
+
+
+/* Medium screens */
+@media (max-width: 1199px) and (min-width: 901px) {
+    .featured-section .featured-grid {
+        width: min(100%, 1000px);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+
+/* Tablet */
+@media (max-width: 900px) {
+    .featured-section .featured-grid {
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+
+/* Mobile */
+@media (max-width: 600px) {
+    .featured-section .featured-grid {
+        width: 100%;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        padding-left: 12px;
+        padding-right: 12px;
+        box-sizing: border-box;
+    }
+}
+
+
+/* Small mobile */
+@media (max-width: 400px) {
+    .featured-section .featured-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+/* Expand featured products only on large screens */
+@media (min-width: 1400px) {
+    .featured-section .featured-grid {
+        width: min(1320px, calc(100% - 80px));
+        gap: 14px;
+    }
+
+    .featured-section .featured-card {
+        min-width: 0;
+    }
+}
+
+/* Extra-wide screens */
+@media (min-width: 1600px) {
+    .featured-section .featured-grid {
+        width: min(1450px, calc(100% - 100px));
+        gap: 16px;
+    }
+}
+
+.footer-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.footer-logo img {
+    width: 165px;
+    height: 60px;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+}
